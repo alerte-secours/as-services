@@ -1,0 +1,19 @@
+table:
+  name: enum_notification_type
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyEnumNotificationType
+    delete_by_pk: deleteOneEnumNotificationType
+    insert: insertManyEnumNotificationType
+    insert_one: insertOneEnumNotificationType
+    select: selectManyEnumNotificationType
+    select_aggregate: selectAggEnumNotificationType
+    select_by_pk: selectOneEnumNotificationType
+    select_stream: selectStreamEnumNotificationType
+    update: updateManyEnumNotificationType
+    update_by_pk: updateOneEnumNotificationType
+    update_many: updateBatchEnumNotificationType

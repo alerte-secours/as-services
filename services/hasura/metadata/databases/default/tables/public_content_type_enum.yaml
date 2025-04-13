@@ -1,0 +1,17 @@
+table:
+  name: content_type_enum
+  schema: public
+configuration:
+  custom_root_fields:
+    delete: deleteManyContentTypeEnum
+    delete_by_pk: deleteOneContentTypeEnum
+    insert: insertManyContentTypeEnum
+    insert_one: insertOneContentTypeEnum
+    select: selectManyContentTypeEnum
+    select_aggregate: selectAggContentTypeEnum
+    select_by_pk: selectOneContentTypeEnum
+    update: updateManyContentTypeEnum
+    update_by_pk: updateOneContentTypeEnum
+    select_stream: selectStreamContentTypeEnum
+    update_many: updateBatchContentTypeEnum
+  custom_column_names: {}

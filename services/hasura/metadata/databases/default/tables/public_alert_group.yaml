@@ -1,0 +1,21 @@
+table:
+  name: alert_group
+  schema: public
+configuration:
+  column_config:
+    created_at:
+      custom_name: createdAt
+  custom_column_names:
+    created_at: createdAt
+  custom_root_fields:
+    delete: deleteManyAlertGroup
+    delete_by_pk: deleteOneAlertGroup
+    insert: insertManyAlertGroup
+    insert_one: insertOneAlertGroup
+    select: selectManyAlertGroup
+    select_aggregate: selectAggAlertGroup
+    select_by_pk: selectOneAlertGroup
+    select_stream: selectStreamAlertGroup
+    update: updateManyAlertGroup
+    update_by_pk: updateOneAlertGroup
+    update_many: updateBatchAlertGroup

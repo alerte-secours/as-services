@@ -1,0 +1,121 @@
+table:
+  name: user_phone_number_relative
+  schema: public
+configuration:
+  column_config:
+    phone_number_id:
+      custom_name: phoneNumberId
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    phone_number_id: phoneNumberId
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyUserPhoneNumberRelative
+    delete_by_pk: deleteOneUserPhoneNumberRelative
+    insert: insertManyUserPhoneNumberRelative
+    insert_one: insertOneUserPhoneNumberRelative
+    select: selectManyUserPhoneNumberRelative
+    select_aggregate: selectAggUserPhoneNumberRelative
+    select_by_pk: selectOneUserPhoneNumberRelative
+    select_stream: selectStreamUserPhoneNumberRelative
+    update: updateManyUserPhoneNumberRelative
+    update_by_pk: updateOneUserPhoneNumberRelative
+    update_many: updateBatchUserPhoneNumberRelative
+object_relationships:
+  - name: onePhoneNumber
+    using:
+      foreign_key_constraint_on: phone_number_id
+array_relationships:
+  - name: manyRelativeAsTo
+    using:
+      manual_configuration:
+        column_mapping:
+          user_id: to_user_id
+        insertion_order: null
+        remote_table:
+          name: relative
+          schema: public
+  - name: manyRelativeInvitation
+    using:
+      manual_configuration:
+        column_mapping:
+          user_id: user_id
+        insertion_order: null
+        remote_table:
+          name: relative_invitation
+          schema: public
+  - name: manyRelativeInvitationAsTo
+    using:
+      manual_configuration:
+        column_mapping:
+          user_id: to_user_id
+        insertion_order: null
+        remote_table:
+          name: relative_invitation
+          schema: public
+insert_permissions:
+  - role: owner
+    permission:
+      check:
+        _and:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - onePhoneNumber:
+              user_id:
+                _eq: X-Hasura-User-Id
+      set:
+        user_id: X-Hasura-User-Id
+      columns:
+        - phone_number_id
+    comment: ""
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - id
+        - phone_number_id
+        - user_id
+      filter:
+        _or:
+          - manyRelativeAsTo:
+              user_id:
+                _eq: X-Hasura-User-Id
+          - manyRelativeInvitationAsTo:
+              user_id:
+                _eq: X-Hasura-User-Id
+    comment: ""
+  - role: owner
+    permission:
+      columns:
+        - id
+        - phone_number_id
+        - user_id
+      filter:
+        _or:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - manyRelativeInvitation:
+              to_user_id:
+                _eq: X-Hasura-User-Id
+  - role: public_anon
+    permission:
+      columns:
+        - id
+        - phone_number_id
+      filter: {}
+    comment: ""
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - phone_number_id
+      filter:
+        _and:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - onePhoneNumber:
+              user_id:
+                _eq: X-Hasura-User-Id
+      check: null
+    comment: ""

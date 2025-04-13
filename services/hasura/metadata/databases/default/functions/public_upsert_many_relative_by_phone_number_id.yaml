@@ -1,0 +1,9 @@
+function:
+  name: upsert_many_relative_by_phone_number_id
+  schema: public
+configuration:
+  custom_name: upsertManyRelativeByPhoneNumberId
+  custom_root_fields: {}
+  session_argument: hasura_session
+permissions:
+  - role: owner

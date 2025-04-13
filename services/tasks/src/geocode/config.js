@@ -1,0 +1,12 @@
+// related to app/src/misc/devicePrefs.js
+const MIN = 500
+const MAX = 25000
+
+module.exports = {
+  ALERT_DISTANCE_START: MIN,
+  ALERT_DISTANCE_END: MAX,
+  ALERT_DISTANCE_STEP: MIN,
+  ALERT_REACH_PERSONS_MIN: 10,
+  DEVICE_RADIUS_ALL_DEFAULT: MIN,
+  DEVICE_RADIUS_REACH_DEFAULT: MAX,
+}

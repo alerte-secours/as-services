@@ -1,0 +1,19 @@
+table:
+  name: role
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyRole
+    delete_by_pk: deleteOneRole
+    insert: insertManyRole
+    insert_one: insertOneRole
+    select: selectManyRole
+    select_aggregate: selectAggRole
+    select_by_pk: selectOneRole
+    select_stream: selectStreamRole
+    update: updateManyRole
+    update_by_pk: updateOneRole
+    update_many: updateBatchRole

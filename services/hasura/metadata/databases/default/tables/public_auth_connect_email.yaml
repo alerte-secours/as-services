@@ -1,0 +1,30 @@
+table:
+  name: auth_connect_email
+  schema: public
+configuration:
+  column_config:
+    connection_code:
+      custom_name: connectionCode
+    connection_email_sent_time:
+      custom_name: connectionEmailSentTime
+    email_id:
+      custom_name: emailId
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    connection_code: connectionCode
+    connection_email_sent_time: connectionEmailSentTime
+    email_id: emailId
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyAuthConnectEmail
+    delete_by_pk: deleteOneAuthConnectEmail
+    insert: insertManyAuthConnectEmail
+    insert_one: insertOneAuthConnectEmail
+    select: selectManyAuthConnectEmail
+    select_aggregate: selectAggAuthConnectEmail
+    select_by_pk: selectOneAuthConnectEmail
+    select_stream: selectStreamAuthConnectEmail
+    update: updateManyAuthConnectEmail
+    update_by_pk: updateOneAuthConnectEmail
+    update_many: updateBatchAuthConnectEmail

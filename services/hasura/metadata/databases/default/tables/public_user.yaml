@@ -1,0 +1,152 @@
+table:
+  name: user
+  schema: public
+configuration:
+  column_config:
+    created_at:
+      custom_name: createdAt
+    updated_at:
+      custom_name: updatedAt
+  custom_column_names:
+    created_at: createdAt
+    updated_at: updatedAt
+  custom_root_fields:
+    delete: deleteManyUser
+    delete_by_pk: deleteOneUser
+    insert: insertManyUser
+    insert_one: insertOneUser
+    select: selectManyUser
+    select_aggregate: selectAggUser
+    select_by_pk: selectOneUser
+    select_stream: selectStreamUser
+    update: updateManyUser
+    update_by_pk: updateOneUser
+    update_many: updateBatchUser
+object_relationships:
+  - name: oneUserAvatar
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: user_avatar
+          schema: public
+  - name: oneUserLoginRequest
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: user_login_request
+          schema: public
+  - name: oneUserPhoneNumberRelative
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: user_phone_number_relative
+          schema: public
+array_relationships:
+  - name: manyAlert
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: alert
+          schema: public
+  - name: manyAlerting
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: alerting
+          schema: public
+  - name: manyDevice
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: device
+          schema: public
+  - name: manyEmail
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: email
+          schema: public
+  - name: manyPhoneNumber
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: phone_number
+          schema: public
+  - name: manyRelative
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: relative
+          schema: public
+  - name: manyRelativeAsTo
+    using:
+      manual_configuration:
+        column_mapping:
+          id: to_user_id
+        insertion_order: null
+        remote_table:
+          name: relative
+          schema: public
+  - name: manyRelativeInvitation
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: relative_invitation
+          schema: public
+  - name: manyRelativeInvitationAsTo
+    using:
+      foreign_key_constraint_on:
+        column: to_user_id
+        table:
+          name: relative_invitation
+          schema: public
+  - name: manyRelativeUnregistered
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: relative_unregistered
+          schema: public
+  - name: manyUserGroupMember
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: user_group_member
+          schema: public
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - created_at
+        - id
+        - updated_at
+        - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        id:
+          _eq: X-Hasura-User-Id

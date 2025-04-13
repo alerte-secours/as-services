@@ -1,0 +1,6 @@
+function:
+  name: lookup_view_phone_number_registered
+  schema: public
+configuration:
+  custom_name: lookupViewPhoneNumberRegistered
+  custom_root_fields: {}

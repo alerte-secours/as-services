@@ -1,0 +1,44 @@
+# description: 
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          authTokenJwt:
+            type: string
+            format: apiJwt
+          phoneModel:
+            type: string
+          deviceUuid:
+            type: string
+            format: uuid
+        required:
+          - authTokenJwt
+responses:
+  200:
+    # description: 
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            userBearerJwt:
+              type: string
+          required:
+            - userBearerJwt
+  410:
+    description: Missing auth token from db
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: {}
+  498:
+    description: expired
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: {}

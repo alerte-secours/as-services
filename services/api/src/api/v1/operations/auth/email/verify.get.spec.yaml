@@ -1,0 +1,26 @@
+summary: Vérifie l'email de l'utilisateur avec un code de vérification
+parameters:
+  - in: query
+    name: code
+    required: true
+    schema:
+      type: string
+      format: uuid
+    description: Le code de vérification envoyé à l'utilisateur
+
+responses:
+  200:
+    description: Email vérifié avec succès.
+    content:
+      text/html:
+        schema:
+          type: string
+          example: "<html><body>Email vérifié avec succès.</body></html>"
+
+  404:
+    description: Code de vérification non trouvé.
+    content:
+      text/html:
+        schema:
+          type: string
+          example: "<html><body>Code de vérification non trouvé.</body></html>"

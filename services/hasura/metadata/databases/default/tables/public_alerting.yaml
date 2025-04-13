@@ -1,0 +1,108 @@
+table:
+  name: alerting
+  schema: public
+configuration:
+  column_config:
+    alert_id:
+      custom_name: alertId
+    coming_help:
+      custom_name: comingHelp
+    created_at:
+      custom_name: createdAt
+    device_id:
+      custom_name: deviceId
+    geomatch_method:
+      custom_name: geomatchMethod
+    initial_distance:
+      custom_name: initialDistance
+    initial_location:
+      custom_name: initialLocation
+    near_location:
+      custom_name: nearLocation
+    notification_sent:
+      custom_name: notificationSent
+    notification_sent_at:
+      custom_name: notificationSentAt
+    opened_once:
+      custom_name: openedOnce
+    relative_user_id:
+      custom_name: relativeUserId
+    updated_at:
+      custom_name: updatedAt
+    updated_seq:
+      custom_name: updatedSeq
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    alert_id: alertId
+    coming_help: comingHelp
+    created_at: createdAt
+    device_id: deviceId
+    geomatch_method: geomatchMethod
+    initial_distance: initialDistance
+    initial_location: initialLocation
+    near_location: nearLocation
+    notification_sent: notificationSent
+    notification_sent_at: notificationSentAt
+    opened_once: openedOnce
+    relative_user_id: relativeUserId
+    updated_at: updatedAt
+    updated_seq: updatedSeq
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyAlerting
+    delete_by_pk: deleteOneAlerting
+    insert: insertManyAlerting
+    insert_one: insertOneAlerting
+    select: selectManyAlerting
+    select_aggregate: selectAggAlerting
+    select_by_pk: selectOneAlerting
+    select_stream: selectStreamAlerting
+    update: updateManyAlerting
+    update_by_pk: updateOneAlerting
+    update_many: updateBatchAlerting
+object_relationships:
+  - name: oneAlert
+    using:
+      manual_configuration:
+        column_mapping:
+          alert_id: id
+        insertion_order: null
+        remote_table:
+          name: alert
+          schema: public
+  - name: oneUser
+    using:
+      foreign_key_constraint_on: user_id
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - acknowledged
+        - alert_id
+        - coming_help
+        - created_at
+        - id
+        - initial_distance
+        - near_location
+        - opened
+        - opened_once
+        - reason
+        - relative_user_id
+        - updated_at
+        - updated_seq
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - acknowledged
+        - coming_help
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+    comment: ""

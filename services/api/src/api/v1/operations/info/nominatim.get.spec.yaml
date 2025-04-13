@@ -1,0 +1,27 @@
+x-security:
+  - auth: ["user"]
+
+parameters:
+  - in: query
+    name: lat
+    required: true
+    schema:
+      type: number
+      format: latitude
+  - in: query
+    name: lon
+    required: true
+    schema:
+      type: number
+      format: longitude
+
+responses:
+  200:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            address:
+              type: string
+            

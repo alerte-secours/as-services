@@ -1,0 +1,90 @@
+table:
+  name: relative
+  schema: public
+configuration:
+  column_config:
+    to_user_id:
+      custom_name: toUserId
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    to_user_id: toUserId
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyRelative
+    delete_by_pk: deleteOneRelative
+    insert: insertManyRelative
+    insert_one: insertOneRelative
+    select: selectManyRelative
+    select_aggregate: selectAggRelative
+    select_by_pk: selectOneRelative
+    select_stream: selectStreamRelative
+    update: updateManyRelative
+    update_by_pk: updateOneRelative
+    update_many: updateBatchRelative
+object_relationships:
+  - name: oneRelativeAllow
+    using:
+      manual_configuration:
+        column_mapping:
+          id: relative_id
+        insertion_order: null
+        remote_table:
+          name: relative_allow
+          schema: public
+  - name: oneUser
+    using:
+      foreign_key_constraint_on: user_id
+  - name: oneUserPhoneNumberRelative
+    using:
+      manual_configuration:
+        column_mapping:
+          to_user_id: user_id
+        insertion_order: null
+        remote_table:
+          name: user_phone_number_relative
+          schema: public
+  - name: oneViewRelativePhoneNumber
+    using:
+      manual_configuration:
+        column_mapping:
+          id: relative_id
+        insertion_order: null
+        remote_table:
+          name: view_relative_phone_number
+          schema: public
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - id
+        - to_user_id
+        - user_id
+      filter:
+        to_user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+  - role: owner
+    permission:
+      columns:
+        - id
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      limit: 5
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - to_user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

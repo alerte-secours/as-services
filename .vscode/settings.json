@@ -1,0 +1,25 @@
+
+{
+  "path-autocomplete.pathMappings": {
+    "~": "${folder}/src"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": [
+    "javascript"
+  ],
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "files.associations": {
+    ".env.{default,local}": "dotenv",
+    "package.json.*": "json"
+  },
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "editor.inlineSuggest.enabled": true
+}

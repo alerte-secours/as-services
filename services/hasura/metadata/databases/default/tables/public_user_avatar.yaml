@@ -1,0 +1,48 @@
+table:
+  name: user_avatar
+  schema: public
+configuration:
+  column_config:
+    image_file_uuid:
+      custom_name: imageFileUuid
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    image_file_uuid: imageFileUuid
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyUserAvatar
+    delete_by_pk: deleteOneUserAvatar
+    insert: insertManyUserAvatar
+    insert_one: insertOneUserAvatar
+    select: selectManyUserAvatar
+    select_aggregate: selectAggUserAvatar
+    select_by_pk: selectOneUserAvatar
+    select_stream: selectStreamUserAvatar
+    update: updateManyUserAvatar
+    update_by_pk: updateOneUserAvatar
+    update_many: updateBatchUserAvatar
+insert_permissions:
+  - role: owner
+    permission:
+      check: {}
+      set:
+        user_id: X-Hasura-User-Id
+      columns:
+        - image_file_uuid
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - image_file_uuid
+        - user_id
+      filter: {}
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - image_file_uuid
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null

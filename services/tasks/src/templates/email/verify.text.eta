@@ -1,0 +1,5 @@
+Bonjour,
+Vous venez d'enregistrer cette adresse email sur Alerte-Secours. Avant de pouvoir utiliser cette adresse email avec votre compte, vous devez prouvez que cette adresse e-mail est bien la vôtre en ouvrant ce lien : <%= it.apiUrl %>/v1/oas/auth/email/verify?code=<%= it.verificationCode %>
+
+Cordialement,
+Alerte-Secours.

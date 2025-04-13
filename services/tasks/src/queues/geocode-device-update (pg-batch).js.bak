@@ -1,0 +1,96 @@
+// const timeLogger = require("utils/debug/time-logger")
+const { ctx } = require("@modjo/core")
+// const { taskCtx } = require("@modjo/microservice-worker/ctx")
+
+const BATCH_SIZE = 1000
+const BATCH_INTERVAL = 10000
+
+module.exports = async function () {
+  let updateQueue = {}
+  let processingQueue = false
+  let queueProcessedResolver
+  let queueProcessed = new Promise((resolve) => {
+    queueProcessedResolver = resolve
+  })
+
+  async function execUpdate(entries) {
+    const sql = ctx.require("postgres")
+
+    await sql`
+      UPDATE
+        "device" AS d
+      SET
+        "accuracy" = (record. "accuracy")::numeric,
+        "altitude" = (record. "altitude")::numeric,
+        "altitude_accuracy" = (record. "altitude_accuracy")::numeric,
+        "heading" = (record. "heading")::numeric,
+        "location" = ST_GeomFromGeoJSON (record. "location"),
+        "speed" = (record. "speed")::numeric
+      FROM (
+        VALUES ${sql(
+          entries
+        )}) AS record (deviceId, location, accuracy, altitude, altitude_accuracy, heading, speed)
+      WHERE
+        d.id = (record.deviceId)::int
+      `
+  }
+
+  async function processUpdates() {
+    if (Object.keys(updateQueue).length === 0 || processingQueue) {
+      return
+    }
+
+    processingQueue = true
+    const entries = Object.values(updateQueue)
+    updateQueue = {}
+
+    await execUpdate(entries)
+
+    processingQueue = false
+    queueProcessedResolver()
+    queueProcessed = new Promise((resolve) => {
+      queueProcessedResolver = resolve
+    })
+  }
+
+  setInterval(() => {
+    processUpdates()
+  }, BATCH_INTERVAL)
+
+  return async function geocodeMove(params) {
+    // const logger = taskCtx.require("logger")
+
+    const {
+      deviceId,
+      accuracy,
+      altitude,
+      altitudeAccuracy,
+      heading,
+      speed,
+      coordinates,
+    } = params
+
+    const locationJSON = JSON.stringify({
+      type: "Point",
+      coordinates,
+    })
+
+    const entry = [
+      deviceId,
+      locationJSON,
+      accuracy,
+      altitude,
+      altitudeAccuracy,
+      heading,
+      speed,
+    ]
+
+    updateQueue[deviceId] = entry
+
+    if (Object.keys(updateQueue).length >= BATCH_SIZE) {
+      processUpdates()
+    }
+
+    await queueProcessed
+  }
+}

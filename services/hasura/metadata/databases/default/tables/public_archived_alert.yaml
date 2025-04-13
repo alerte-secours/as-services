@@ -1,0 +1,151 @@
+table:
+  name: archived_alert
+  schema: public
+configuration:
+  column_config:
+    alert_id:
+      custom_name: alertId
+    alert_tag:
+      custom_name: alertTag
+    altitude_accuracy:
+      custom_name: altitudeAccuracy
+    archive_created_at:
+      custom_name: archiveCreatedAt
+    call_emergency:
+      custom_name: callEmergency
+    closed_at:
+      custom_name: closedAt
+    closed_by:
+      custom_name: closedBy
+    created_at:
+      custom_name: createdAt
+    device_id:
+      custom_name: deviceId
+    keep_open_at:
+      custom_name: keepOpenAt
+    nearest_place:
+      custom_name: nearestPlace
+    notified_count:
+      custom_name: notifiedCount
+    notify_around:
+      custom_name: notifyAround
+    notify_relatives:
+      custom_name: notifyRelatives
+    phone_number_id:
+      custom_name: phoneNumberId
+    suggest_close_sent:
+      custom_name: suggestCloseSent
+    suggest_keep_open_sent:
+      custom_name: suggestKeepOpenSent
+    updated_at:
+      custom_name: updatedAt
+    user_id:
+      custom_name: userId
+    what3words:
+      custom_name: what3Words
+  custom_column_names:
+    alert_id: alertId
+    alert_tag: alertTag
+    altitude_accuracy: altitudeAccuracy
+    archive_created_at: archiveCreatedAt
+    call_emergency: callEmergency
+    closed_at: closedAt
+    closed_by: closedBy
+    created_at: createdAt
+    device_id: deviceId
+    keep_open_at: keepOpenAt
+    nearest_place: nearestPlace
+    notified_count: notifiedCount
+    notify_around: notifyAround
+    notify_relatives: notifyRelatives
+    phone_number_id: phoneNumberId
+    suggest_close_sent: suggestCloseSent
+    suggest_keep_open_sent: suggestKeepOpenSent
+    updated_at: updatedAt
+    user_id: userId
+    what3words: what3Words
+  custom_root_fields:
+    delete: deleteManyArchivedAlert
+    delete_by_pk: deleteOneArchivedAlert
+    insert: insertManyArchivedAlert
+    insert_one: insertOneArchivedAlert
+    select: selectManyArchivedAlert
+    select_aggregate: selectAggArchivedAlert
+    select_by_pk: selectOneArchivedAlert
+    select_stream: selectStreamArchivedAlert
+    update: updateManyArchivedAlert
+    update_by_pk: updateOneArchivedAlert
+    update_many: updateBatchArchivedAlert
+array_relationships:
+  - name: manyAlerted
+    using:
+      foreign_key_constraint_on:
+        column: archived_alert_id
+        table:
+          name: alerted
+          schema: public
+computed_fields:
+  - name: username
+    definition:
+      function:
+        name: computed_archived_alert__username
+        schema: public
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - accuracy
+        - address
+        - alert_tag
+        - altitude
+        - altitude_accuracy
+        - code
+        - created_at
+        - heading
+        - id
+        - level
+        - location
+        - nearest_place
+        - notified_count
+        - radius
+        - speed
+        - subject
+        - user_id
+        - what3words
+      computed_fields:
+        - username
+      filter:
+        manyAlerted:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""
+  - role: owner
+    permission:
+      columns:
+        - accuracy
+        - address
+        - alert_tag
+        - altitude
+        - altitude_accuracy
+        - code
+        - created_at
+        - heading
+        - id
+        - level
+        - location
+        - nearest_place
+        - notified_count
+        - notify_around
+        - notify_relatives
+        - radius
+        - speed
+        - subject
+        - updated_at
+        - user_id
+        - what3words
+      computed_fields:
+        - username
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""

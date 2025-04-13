@@ -1,0 +1,30 @@
+table:
+  name: auth_token
+  schema: public
+configuration:
+  column_config:
+    auth_token:
+      custom_name: authToken
+    created_at:
+      custom_name: createdAt
+    device_id:
+      custom_name: deviceId
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    auth_token: authToken
+    created_at: createdAt
+    device_id: deviceId
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyAuthToken
+    delete_by_pk: deleteOneAuthToken
+    insert: insertManyAuthToken
+    insert_one: insertOneAuthToken
+    select: selectManyAuthToken
+    select_aggregate: selectAggAuthToken
+    select_by_pk: selectOneAuthToken
+    select_stream: selectStreamAuthToken
+    update: updateManyAuthToken
+    update_by_pk: updateOneAuthToken
+    update_many: updateBatchAuthToken

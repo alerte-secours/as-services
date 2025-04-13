@@ -1,0 +1,17 @@
+table:
+  name: reason
+  schema: public
+configuration:
+  custom_root_fields:
+    delete: deleteManyReason
+    delete_by_pk: deleteOneReason
+    insert: insertManyReason
+    insert_one: insertOneReason
+    select: selectManyReason
+    select_aggregate: selectAggReason
+    select_by_pk: selectOneReason
+    select_stream: selectStreamReason
+    update: updateManyReason
+    update_by_pk: updateOneReason
+    update_many: updateBatchReason
+  custom_column_names: {}

@@ -1,0 +1,134 @@
+table:
+  name: phone_number
+  schema: public
+configuration:
+  column_config:
+    created_at:
+      custom_name: createdAt
+    device_id:
+      custom_name: deviceId
+    is_private:
+      custom_name: isPrivate
+    updated_at:
+      custom_name: updatedAt
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    created_at: createdAt
+    device_id: deviceId
+    is_private: isPrivate
+    updated_at: updatedAt
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyPhoneNumber
+    delete_by_pk: deleteOnePhoneNumber
+    insert: insertManyPhoneNumber
+    insert_one: insertOnePhoneNumber
+    select: selectManyPhoneNumber
+    select_aggregate: selectAggPhoneNumber
+    select_by_pk: selectOnePhoneNumber
+    select_stream: selectStreamPhoneNumber
+    update: updateManyPhoneNumber
+    update_by_pk: updateOnePhoneNumber
+    update_many: updateBatchPhoneNumber
+object_relationships:
+  - name: oneUser
+    using:
+      foreign_key_constraint_on: user_id
+  - name: oneUserPhoneNumberRelative
+    using:
+      manual_configuration:
+        column_mapping:
+          id: phone_number_id
+        insertion_order: null
+        remote_table:
+          name: user_phone_number_relative
+          schema: public
+array_relationships:
+  - name: manyUserLoginRequest
+    using:
+      foreign_key_constraint_on:
+        column: phone_number_id
+        table:
+          name: user_login_request
+          schema: public
+computed_fields:
+  - name: phone_number_key
+    definition:
+      function:
+        name: computed_phone_number__phone_number_key
+        schema: public
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - country
+        - id
+        - number
+      computed_fields:
+        - phone_number_key
+      filter:
+        manyUserLoginRequest:
+          user_id:
+            _eq: X-Hasura-User-Id
+  - role: owner
+    permission:
+      columns:
+        - country
+        - created_at
+        - device_id
+        - id
+        - is_private
+        - number
+        - updated_at
+        - user_id
+      computed_fields:
+        - phone_number_key
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+  - role: public_anon
+    permission:
+      columns:
+        - country
+        - id
+        - number
+      filter:
+        _exists:
+          _table:
+            name: user_phone_number_relative
+            schema: public
+          _where:
+            phone_number_id:
+              _ceq:
+                - id
+  - role: public_user
+    permission:
+      columns:
+        - country
+        - id
+        - number
+        - user_id
+      computed_fields:
+        - phone_number_key
+      filter:
+        is_private:
+          _eq: false
+    comment: ""
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - is_private
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+      set:
+        device_id: X-Hasura-Device-Id
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

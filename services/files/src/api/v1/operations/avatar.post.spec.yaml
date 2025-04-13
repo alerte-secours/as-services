@@ -1,0 +1,23 @@
+# description: 
+x-security: 
+  - auth: ["user"]
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+
+responses:
+  200:
+    # description: 
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            imageFileUuid:
+              type: string
+              format: uuid
+          required:
+            - imageFileUuid

@@ -1,0 +1,23 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "devDependencies": {
+    "eslint": "^8.10.0"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "postinstall": "link-module-alias"
+  },
+  "_moduleAliases": {
+    "~": "."
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "country-codes-list": "^1.6.11",
+    "generate-letter-wordset": "^1.0.2",
+    "google-libphonenumber": "^3.2.40",
+    "link-module-alias": "^1.2.0"
+  }
+}

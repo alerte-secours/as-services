@@ -1,0 +1,27 @@
+parameters:
+  - in: query
+    name: code
+    required: true
+    schema:
+      type: string
+
+responses:
+  200:
+    content:
+      text/html:
+        schema:
+          type: string
+
+  404:
+    content:
+      text/html:
+        schema:
+          type: string
+
+  498:
+    description: expired
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: {}

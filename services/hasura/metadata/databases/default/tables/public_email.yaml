@@ -1,0 +1,86 @@
+table:
+  name: email
+  schema: public
+configuration:
+  column_config:
+    created_at:
+      custom_name: createdAt
+    user_id:
+      custom_name: userId
+    verification_code:
+      custom_name: verificationCode
+    verification_email_sent:
+      custom_name: verificationEmailSent
+    verification_email_sent_time:
+      custom_name: verificationEmailSentTime
+  custom_column_names:
+    created_at: createdAt
+    user_id: userId
+    verification_code: verificationCode
+    verification_email_sent: verificationEmailSent
+    verification_email_sent_time: verificationEmailSentTime
+  custom_root_fields:
+    delete: deleteManyEmail
+    delete_by_pk: deleteOneEmail
+    insert: insertManyEmail
+    insert_one: insertOneEmail
+    select: selectManyEmail
+    select_aggregate: selectAggEmail
+    select_by_pk: selectOneEmail
+    select_stream: selectStreamEmail
+    update: updateManyEmail
+    update_by_pk: updateOneEmail
+    update_many: updateBatchEmail
+array_relationships:
+  - name: manyUserLoginRequests
+    using:
+      foreign_key_constraint_on:
+        column: email_id
+        table:
+          name: user_login_request
+          schema: public
+insert_permissions:
+  - role: owner
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      set:
+        user_id: X-Hasura-User-Id
+      columns:
+        - email
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - email
+        - id
+        - user_id
+      filter:
+        manyUserLoginRequests:
+          user_id:
+            _eq: X-Hasura-User-Id
+  - role: owner
+    permission:
+      columns:
+        - created_at
+        - email
+        - id
+        - user_id
+        - verification_email_sent_time
+        - verified
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+  - role: public_anon
+    permission:
+      columns:
+        - email
+      filter: {}
+    comment: ""
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

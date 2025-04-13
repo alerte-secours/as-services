@@ -1,0 +1,29 @@
+# description: 
+x-security: 
+  - auth: ["user"]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          code:
+            type: string
+          accessCode:
+            type: string
+        required:
+          - code
+          - accessCode
+responses:
+  200:
+    # description: 
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            alertingId:
+              type: integer
+            alertId:
+              type: integer

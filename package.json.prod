@@ -1,0 +1,70 @@
+{
+  "name": "alerte-secours",
+  "version": "0.0.1",
+  "description": "Alerte-Secours - Le Réflexe qui Sauve",
+  "keywords": [
+    "alerte",
+    "secours",
+    "urgence",
+    "entraide",
+    "geolocalisation"
+  ],
+  "author": "devthejo <jo@devthefuture.org>",
+  "homepage": "https://codeberg.org/alerte-secours/alerte-secours",
+  "repository": "https://codeberg.org/alerte-secours/alerte-secours",
+  "bugs": "https://codeberg.org/alerte-secours/alerte-secours/-/issues",
+  "private": true,
+  "workspaces": [
+    "services/*",
+    "libs/*",
+    "tests/*"
+  ],
+  "scripts": {
+    "dev:web": "yarn workspace @as/web run dev",
+    "release": "commit-and-tag-version",
+    "lint": "eslint .",
+    "test": "jest tests",
+    "clear:local": "git clean -xdf",
+    "postinstall": "[ -d '.husky' ] && husky install || true && bin/direnv allow"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "eslint"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint --fix",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "js-yaml": "^4.1.0",
+    "lodash.camelcase": "^4.3.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "commit-and-tag-version": "^11.2.2",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^7",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.1",
+    "eslint-plugin-sql-pretty": "^1.1.2",
+    "husky": "^7.0.0",
+    "lint-staged": "^11.1.2",
+    "node-gyp": "^9.4.0",
+    "prettier": "^2.3.2",
+    "standard-changelog": "^2.0.27"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "resolutions": {
+    "express": "5.0.0-beta.3"
+  },
+  "packageManager": "yarn@4.6.0"
+}

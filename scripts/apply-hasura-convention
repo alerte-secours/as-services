@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+const dotenv = require("dotenv")
+
+const applyConvention = require("@modjo/hasura/dev/apply-convention")
+
+dotenv.config({ path: ".env" })
+
+const pgPort = process.env.EXPOSE_PG_PORT || 4204
+
+const main = async () => {
+  await applyConvention({
+    hasuraPath: "services/hasura",
+    postgres: { dsn: `postgres://dev:dev@localhost:${pgPort}/dev` },
+  })
+  process.exit(0)
+}
+
+main()

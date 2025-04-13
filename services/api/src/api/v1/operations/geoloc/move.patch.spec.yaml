@@ -1,0 +1,54 @@
+# description: 
+x-security: 
+  - auth: ["user"]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          device:
+            type: object
+            properties:
+              accuracy:
+                type: number
+              altitude:
+                type: number
+              altitudeAccuracy:
+                type: number
+              heading:
+                type: number
+              location:
+                type: object
+                properties:
+                  type:
+                    enum: [Point]
+                  coordinates:
+                    type: array
+                    format: location
+                    items:
+                      type: number
+              speed:
+                type: number
+            required:
+              - accuracy
+              - altitude
+              - altitudeAccuracy
+              - heading
+              - location
+        required:
+          - device
+responses:
+  200:
+    # description: 
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            updatedAt:
+              type: string
+              format: date-time
+          required:
+            - updatedAt

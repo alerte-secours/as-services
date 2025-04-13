@@ -1,0 +1,35 @@
+table:
+  name: user_connect_request
+  schema: public
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - email_id
+        - id
+        - phone_number_id
+        - type
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+configuration:
+  custom_root_fields:
+    delete: deleteManyUserConnectRequest
+    delete_by_pk: deleteOneUserConnectRequest
+    insert: insertManyUserConnectRequest
+    insert_one: insertOneUserConnectRequest
+    select: selectManyUserConnectRequest
+    select_aggregate: selectAggUserConnectRequest
+    select_by_pk: selectOneUserConnectRequest
+    select_stream: selectStreamUserConnectRequest
+    update: updateManyUserConnectRequest
+    update_by_pk: updateOneUserConnectRequest
+    update_many: updateBatchUserConnectRequest
+  custom_column_names: {}

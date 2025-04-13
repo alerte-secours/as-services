@@ -1,0 +1,27 @@
+table:
+  name: alert_link
+  schema: public
+configuration:
+  column_config:
+    alert1_id:
+      custom_name: alert1Id
+    alert2_id:
+      custom_name: alert2Id
+    created_at:
+      custom_name: createdAt
+  custom_column_names:
+    alert1_id: alert1Id
+    alert2_id: alert2Id
+    created_at: createdAt
+  custom_root_fields:
+    delete: deleteManyAlertLink
+    delete_by_pk: deleteOneAlertLink
+    insert: insertManyAlertLink
+    insert_one: insertOneAlertLink
+    select: selectManyAlertLink
+    select_aggregate: selectAggAlertLink
+    select_by_pk: selectOneAlertLink
+    select_stream: selectStreamAlertLink
+    update: updateManyAlertLink
+    update_by_pk: updateOneAlertLink
+    update_many: updateBatchAlertLink

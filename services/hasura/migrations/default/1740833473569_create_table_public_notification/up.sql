@@ -1,0 +1,1 @@
+CREATE TABLE "public"."notification" ("id" serial NOT NULL, "user_id" integer NOT NULL, "type" text NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON UPDATE cascade ON DELETE cascade);

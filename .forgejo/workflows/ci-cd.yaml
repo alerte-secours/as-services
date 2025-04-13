@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "**"
+
+jobs:
+  build:
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+    runs-on: ubuntu-latest
+    container:
+      image: devthefuture/act-runner:latest
+      volumes:
+        - /buildkit-certs:/buildkit-certs
+    strategy:
+      matrix:
+        build:
+          - name: hasura
+            dockerfile: ./services/hasura/Dockerfile
+          - name: api
+            dockerfile: ./services/api/Dockerfile
+          - name: files
+            dockerfile: ./services/files/Dockerfile
+          - name: tasks
+            dockerfile: ./services/tasks/Dockerfile
+          - name: watchers
+            dockerfile: ./services/watchers/Dockerfile
+          - name: web
+            dockerfile: ./services/web/Dockerfile
+          - name: app
+            dockerfile: ./services/app/Dockerfile
+    steps:
+      - name: ⏬ Checkout code repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.M8A_ORG_BOT_REPO_TOKEN }} # Required for private repositories to works consistently, avoiding random errors
+
+      - name: 📌 Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: https://git.devthefuture.org/devthefuture/docker-metadata-action@v5
+        with:
+          images: git.devthefuture.org/${{ github.repository }}/${{ matrix.build.name }}
+          tags: |
+            type=semver,pattern={{version}},priority=900
+            type=semver,pattern=v{{version}},priority=900
+            type=sha,priority=890
+            type=ref,event=branch,priority=600
+            type=ref,event=pr,priority=600
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }},priority=200
+
+      - name: 📦 Build and push Docker image
+        uses: https://git.devthefuture.org/devthefuture/actions/buildkit@main
+        with:
+          context: ${{ matrix.build.context || '.' }}
+          dockerfile: ${{ matrix.build.dockerfile }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          registry: git.devthefuture.org
+          registry-username: "org-bot-${{ github.repository_owner }}"
+          registry-password: ${{ secrets.M8A_ORG_BOT_PACKAGE_TOKEN }}
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    container:
+      image: devthefuture/act-runner:latest@sha256:f326ce2f586d4f55757b87d3de7baf29715ef6cbc5af7bdf6313bcf7a90e7b3d
+    steps:
+      - name: 🎡 Check out the Helm chart repository
+        uses: actions/checkout@v4
+        with:
+          repository: "${{ github.repository_owner }}/appsets"
+          token: ${{ secrets.M8A_ORG_BOT_REPO_TOKEN }}
+          ref: "main"
+
+      - name: 🚀 Upgrade images tag
+        uses: https://git.devthefuture.org/devthefuture/actions/uptag@v0.2.3
+        with:
+          app: |
+            ---
+            name: hasura
+            key: graphql-engine.image.tag
+            ---
+            name: api
+            key: modjo-microservice.image.tag
+            ---
+            name: files
+            key: modjo-microservice.image.tag
+            ---
+            name: tasks
+            key: modjo-microservice.image.tag
+            ---
+            name: watchers
+            key: modjo-microservice.image.tag
+            ---
+            name: app
+            key: nginx.image.tag
+            ---
+          env: ${{ startsWith(github.ref, 'refs/tags/') && 'production' || 'staging' }}
+          meta-tags: ${{ needs.build.outputs.tags }}
+          commit: "true"
+          push: "true"

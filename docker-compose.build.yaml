@@ -1,0 +1,304 @@
+services:
+  db:
+    image: mdillon/postgis:11
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=dev
+    ports:
+      - "${EXPOSE_PG_PORT:-4204}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  minio:
+    image: bitnami/minio:2022-debian-10
+    ports:
+      - "${EXPOSE_MINO_PORT:-4290}:9000"
+      - "${EXPOSE_MINIO_CONSOLE_PORT:-4291}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio-admin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minio-admin}
+      MINIO_FORCE_NEW_KEYS: "yes"
+      BITNAMI_DEBUG: "true"
+    volumes:
+      - minio_data:/data
+  minio-setup:
+    image: minio/mc
+    depends_on:
+      - minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio-admin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minio-admin}
+    entrypoint: >
+      /bin/sh -c "
+      set -e
+      mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER:-minio-admin} ${MINIO_ROOT_PASSWORD:-minio-admin};
+      until mc ls myminio; do
+        echo 'Waiting for MinIO to be ready...';
+        sleep 1;
+      done;
+      echo 'MinIO is up and running, configuring...';
+      mc mb myminio/avatar;
+      mc mb myminio/audio;
+      mc anonymous set download myminio/avatar;
+      "
+
+  rabbitmq:
+    image: docker.io/bitnami/rabbitmq:3.9
+    restart: always
+    volumes:
+      - rabbitmq_data:/bitnami
+    ports:
+      - ${EXPOSE_RABBITMQ_NODE_PORT}:5672
+      - ${EXPOSE_RABBITMQ_MANAGEMENT_PORT_PORT}:15672
+    environment:
+      - RABBITMQ_USERNAME=dev
+      - RABBITMQ_PASSWORD=dev
+      - RABBITMQ_DISK_FREE_ABSOLUTE_LIMIT=2GB
+
+  redis-q-dedup:
+    image: &redisImage bitnami/redis:7.2
+    # restart: always
+    ports:
+      - "${EXPOSE_REDIS_QD_PORT:-4278}:6379"
+    environment: # https://hub.docker.com/r/bitnami/redis
+      REDIS_PASSWORD: redis-password
+      REDIS_PORT: "6379"
+      REDIS_AOF_ENABLED: "no"
+
+  redis-hot-geodata:
+    image: *redisImage
+    # restart: always
+    ports:
+      - "${EXPOSE_REDIS_HG_PORT:-4279}:6379"
+    volumes:
+      - redis_hg_data:/bitnami/redis/data
+    environment: # https://hub.docker.com/r/bitnami/redis
+      REDIS_PASSWORD: redis-password
+      REDIS_PORT: "6379"
+      REDIS_AOF_ENABLED: "yes"
+      REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
+
+  keydb-cold-geodata:
+    image: eqalpha/keydb:x86_64_v6.3.4
+    # restart: always
+    ports:
+      - "${EXPOSE_KEYDB_CG_PORT:-4277}:6379"
+    volumes:
+      - keydb_cg_data:/data
+    command:
+      - keydb-server
+      - /etc/keydb/redis.conf
+
+      - --requirepass
+      - keydb-password
+
+      - --server-threads
+      - "2"
+      
+      - --storage-provider
+      - flash
+      - /data/flash
+      
+      - --maxmemory
+      - "1G"
+
+      - --maxmemory-policy
+      - allkeys-lfu
+
+  hasura:
+    image: helpme_hasura
+    build:
+      context: .
+      dockerfile: ./services/hasura/Dockerfile
+    ports:
+      - ${EXPOSE_HASURA_PORT:-4201}:8080
+    depends_on:
+      - db
+      - api
+    restart: always
+    environment:
+      HASURA_GRAPHQL_INFER_FUNCTION_PERMISSIONS: "false"
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-admin}
+      HASURA_GRAPHQL_DATABASE_URL: postgres://dev:dev@db:5432/dev
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_JWT_SECRET: '{"jwk_url": "http://api:${API_PORT:-4200}/api/v1/oas/jwks","header":{"type":"Cookie","name":"bearer"},"claims_namespace":"${CLAIMS_NAMESPACE:-https://hasura.io/jwt/claims}"}'
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"
+      HASURA_REMOTE_SCHEMA_API_GRAPHQL_ENDPOINT: ${HASURA_REMOTE_SCHEMA_API_GRAPHQL_ENDPOINT:-http://api:4200/api/v1/graphql}
+      API_PORT: ${API_PORT:-4200}
+      HASURA_GRAPHQL_ENABLED_APIS: ${HASURA_GRAPHQL_ENABLED_APIS:-graphql,metadata}
+
+  hasura_console:
+    image: helpme_hasura_console
+    build:
+      context: .
+      dockerfile: ./services/hasura/console/Dockerfile
+    ports:
+      - ${HASURA_CONSOLE_PORT:-4295}:${HASURA_CONSOLE_PORT:-4295}
+      - ${HASURA_CONSOLE_API_PORT:-4293}:${HASURA_CONSOLE_API_PORT:-4293}
+    depends_on:
+      - db
+      - api
+    restart: always
+    environment:
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-admin}
+      HASURA_CONSOLE_INTERNAL_HOSTNAME: ${HASURA_CONSOLE_INTERNAL_HOSTNAME:-hasura_console}
+      HASURA_CONSOLE_PORT: ${HASURA_CONSOLE_PORT:-4295}
+      HASURA_CONSOLE_API_PORT: ${HASURA_CONSOLE_API_PORT:-4293}
+      HASURA_GRAPHQL_ENDPOINT: http://localhost:${EXPOSE_HASURA_PORT:-4201}
+      HASURA_INTERNAL_HOSTNAME: ${HASURA_INTERNAL_HOSTNAME:-hasura}
+      HASURA_EXPOSE_PORT: ${EXPOSE_HASURA_PORT:-4201}
+
+  api:
+    image: helpme_api
+    build:
+      context: .
+      dockerfile: ./services/api/Dockerfile
+    volumes:
+      - ./.dev-secrets:/secrets:ro
+    ports:
+      - ${EXPOSE_API_PORT:-4200}:${API_PORT:-4200}
+    restart: always
+    environment:
+      PORT: "${API_PORT:-4200}"
+      JWK_FILE: /secrets/jwk.json
+      OLDJWK_FILE: /secrets/jwk2.json
+      DATABASE_URL: ${DATABASE_URL-psql://dev:dev@db/dev}
+      HASURA_GRAPHQL_URL: ${HASURA_GRAPHQL_URL:-http://hasura:8080/v1/graphql}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-admin}
+      LOG_REQUESTS: ${LOG_REQUESTS:-false}
+      CLAIMS_NAMESPACE: ${CLAIMS_NAMESPACE:-https://hasura.io/jwt/claims}
+      AMQP_URL: ${AMQP_URL-amqp://dev:dev@rabbitmq}
+      AMQP_HOST: rabbitmq
+      AMQP_PORT: 5672
+      EXTERNAL_RINGOVER_CALL_EVENT_WEBHOOK_KEY: ${EXTERNAL_RINGOVER_CALL_EVENT_WEBHOOK_KEY:-}
+      REDIS_QUEUE_DEDUP_HOST: redis-q-dedup
+      REDIS_QUEUE_DEDUP_PASSWORD: redis-password
+      REDIS_HOT_GEODATA_HOST: redis-hot-geodata
+      REDIS_HOT_GEODATA_PASSWORD: redis-password
+    depends_on:
+      - db
+      - rabbitmq
+      - redis-hot-geodata
+      - keydb-cold-geodata
+      - redis-q-dedup
+
+  files:
+    image: helpme_file
+    restart: always
+    build:
+      context: .
+      dockerfile: ./services/files/Dockerfile
+    volumes:
+      - ./.dev-secrets:/secrets:ro
+    ports:
+      - ${EXPOSE_FILES_PORT:-4292}:${FILES_PORT:-4292}
+    environment:
+      LOGLEVEL: ${FILES_LOGLEVEL:-debug}
+      PORT: "${FILES_PORT:-4292}"
+      JWK_FILE: /secrets/jwk.json
+      OLDJWK_FILE: /secrets/jwk2.json
+      DATABASE_URL: ${DATABASE_URL-psql://dev:dev@db/dev}
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minio-admin}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minio-admin}
+      HASURA_GRAPHQL_URL: ${HASURA_GRAPHQL_URL:-http://hasura:8080/v1/graphql}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-admin}
+      LOG_REQUESTS: ${LOG_REQUESTS:-false}
+      CLAIMS_NAMESPACE: ${CLAIMS_NAMESPACE:-https://hasura.io/jwt/claims}
+      AMQP_URL: ${AMQP_URL-amqp://dev:dev@rabbitmq}
+      AMQP_HOST: rabbitmq
+      AMQP_PORT: 5672
+      SENTRY_DSN: ${SENTRY_DSN_FILES:-""}
+      SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-development}
+    depends_on:
+      - minio
+      - db
+      - rabbitmq
+
+  tasks:
+    image: helpme_tasks
+    restart: always
+    build:
+      context: .
+      dockerfile: ./services/tasks/Dockerfile
+    volumes:
+      - ./services/tasks/src/googleServiceAccountKey.json:/app/services/tasks/src/googleServiceAccountKey.json
+    environment:
+      API_URL: ${API_URL:-http://localhost:${EXPOSE_API_PORT:-4200}/api}
+      LOGLEVEL: ${TASKS_LOGLEVEL:-debug}
+      DATABASE_URL: ${DATABASE_URL-psql://dev:dev@db/dev}
+      AMQP_URL: ${AMQP_URL-amqp://dev:dev@rabbitmq}
+      AMQP_PORT: 5672
+      NOMINATIM_URL: ${NOMINATIM_URL:-http://nominatim:8080}
+      HASURA_GRAPHQL_URL: ${HASURA_GRAPHQL_URL:-http://hasura:8080/v1/graphql}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-admin}
+      WHAT3WORDS_API_KEY: ${WHAT3WORDS_API_KEY-}
+      GOOGLE_SERVICE_ACCOUNT_KEY_FILE: ${GOOGLE_SERVICE_ACCOUNT_KEY_FILE:-/app/services/tasks/src/googleServiceAccountKey.json}
+      SMTP_USER: ""
+      SMTP_PASS: ""
+      SMTP_HOST: maildev
+      SMTP_PORT: 1025
+      SMTP_FROM: ""
+      REDIS_QUEUE_DEDUP_HOST: redis-q-dedup
+      REDIS_QUEUE_DEDUP_PASSWORD: redis-password
+      REDIS_HOT_GEODATA_HOST: redis-hot-geodata
+      REDIS_HOT_GEODATA_PASSWORD: redis-password
+      KEYDB_COLD_GEODATA_HOST: keydb-cold-geodata
+      KEYDB_COLD_GEODATA_PASSWORD: keydb-password
+      SENTRY_DSN: ${SENTRY_DSN_TASKS:-""}
+      SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-development}
+    depends_on:
+      - db
+      - rabbitmq
+      - redis-hot-geodata
+      - keydb-cold-geodata
+      - redis-q-dedup
+
+  watchers:
+    image: helpme_watchers
+    build:
+      context: .
+      dockerfile: ./services/watchers/Dockerfile
+    restart: always
+    environment:
+      LOGLEVEL: ${WATCHERS_LOGLEVEL:-debug}
+      DATABASE_URL: ${DATABASE_URL-psql://dev:dev@db/dev}
+      AMQP_URL: ${AMQP_URL-amqp://dev:dev@rabbitmq}
+      AMQP_HOST: rabbitmq
+      AMQP_PORT: 5672
+      HASURA_GRAPHQL_URL: ${HASURA_GRAPHQL_URL:-http://hasura:8080/v1/graphql}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-admin}
+      REDIS_HOT_GEODATA_HOST: redis-hot-geodata
+      REDIS_HOT_GEODATA_PASSWORD: redis-password
+      KEYDB_COLD_GEODATA_HOST: keydb-cold-geodata
+      KEYDB_COLD_GEODATA_PASSWORD: keydb-password
+      SENTRY_DSN: ${SENTRY_DSN_WATCHERS:-""}
+      SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-development}
+    depends_on:
+      - db
+      - rabbitmq
+      - redis-hot-geodata
+      - keydb-cold-geodata
+
+  web:
+    image: helpme_web
+    restart: always
+    build:
+      context: .
+      dockerfile: ./services/web/Dockerfile
+    ports:
+      - ${WEB_PORT:-4203}:8080
+
+volumes:
+  pgdata:
+    name: helpme-pgdata
+  minio_data:
+    name: helpme-miniodata
+  rabbitmq_data:
+    name: helpme-rabbitmq-data
+  redis_hg_data:
+    name: helpme-redishg-data
+  keydb_cg_data:
+    name: helpme-keydbcg-data

@@ -1,0 +1,22 @@
+table:
+  name: user_relative
+  schema: public
+configuration:
+  column_config:
+    phone_number_id:
+      custom_name: phoneNumberId
+    user_id:
+      custom_name: userId
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyUserRelative
+    delete_by_pk: deleteOneUserRelative
+    insert: insertManyUserRelative
+    insert_one: insertOneUserRelative
+    select: selectManyUserRelative
+    select_aggregate: selectAggUserRelative
+    select_by_pk: selectOneUserRelative
+    select_stream: selectStreamUserRelative
+    update: updateManyUserRelative
+    update_by_pk: updateOneUserRelative
+    update_many: updateBatchUserRelative

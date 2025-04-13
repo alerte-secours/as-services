@@ -1,0 +1,17 @@
+table:
+  name: message_location
+  schema: public
+configuration:
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyMessageLocation
+    delete_by_pk: deleteOneMessageLocation
+    insert: insertManyMessageLocation
+    insert_one: insertOneMessageLocation
+    select: selectManyMessageLocation
+    select_aggregate: selectAggMessageLocation
+    select_by_pk: selectOneMessageLocation
+    update: updateManyMessageLocation
+    update_by_pk: updateOneMessageLocation
+    select_stream: selectStreamMessageLocation
+    update_many: updateBatchMessageLocation

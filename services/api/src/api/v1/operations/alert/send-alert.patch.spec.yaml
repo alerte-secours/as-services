@@ -1,0 +1,65 @@
+# description:
+x-security:
+  - auth: ["user"]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          callEmergency:
+            type: boolean
+          notifyAround:
+            type: boolean
+          notifyRelatives:
+            type: boolean
+          uuid:
+            type: string
+            format: uuid
+          level:
+            enum: [red, yellow, green]
+          subject:
+            type: string
+          location:
+            type: object
+            properties:
+              type:
+                enum: [Point]
+              coordinates:
+                type: array
+                format: location
+                items:
+                  type: number
+          accuracy:
+            type: number
+          altitude:
+            type: number
+          altitudeAccuracy:
+            type: number
+          heading:
+            type: number
+          speed:
+            type: number
+
+        required:
+          - level
+          - uuid
+responses:
+  200:
+    # description:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            alertId:
+              type: integer
+            accessCode:
+              type: string
+            code:
+              type: string
+          required:
+            - alertId
+            - code
+            - accessCode

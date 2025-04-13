@@ -1,0 +1,92 @@
+table:
+  name: archived_message
+  schema: public
+configuration:
+  column_config:
+    archived_alert_id:
+      custom_name: archivedAlertId
+    audio_file_uuid:
+      custom_name: audioFileUuid
+    content_type:
+      custom_name: contentType
+    created_at:
+      custom_name: createdAt
+    device_id:
+      custom_name: deviceId
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    archived_alert_id: archivedAlertId
+    audio_file_uuid: audioFileUuid
+    content_type: contentType
+    created_at: createdAt
+    device_id: deviceId
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyArchivedMessage
+    delete_by_pk: deleteOneArchivedMessage
+    insert: insertManyArchivedMessage
+    insert_one: insertOneArchivedMessage
+    select: selectManyArchivedMessage
+    select_aggregate: selectAggArchivedMessage
+    select_by_pk: selectOneArchivedMessage
+    select_stream: selectStreamArchivedMessage
+    update: updateManyArchivedMessage
+    update_by_pk: updateOneArchivedMessage
+    update_many: updateBatchArchivedMessage
+object_relationships:
+  - name: oneArchivedAlert
+    using:
+      foreign_key_constraint_on: archived_alert_id
+computed_fields:
+  - name: avatarImageFileUuid
+    definition:
+      function:
+        name: computed_archived_message__avatar_image_file_uuid
+        schema: public
+  - name: username
+    definition:
+      function:
+        name: computed_archived_message__username
+        schema: public
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - archived_alert_id
+        - audio_file_uuid
+        - content_type
+        - created_at
+        - id
+        - location
+        - text
+        - user_id
+      computed_fields:
+        - avatarImageFileUuid
+        - username
+      filter:
+        _or:
+          - oneArchivedAlert:
+              user_id:
+                _eq: X-Hasura-User-Id
+          - oneArchivedAlert:
+              manyAlerted:
+                user_id:
+                  _eq: X-Hasura-User-Id
+  - role: owner
+    permission:
+      columns:
+        - archived_alert_id
+        - audio_file_uuid
+        - content_type
+        - created_at
+        - id
+        - location
+        - text
+        - user_id
+      computed_fields:
+        - avatarImageFileUuid
+        - username
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

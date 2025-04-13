@@ -1,0 +1,24 @@
+table:
+  name: user_group_member
+  schema: public
+configuration:
+  column_config:
+    user_group_id:
+      custom_name: userGroupId
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    user_group_id: userGroupId
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyUserGroupMember
+    delete_by_pk: deleteOneUserGroupMember
+    insert: insertManyUserGroupMember
+    insert_one: insertOneUserGroupMember
+    select: selectManyUserGroupMember
+    select_aggregate: selectAggUserGroupMember
+    select_by_pk: selectOneUserGroupMember
+    select_stream: selectStreamUserGroupMember
+    update: updateManyUserGroupMember
+    update_by_pk: updateOneUserGroupMember
+    update_many: updateBatchUserGroupMember

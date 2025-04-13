@@ -1,0 +1,19 @@
+table:
+  name: enum_user_login_request_type
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyEnumUserLoginRequestType
+    delete_by_pk: deleteOneEnumUserLoginRequestType
+    insert: insertManyEnumUserLoginRequestType
+    insert_one: insertOneEnumUserLoginRequestType
+    select: selectManyEnumUserLoginRequestType
+    select_aggregate: selectAggEnumUserLoginRequestType
+    select_by_pk: selectOneEnumUserLoginRequestType
+    select_stream: selectStreamEnumUserLoginRequestType
+    update: updateManyEnumUserLoginRequestType
+    update_by_pk: updateOneEnumUserLoginRequestType
+    update_many: updateBatchEnumUserLoginRequestType

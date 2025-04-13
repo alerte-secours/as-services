@@ -1,0 +1,58 @@
+table:
+  name: notification
+  schema: public
+configuration:
+  column_config:
+    created_at:
+      custom_name: createdAt
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    created_at: createdAt
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyNotification
+    delete_by_pk: deleteOneNotification
+    insert: insertManyNotification
+    insert_one: insertOneNotification
+    select: selectManyNotification
+    select_aggregate: selectAggNotification
+    select_by_pk: selectOneNotification
+    select_stream: selectStreamNotification
+    update: updateManyNotification
+    update_by_pk: updateOneNotification
+    update_many: updateBatchNotification
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - acknowledged
+        - created_at
+        - data
+        - id
+        - message
+        - type
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      limit: 20
+      allow_aggregations: true
+    comment: ""
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - acknowledged
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+    comment: ""
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""

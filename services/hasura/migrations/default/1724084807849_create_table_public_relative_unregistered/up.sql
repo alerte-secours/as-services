@@ -1,0 +1,1 @@
+CREATE TABLE "public"."relative_unregistered" ("id" serial NOT NULL, "user_id" integer NOT NULL, "phone_country" text NOT NULL, "phone_number" text NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") , FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON UPDATE cascade ON DELETE cascade, UNIQUE ("user_id", "phone_country", "phone_number"));

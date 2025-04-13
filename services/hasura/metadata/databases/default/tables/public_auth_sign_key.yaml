@@ -1,0 +1,31 @@
+table:
+  name: auth_sign_key
+  schema: public
+configuration:
+  column_config:
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyAuthSignKey
+    delete_by_pk: deleteOneAuthSignKey
+    insert: insertManyAuthSignKey
+    insert_one: insertOneAuthSignKey
+    select: selectManyAuthSignKey
+    select_aggregate: selectAggAuthSignKey
+    select_by_pk: selectOneAuthSignKey
+    select_stream: selectStreamAuthSignKey
+    update: updateManyAuthSignKey
+    update_by_pk: updateOneAuthSignKey
+    update_many: updateBatchAuthSignKey
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - key
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      limit: 1

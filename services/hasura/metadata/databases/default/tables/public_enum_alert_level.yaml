@@ -1,0 +1,19 @@
+table:
+  name: enum_alert_level
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyEnumAlertLevel
+    delete_by_pk: deleteOneEnumAlertLevel
+    insert: insertManyEnumAlertLevel
+    insert_one: insertOneEnumAlertLevel
+    select: selectManyEnumAlertLevel
+    select_aggregate: selectAggEnumAlertLevel
+    select_by_pk: selectOneEnumAlertLevel
+    select_stream: selectStreamEnumAlertLevel
+    update: updateManyEnumAlertLevel
+    update_by_pk: updateOneEnumAlertLevel
+    update_many: updateBatchEnumAlertLevel

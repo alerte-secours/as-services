@@ -1,0 +1,13 @@
+description: Device first connect, get auth token.
+responses:
+  200:
+    description: Generated auth token for generated user.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            authTokenJwt:
+              type: string
+          required:
+            - authTokenJwt

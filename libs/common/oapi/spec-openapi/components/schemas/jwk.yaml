@@ -1,0 +1,13 @@
+type: object
+properties:
+  kty:
+    type: string
+  n:
+    type: string
+  e:
+    type: string
+  kid:
+    type: string
+required: 
+  - kty
+  - kid

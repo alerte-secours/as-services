@@ -1,0 +1,18 @@
+table:
+  name: alert_tag
+  schema: public
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyAlertTag
+    delete_by_pk: deleteOneAlertTag
+    insert: insertManyAlertTag
+    insert_one: insertOneAlertTag
+    select: selectManyAlertTag
+    select_aggregate: selectAggAlertTag
+    select_by_pk: selectOneAlertTag
+    select_stream: selectStreamAlertTag
+    update: updateManyAlertTag
+    update_by_pk: updateOneAlertTag
+    update_many: updateBatchAlertTag

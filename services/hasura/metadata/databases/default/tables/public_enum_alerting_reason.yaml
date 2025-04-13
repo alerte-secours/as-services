@@ -1,0 +1,19 @@
+table:
+  name: enum_alerting_reason
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyEnumAlertingReason
+    delete_by_pk: deleteOneEnumAlertingReason
+    insert: insertManyEnumAlertingReason
+    insert_one: insertOneEnumAlertingReason
+    select: selectManyEnumAlertingReason
+    select_aggregate: selectAggEnumAlertingReason
+    select_by_pk: selectOneEnumAlertingReason
+    select_stream: selectStreamEnumAlertingReason
+    update: updateManyEnumAlertingReason
+    update_by_pk: updateOneEnumAlertingReason
+    update_many: updateBatchEnumAlertingReason

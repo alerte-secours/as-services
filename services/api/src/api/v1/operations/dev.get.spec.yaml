@@ -1,0 +1,14 @@
+parameters: []
+x-security: 
+- auth: ["admin"]
+responses:
+  200:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            count:
+              type: number
+            elapsed:
+              type: number

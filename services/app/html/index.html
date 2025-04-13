@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirection...</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+    <script type="text/javascript">
+        function getQueryParams() {
+            const url = new URL(window.location.href);
+            const queryParams = url.searchParams.get('q');
+            const params = {};
+            if (queryParams) {
+                const pairs = queryParams.split('~');
+
+                pairs.forEach(pair => {
+                    const [key, value] = pair.split(':');
+                    
+                    if (key && value) {
+                        params[key] = value;
+                    }
+                });
+            }
+            return params;
+        }
+
+        function generateQRCode(url) {
+            const qr = new QRious({
+                element: document.getElementById('qrcode'),
+                value: url,
+                size: 200
+            });
+        }
+
+        function createGoogleMapsLink(ll) {
+            if (ll) {
+                const [lat, lon] = ll.split(',');
+                return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+            }
+            return null;
+        }
+
+        function openApp() {
+            const params = getQueryParams();
+            const item = window.location.pathname.split('/').pop();
+            const accessCode = params.c;
+            const currentUrl = window.location.href;
+            const googleMapsLink = createGoogleMapsLink(params.l);
+
+            const iframe = document.createElement("iframe");
+            iframe.style.border = "none";
+            iframe.style.width = "1px";
+            iframe.style.height = "1px";
+            iframe.src = `com.alertesecours://code/${item}?accessCode=${accessCode}`;
+            document.body.appendChild(iframe);
+
+            setTimeout(function() {
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                document.getElementById('message').style.display = 'none';
+                if (/android/i.test(userAgent)) {
+                    window.location.href = "https://play.google.com/store/apps/details?id=com.alertesecours";
+                } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                    window.location.href = "https://apps.apple.com/fr/app/alerte-secours/id6708225143";
+                } else {
+                    // Si l'agent utilisateur ne correspond ni à Android ni à iOS
+                    document.getElementById('non-mobile-message').style.display = 'block';
+                    document.getElementById('current-url').innerHTML = `<a href="${currentUrl}">${currentUrl}</a>`;
+                    document.getElementById('current-url').style.display = 'block';
+                    generateQRCode(currentUrl);
+                    if (googleMapsLink) {
+                        document.getElementById('google-maps-link').innerHTML = `<a href="${googleMapsLink}" target="_blank">Voir la localisation de l'alerte sur Google Maps</a>`;
+                        document.getElementById('google-maps-link').style.display = 'block';
+                    }
+                }
+                document.body.removeChild(iframe);
+            }, 2000);
+        }
+
+        window.onload = openApp;
+    </script>
+</head>
+<body>
+    <p id="message">Redirection...</p>
+    <div id="non-mobile-message" style="display:none;">
+        Ce service est uniquement disponible sur mobile.
+        <br />
+        <div>
+            <div>
+                Scannez ce QR code depuis votre mobile:
+            </div>
+            <div>
+                <canvas id="qrcode"></canvas>
+            </div>
+        </div>
+        <div>
+            Ou entrez manuellement le lien suivant depuis votre mobile: <span id="current-url" style="display:none;"></span>
+        </div>
+        <br />
+        <div id="google-maps-link" style="display:none;"></div>
+        <br />
+        <!-- <p id="apk-link">
+            Vous pouvez également télécharger le fichier APK <a href='//path/to/alertesecours.apk'>ici</a> si vous utilisez un store alternatif.
+        </p> -->
+    </div>
+    
+</body>
+</html>

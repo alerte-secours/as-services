@@ -1,0 +1,7 @@
+<% layout("./layout.html.eta") %>
+
+<h2>Bonjour,</h2>
+<p>Confirmation de la demande de connexion depuis l'application Alerte-Secours par l'utilisateur "<%= it.username %>" en utilisant cette adresse email.</p>
+<a href="<%= it.apiUrl %>/v1/oas/auth/email/connect?code=<%= it.connectionCode %>" class="button">Cliquez ici pour confimer la connexion</a>
+<p class="instruction">Si vous avez des difficultés à ouvrir ce lien, copiez et collez le lien suivant dans votre navigateur:<br> <%= it.apiUrl %>/v1/oas/auth/email/connect?code=<%= it.connectionCode %></p>
+<p>Si vous n'êtes pas à l'origine de cette requête, veuillez ignorer cet email.</p>

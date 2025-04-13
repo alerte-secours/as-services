@@ -1,0 +1,39 @@
+# description: 
+x-security: 
+  - auth: ["user"]
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties: {}
+              # file:
+              #   type: string
+              #   format: binary
+              # alertId:
+              #   type: string
+              #   format: string-integer
+        required:
+          - data
+                
+
+responses:
+  200:
+    # description: 
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            messageId:
+              type: integer
+            audioFileUuid:
+              type: string
+              format: uuid
+          required:
+            - messageId
+            - audioFileUuid

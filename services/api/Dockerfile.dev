@@ -1,0 +1,6 @@
+# syntax = devthefuture/dockerfile-x
+
+FROM ./dockerfile-x/node
+
+ENV NODE_ENV=development
+CMD [ "yarn", "workspace", "@as/api", "dev" ]

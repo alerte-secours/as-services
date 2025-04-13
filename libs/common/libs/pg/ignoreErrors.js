@@ -1,0 +1,79 @@
+const postgres = require("postgres")
+
+const PG_FOREIGN_KEY_VIOLATION = "23503"
+const PG_UNIQUE_VIOLATION = "23505"
+const PG_CHECK_VIOLATION = "23514"
+const PG_NOT_NULL_VIOLATION = "23502"
+const PG_RESTRICT_VIOLATION = "23001"
+const PG_INVALID_TEXT_REPRESENTATION = "22P02"
+const PG_NUMERIC_VALUE_OUT_OF_RANGE = "22003"
+const PG_STRING_DATA_RIGHT_TRUNCATION = "22001"
+const PG_DIVISION_BY_ZERO = "22012"
+const PG_INVALID_PARAMETER_VALUE = "22023"
+const PG_INTEGRITY_CONSTRAINT_VIOLATION = "23000"
+const PG_INVALID_CURSOR_STATE = "24000"
+const PG_TRANSACTION_ROLLBACK = "40000"
+const PG_SERIALIZATION_FAILURE = "40001"
+const PG_DEADLOCK_DETECTED = "40P01"
+const PG_SYNTAX_ERROR = "42601"
+const PG_INSUFFICIENT_PRIVILEGE = "42501"
+const PG_INVALID_CATALOG_NAME = "3D000"
+const PG_INVALID_SCHEMA_NAME = "3F000"
+const PG_INVALID_COLUMN_REFERENCE = "42703"
+const PG_DUPLICATE_COLUMN = "42701"
+const PG_DUPLICATE_DATABASE = "42P04"
+const PG_DUPLICATE_OBJECT = "42710"
+const PG_DUPLICATE_TABLE = "42P07"
+const PG_DATA_EXCEPTION = "22000"
+
+async function ignoreError(sqlQuery, errorCodes = []) {
+  if (!Array.isArray(errorCodes)) {
+    errorCodes = [errorCodes]
+  }
+  try {
+    const result = await sqlQuery
+    return result
+  } catch (error) {
+    if (
+      error instanceof postgres.PostgresError &&
+      (errorCodes.includes(error.code) || errorCodes.includes("*"))
+    ) {
+      console.log("ignoring error", error)
+    } else {
+      throw error
+    }
+  }
+}
+async function ignoreForeignKeyViolation(sqlQuery) {
+  return ignoreError(sqlQuery, [PG_FOREIGN_KEY_VIOLATION])
+}
+
+module.exports = {
+  ignoreError,
+  ignoreForeignKeyViolation,
+  PG_FOREIGN_KEY_VIOLATION,
+  PG_UNIQUE_VIOLATION,
+  PG_CHECK_VIOLATION,
+  PG_NOT_NULL_VIOLATION,
+  PG_RESTRICT_VIOLATION,
+  PG_INVALID_TEXT_REPRESENTATION,
+  PG_NUMERIC_VALUE_OUT_OF_RANGE,
+  PG_STRING_DATA_RIGHT_TRUNCATION,
+  PG_DIVISION_BY_ZERO,
+  PG_INVALID_PARAMETER_VALUE,
+  PG_INTEGRITY_CONSTRAINT_VIOLATION,
+  PG_INVALID_CURSOR_STATE,
+  PG_TRANSACTION_ROLLBACK,
+  PG_SERIALIZATION_FAILURE,
+  PG_DEADLOCK_DETECTED,
+  PG_SYNTAX_ERROR,
+  PG_INSUFFICIENT_PRIVILEGE,
+  PG_INVALID_CATALOG_NAME,
+  PG_INVALID_SCHEMA_NAME,
+  PG_INVALID_COLUMN_REFERENCE,
+  PG_DUPLICATE_COLUMN,
+  PG_DUPLICATE_DATABASE,
+  PG_DUPLICATE_OBJECT,
+  PG_DUPLICATE_TABLE,
+  PG_DATA_EXCEPTION,
+}

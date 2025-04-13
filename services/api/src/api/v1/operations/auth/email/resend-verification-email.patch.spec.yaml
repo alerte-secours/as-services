@@ -1,0 +1,30 @@
+x-security: 
+  - auth: ["user"]
+
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          email:
+            type: string
+            format: email
+        required:
+          - email
+responses:
+  200:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            ok:
+              type: boolean
+  429:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: {}

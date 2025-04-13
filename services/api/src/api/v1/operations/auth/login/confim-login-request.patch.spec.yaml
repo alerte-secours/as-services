@@ -1,0 +1,54 @@
+x-security: 
+  - auth: ["user"]
+
+# description: 
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          loginRequestId:
+            type: integer
+          deviceUuid:
+            type: string
+            format: uuid
+        required:
+          - loginRequestId
+responses:
+  200:
+    # description: 
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            authTokenJwt:
+              type: string
+          required:
+            - authTokenJwt
+    
+  400:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: {}
+  
+  404:
+    description: Request Login not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+
+  498:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: {}

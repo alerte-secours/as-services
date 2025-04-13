@@ -1,0 +1,6 @@
+function:
+  name: lookup_view_email_registered
+  schema: public
+configuration:
+  custom_name: lookupViewEmailRegistered
+  custom_root_fields: {}

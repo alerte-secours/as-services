@@ -1,0 +1,19 @@
+table:
+  name: enum_user_role
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyEnumUserRole
+    delete_by_pk: deleteOneEnumUserRole
+    insert: insertManyEnumUserRole
+    insert_one: insertOneEnumUserRole
+    select: selectManyEnumUserRole
+    select_aggregate: selectAggEnumUserRole
+    select_by_pk: selectOneEnumUserRole
+    select_stream: selectStreamEnumUserRole
+    update: updateManyEnumUserRole
+    update_by_pk: updateOneEnumUserRole
+    update_many: updateBatchEnumUserRole

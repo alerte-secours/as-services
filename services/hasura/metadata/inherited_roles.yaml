@@ -1,0 +1,6 @@
+- role_name: user
+  role_set:
+    - public_user
+    - other
+    - owner
+    - public_anon

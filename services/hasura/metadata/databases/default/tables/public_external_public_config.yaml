@@ -1,0 +1,26 @@
+table:
+  name: external_public_config
+  schema: public
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyExternalPublicConfig
+    delete_by_pk: deleteOneExternalPublicConfig
+    insert: insertManyExternalPublicConfig
+    insert_one: insertOneExternalPublicConfig
+    select: selectManyExternalPublicConfig
+    select_aggregate: selectAggExternalPublicConfig
+    select_by_pk: selectOneExternalPublicConfig
+    select_stream: selectStreamExternalPublicConfig
+    update: updateManyExternalPublicConfig
+    update_by_pk: updateOneExternalPublicConfig
+    update_many: updateBatchExternalPublicConfig
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - key
+        - value
+      filter: {}
+      limit: 1

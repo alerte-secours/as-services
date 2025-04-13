@@ -1,0 +1,17 @@
+type: object
+additionalProperties: true
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  login:
+    type: string
+  email:
+    type: string
+    format: email
+  email_verified:
+    type: boolean
+  created_at:
+    type: string
+    format: date-time

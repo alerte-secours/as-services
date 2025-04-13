@@ -1,0 +1,110 @@
+table:
+  name: device
+  schema: public
+configuration:
+  column_config:
+    altitude_accuracy:
+      custom_name: altitudeAccuracy
+    created_at:
+      custom_name: createdAt
+    fcm_token:
+      custom_name: fcmToken
+    notification_alert_level:
+      custom_name: notificationAlertLevel
+    phone_model:
+      custom_name: phoneModel
+    preferred_emergency_call:
+      custom_name: preferredEmergencyCall
+    radius_all:
+      custom_name: radiusAll
+    radius_reach:
+      custom_name: radiusReach
+    updated_at:
+      custom_name: updatedAt
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    altitude_accuracy: altitudeAccuracy
+    created_at: createdAt
+    fcm_token: fcmToken
+    notification_alert_level: notificationAlertLevel
+    phone_model: phoneModel
+    preferred_emergency_call: preferredEmergencyCall
+    radius_all: radiusAll
+    radius_reach: radiusReach
+    updated_at: updatedAt
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyDevice
+    delete_by_pk: deleteOneDevice
+    insert: insertManyDevice
+    insert_one: insertOneDevice
+    select: selectManyDevice
+    select_aggregate: selectAggDevice
+    select_by_pk: selectOneDevice
+    select_stream: selectStreamDevice
+    update: updateManyDevice
+    update_by_pk: updateOneDevice
+    update_many: updateBatchDevice
+insert_permissions:
+  - role: owner
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      set:
+        user_id: X-Hasura-User-Id
+      columns:
+        - phone_model
+        - uuid
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - accuracy
+        - altitude
+        - altitude_accuracy
+        - created_at
+        - heading
+        - id
+        - location
+        - notification_alert_level
+        - phone_model
+        - preferred_emergency_call
+        - radius_all
+        - radius_reach
+        - speed
+        - updated_at
+        - user_id
+        - uuid
+      filter:
+        id:
+          _eq: X-Hasura-Device-Id
+      limit: 1
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - accuracy
+        - altitude
+        - altitude_accuracy
+        - fcm_token
+        - heading
+        - location
+        - notification_alert_level
+        - preferred_emergency_call
+        - radius_all
+        - radius_reach
+        - speed
+      filter:
+        id:
+          _eq: X-Hasura-Device-Id
+      check:
+        id:
+          _eq: X-Hasura-Device-Id
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        id:
+          _eq: X-Hasura-Device-Id

@@ -1,0 +1,14 @@
+usage:
+  - only for user specific subscription (link between users and alerts)
+
+io:
+  - input: tasks (event of location change)
+  - output: send subscribed user changed (as replacement of hasura subscribtion)
+
+tech:
+  asyncapi
+    - schema
+    - validator
+
+  express-ws (using ws) https://github.com/HenningM/express-ws
+

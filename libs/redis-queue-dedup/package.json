@@ -1,0 +1,8 @@
+{
+  "name": "redis-queue-dedup",
+  "packageManager": "yarn@4.1.0",
+  "dependencies": {
+    "@modjo/core": "^1.6.0",
+    "murmurhash": "^2.0.1"
+  }
+}

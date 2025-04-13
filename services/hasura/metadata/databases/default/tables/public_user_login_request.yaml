@@ -1,0 +1,55 @@
+table:
+  name: user_login_request
+  schema: public
+configuration:
+  column_config:
+    email_id:
+      custom_name: emailId
+    phone_number_id:
+      custom_name: phoneNumberId
+    updated_at:
+      custom_name: updatedAt
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    email_id: emailId
+    phone_number_id: phoneNumberId
+    updated_at: updatedAt
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyUserLoginRequest
+    delete_by_pk: deleteOneUserLoginRequest
+    insert: insertManyUserLoginRequest
+    insert_one: insertOneUserLoginRequest
+    select: selectManyUserLoginRequest
+    select_aggregate: selectAggUserLoginRequest
+    select_by_pk: selectOneUserLoginRequest
+    select_stream: selectStreamUserLoginRequest
+    update: updateManyUserLoginRequest
+    update_by_pk: updateOneUserLoginRequest
+    update_many: updateBatchUserLoginRequest
+object_relationships:
+  - name: oneEmail
+    using:
+      foreign_key_constraint_on: email_id
+  - name: onePhoneNumber
+    using:
+      foreign_key_constraint_on: phone_number_id
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - email_id
+        - id
+        - phone_number_id
+        - type
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

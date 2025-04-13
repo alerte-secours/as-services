@@ -1,0 +1,63 @@
+table:
+  name: relative_unregistered
+  schema: public
+configuration:
+  column_config:
+    created_at:
+      custom_name: createdAt
+    phone_country:
+      custom_name: phoneCountry
+    phone_number:
+      custom_name: phoneNumber
+    reconciliation_checked:
+      custom_name: reconciliationChecked
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    created_at: createdAt
+    phone_country: phoneCountry
+    phone_number: phoneNumber
+    reconciliation_checked: reconciliationChecked
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyRelativeUnregistered
+    delete_by_pk: deleteOneRelativeUnregistered
+    insert: insertManyRelativeUnregistered
+    insert_one: insertOneRelativeUnregistered
+    select: selectManyRelativeUnregistered
+    select_aggregate: selectAggRelativeUnregistered
+    select_by_pk: selectOneRelativeUnregistered
+    select_stream: selectStreamRelativeUnregistered
+    update: updateManyRelativeUnregistered
+    update_by_pk: updateOneRelativeUnregistered
+    update_many: updateBatchRelativeUnregistered
+insert_permissions:
+  - role: owner
+    permission:
+      check: {}
+      set:
+        user_id: x-hasura-User-Id
+      columns:
+        - phone_country
+        - phone_number
+    comment: ""
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - id
+        - phone_country
+        - phone_number
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      limit: 5
+    comment: ""
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""

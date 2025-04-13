@@ -1,0 +1,6 @@
+function:
+  name: upsert_relative_by_phone_number_id
+  schema: public
+configuration:
+  custom_name: upsertRelativeByPhoneNumberId
+  custom_root_fields: {}

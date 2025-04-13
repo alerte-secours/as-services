@@ -1,0 +1,19 @@
+table:
+  name: enum_alert_closed_by
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyEnumAlertClosedBy
+    delete_by_pk: deleteOneEnumAlertClosedBy
+    insert: insertManyEnumAlertClosedBy
+    insert_one: insertOneEnumAlertClosedBy
+    select: selectManyEnumAlertClosedBy
+    select_aggregate: selectAggEnumAlertClosedBy
+    select_by_pk: selectOneEnumAlertClosedBy
+    select_stream: selectStreamEnumAlertClosedBy
+    update: updateManyEnumAlertClosedBy
+    update_by_pk: updateOneEnumAlertClosedBy
+    update_many: updateBatchEnumAlertClosedBy

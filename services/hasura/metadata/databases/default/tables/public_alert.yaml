@@ -1,0 +1,201 @@
+table:
+  name: alert
+  schema: public
+configuration:
+  column_config:
+    access_code:
+      custom_name: accessCode
+    acknowledged_around_count:
+      custom_name: acknowledgedAroundCount
+    acknowledged_connect_count:
+      custom_name: acknowledgedConnectCount
+    acknowledged_relative_count:
+      custom_name: acknowledgedRelativeCount
+    alert_tag:
+      custom_name: alertTag
+    alerting_around_count:
+      custom_name: alertingAroundCount
+    alerting_connect_count:
+      custom_name: alertingConnectCount
+    alerting_relative_count:
+      custom_name: alertingRelativeCount
+    altitude_accuracy:
+      custom_name: altitudeAccuracy
+    call_emergency:
+      custom_name: callEmergency
+    closed_at:
+      custom_name: closedAt
+    closed_by:
+      custom_name: closedBy
+    created_at:
+      custom_name: createdAt
+    device_id:
+      custom_name: deviceId
+    emergency_calling_notification_sent:
+      custom_name: emergencyCallingNotificationSent
+    keep_open_at:
+      custom_name: keepOpenAt
+    nearest_place:
+      custom_name: nearestPlace
+    notified_count:
+      custom_name: notifiedCount
+    notify_around:
+      custom_name: notifyAround
+    notify_relatives:
+      custom_name: notifyRelatives
+    phone_number_id:
+      custom_name: phoneNumberId
+    suggest_close_sent:
+      custom_name: suggestCloseSent
+    suggest_keep_open_sent:
+      custom_name: suggestKeepOpenSent
+    updated_at:
+      custom_name: updatedAt
+    user_id:
+      custom_name: userId
+    what3words:
+      custom_name: what3Words
+  custom_column_names:
+    access_code: accessCode
+    acknowledged_around_count: acknowledgedAroundCount
+    acknowledged_connect_count: acknowledgedConnectCount
+    acknowledged_relative_count: acknowledgedRelativeCount
+    alert_tag: alertTag
+    alerting_around_count: alertingAroundCount
+    alerting_connect_count: alertingConnectCount
+    alerting_relative_count: alertingRelativeCount
+    altitude_accuracy: altitudeAccuracy
+    call_emergency: callEmergency
+    closed_at: closedAt
+    closed_by: closedBy
+    created_at: createdAt
+    device_id: deviceId
+    emergency_calling_notification_sent: emergencyCallingNotificationSent
+    keep_open_at: keepOpenAt
+    nearest_place: nearestPlace
+    notified_count: notifiedCount
+    notify_around: notifyAround
+    notify_relatives: notifyRelatives
+    phone_number_id: phoneNumberId
+    suggest_close_sent: suggestCloseSent
+    suggest_keep_open_sent: suggestKeepOpenSent
+    updated_at: updatedAt
+    user_id: userId
+    what3words: what3Words
+  custom_root_fields:
+    delete: deleteManyAlert
+    delete_by_pk: deleteOneAlert
+    insert: insertManyAlert
+    insert_one: insertOneAlert
+    select: selectManyAlert
+    select_aggregate: selectAggAlert
+    select_by_pk: selectOneAlert
+    select_stream: selectStreamAlert
+    update: updateManyAlert
+    update_by_pk: updateOneAlert
+    update_many: updateBatchAlert
+array_relationships:
+  - name: manyAlerting
+    using:
+      foreign_key_constraint_on:
+        column: alert_id
+        table:
+          name: alerting
+          schema: public
+computed_fields:
+  - name: avatarImageFileUuid
+    definition:
+      function:
+        name: computed_alert__avatar_image_file_uuid
+        schema: public
+  - name: username
+    definition:
+      function:
+        name: computed_alert__username
+        schema: public
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - access_code
+        - accuracy
+        - acknowledged_around_count
+        - address
+        - alert_tag
+        - alerting_around_count
+        - altitude
+        - altitude_accuracy
+        - closed_at
+        - code
+        - created_at
+        - heading
+        - id
+        - keep_open_at
+        - level
+        - location
+        - nearest_place
+        - notified_count
+        - radius
+        - speed
+        - state
+        - subject
+        - user_id
+        - what3words
+      computed_fields:
+        - avatarImageFileUuid
+        - username
+      filter:
+        manyAlerting:
+          user_id:
+            _eq: X-Hasura-User-Id
+  - role: owner
+    permission:
+      columns:
+        - access_code
+        - accuracy
+        - acknowledged_around_count
+        - acknowledged_connect_count
+        - acknowledged_relative_count
+        - address
+        - alert_tag
+        - alerting_around_count
+        - alerting_connect_count
+        - alerting_relative_count
+        - altitude
+        - altitude_accuracy
+        - closed_at
+        - code
+        - created_at
+        - heading
+        - id
+        - keep_open_at
+        - level
+        - location
+        - nearest_place
+        - notified_count
+        - notify_around
+        - notify_relatives
+        - radius
+        - speed
+        - state
+        - subject
+        - updated_at
+        - user_id
+        - what3words
+      computed_fields:
+        - avatarImageFileUuid
+        - username
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - alert_tag
+        - level
+        - subject
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null

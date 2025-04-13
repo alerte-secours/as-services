@@ -1,0 +1,26 @@
+table:
+  name: files
+  schema: public
+configuration:
+  column_config:
+    alert_id:
+      custom_name: alertId
+    created_at:
+      custom_name: createdAt
+    device_id:
+      custom_name: deviceId
+    user_id:
+      custom_name: userId
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyFiles
+    delete_by_pk: deleteOneFiles
+    insert: insertManyFiles
+    insert_one: insertOneFiles
+    select: selectManyFiles
+    select_aggregate: selectAggFiles
+    select_by_pk: selectOneFiles
+    select_stream: selectStreamFiles
+    update: updateManyFiles
+    update_by_pk: updateOneFiles
+    update_many: updateBatchFiles

@@ -1,0 +1,7 @@
+Bonjour,
+Pour confirmer la demande de connexion depuis l'application Alerte-Secours par l'utilisateur "<%= it.username %>" en utilisant cette adresse email, ouvrez lien suivant : <%= it.apiUrl %>/v1/oas/auth/email/connect?code=<%= it.connectionCode %>
+
+Si vous n'êtes pas à l'origine de cette requête, veuillez ignorer cet email.
+
+Cordialement,
+Alerte-Secours.

@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname $0)/_/husky.sh"
+
+export PATH=$PATH:$HOME/.yarn/bin
+
+yarn commitlint --edit $1
+

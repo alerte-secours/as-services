@@ -1,0 +1,11 @@
+{
+  "events": {
+    
+  },
+  "ext": ".js, .json, .yaml, .yml, .eta",
+  "watch": [
+    "src",
+    "../../libs",
+    "../../.yarn-dev-portal/.links/modjo"
+  ]
+}

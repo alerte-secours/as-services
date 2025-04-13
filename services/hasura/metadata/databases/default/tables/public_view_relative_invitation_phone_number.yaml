@@ -1,0 +1,27 @@
+table:
+  name: view_relative_invitation_phone_number
+  schema: public
+configuration:
+  column_config:
+    phone_number_id:
+      custom_name: phoneNumberId
+    relative_invitation_id:
+      custom_name: relativeInvitationId
+    to_phone_number_id:
+      custom_name: toPhoneNumberId
+  custom_column_names:
+    phone_number_id: phoneNumberId
+    relative_invitation_id: relativeInvitationId
+    to_phone_number_id: toPhoneNumberId
+  custom_root_fields:
+    delete: deleteManyViewRelativeInvitationPhoneNumber
+    delete_by_pk: deleteOneViewRelativeInvitationPhoneNumber
+    insert: insertManyViewRelativeInvitationPhoneNumber
+    insert_one: insertOneViewRelativeInvitationPhoneNumber
+    select: selectManyViewRelativeInvitationPhoneNumber
+    select_aggregate: selectAggViewRelativeInvitationPhoneNumber
+    select_by_pk: selectOneViewRelativeInvitationPhoneNumber
+    select_stream: selectStreamViewRelativeInvitationPhoneNumber
+    update: updateManyViewRelativeInvitationPhoneNumber
+    update_by_pk: updateOneViewRelativeInvitationPhoneNumber
+    update_many: updateBatchViewRelativeInvitationPhoneNumber

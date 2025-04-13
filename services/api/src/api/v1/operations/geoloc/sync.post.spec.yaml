@@ -1,0 +1,103 @@
+# description: 
+x-security: 
+  - auth: ["user"]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        additionalProperties: true
+        required:
+          - location
+        properties:
+          location:
+            type: object
+            required:
+              - coords
+            properties:
+              event:
+                type: string
+                nullable: true
+                enum:
+                  - boot
+                  - terminate
+                  - location
+                  - motionchange
+                  - http
+                  - heartbeat
+                  - providerchange
+                  - activitychange
+                  - geofence
+                  - geofenceschange
+                  - enabledchange
+                  - connectvitychange
+                  - schedule
+                  - powersavechange
+                  - notificationaction
+                  - authorization
+              is_moving:
+                type: boolean
+              uuid:
+                type: string
+                format: uuid
+              timestamp:
+                type: string
+                format: date-time
+              odometer:
+                type: number
+              coords:
+                type: object
+                required:
+                  - latitude
+                  - longitude
+                properties:
+                  latitude:
+                    type: number
+                    format: latitude
+                  longitude:
+                    type: number
+                    format: longitude
+                  accuracy:
+                    type: number
+                  speed:
+                    type: number
+                  speed_accuracy:
+                    type: number
+                  heading:
+                    type: number
+                  heading_accuracy:
+                    type: number
+                  altitude:
+                    type: number
+                  altitude_accuracy:
+                    type: number
+              activity:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  confidence:
+                    type: number
+              battery:
+                type: object
+                properties:
+                  is_chargin:
+                    type: boolean
+                  level:
+                    type: number
+              extra:
+                type: object
+                additionalProperties: {}
+                
+
+responses:
+  200:
+    # description: 
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            ok:
+              type: boolean

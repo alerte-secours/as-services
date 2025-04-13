@@ -1,0 +1,19 @@
+table:
+  name: alert_state
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyAlertState
+    delete_by_pk: deleteOneAlertState
+    insert: insertManyAlertState
+    insert_one: insertOneAlertState
+    select: selectManyAlertState
+    select_aggregate: selectAggAlertState
+    select_by_pk: selectOneAlertState
+    select_stream: selectStreamAlertState
+    update: updateManyAlertState
+    update_by_pk: updateOneAlertState
+    update_many: updateBatchAlertState

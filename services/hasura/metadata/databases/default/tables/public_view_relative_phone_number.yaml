@@ -1,0 +1,70 @@
+table:
+  name: view_relative_phone_number
+  schema: public
+configuration:
+  column_config:
+    phone_number_id:
+      custom_name: phoneNumberId
+    relative_id:
+      custom_name: relativeId
+    to_phone_number_id:
+      custom_name: toPhoneNumberId
+  custom_column_names:
+    phone_number_id: phoneNumberId
+    relative_id: relativeId
+    to_phone_number_id: toPhoneNumberId
+  custom_root_fields:
+    delete: deleteManyViewRelativePhoneNumber
+    delete_by_pk: deleteOneViewRelativePhoneNumber
+    insert: insertManyViewRelativePhoneNumber
+    insert_one: insertOneViewRelativePhoneNumber
+    select: selectManyViewRelativePhoneNumber
+    select_aggregate: selectAggViewRelativePhoneNumber
+    select_by_pk: selectOneViewRelativePhoneNumber
+    select_stream: selectStreamViewRelativePhoneNumber
+    update: updateManyViewRelativePhoneNumber
+    update_by_pk: updateOneViewRelativePhoneNumber
+    update_many: updateBatchViewRelativePhoneNumber
+object_relationships:
+  - name: onePhoneNumber
+    using:
+      manual_configuration:
+        column_mapping:
+          phone_number_id: id
+        insertion_order: null
+        remote_table:
+          name: phone_number
+          schema: public
+  - name: onePhoneNumberAsTo
+    using:
+      manual_configuration:
+        column_mapping:
+          to_phone_number_id: id
+        insertion_order: null
+        remote_table:
+          name: phone_number
+          schema: public
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - phone_number_id
+        - relative_id
+        - to_phone_number_id
+      filter:
+        onePhoneNumberAsTo:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""
+  - role: owner
+    permission:
+      columns:
+        - phone_number_id
+        - relative_id
+        - to_phone_number_id
+      filter:
+        onePhoneNumber:
+          user_id:
+            _eq: X-Hasura-User-Id
+      limit: 5
+    comment: ""

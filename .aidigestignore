@@ -1,0 +1,64 @@
+# ai-digest
+.aidigestignore
+
+# yarn-dev-portal
+yarn.lock.*
+package.json.*
+.yarn-dev-portal
+
+# versioning
+CHANGELOG.md
+.versionrc.json
+
+# lint
+.commitlintrc.json
+.eslintrc.js
+.editorconfig
+.husky
+
+# node
+.yarnrc.yml
+.yarn
+
+# docker
+.dockerignore
+docker-compose.build.yaml
+
+# env
+.envrc
+.env.local
+
+# git
+.gitignore
+
+# tmux
+.tmux.conf
+.tmuxp.full-decoupled.yaml
+.tmuxp.yaml
+
+# md
+README.md
+
+# ci/cd
+.forgejo
+
+# binaries
+*.png
+*.svg
+*.jpg
+*.jpeg
+*.ico
+
+# generic
+*.bak
+*.tmp
+*.log
+
+# project
+tileserver-files
+.dev-secrets
+.osm-files
+osm-files
+tests
+docs
+dockerfile-x

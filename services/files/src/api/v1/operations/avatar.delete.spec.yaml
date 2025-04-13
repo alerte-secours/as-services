@@ -1,0 +1,9 @@
+x-security: 
+  - auth: ["user"]
+
+responses:
+  200:
+    content:
+      application/json:
+        schema:
+          type: object

@@ -1,0 +1,87 @@
+table:
+  name: alerted
+  schema: public
+configuration:
+  column_config:
+    archived_alert_id:
+      custom_name: archivedAlertId
+    coming_help:
+      custom_name: comingHelp
+    created_at:
+      custom_name: createdAt
+    device_id:
+      custom_name: deviceId
+    geomatch_method:
+      custom_name: geomatchMethod
+    initial_distance:
+      custom_name: initialDistance
+    initial_location:
+      custom_name: initialLocation
+    near_location:
+      custom_name: nearLocation
+    notification_sent:
+      custom_name: notificationSent
+    notification_sent_at:
+      custom_name: notificationSentAt
+    opened_once:
+      custom_name: openedOnce
+    relative_user_id:
+      custom_name: relativeUserId
+    updated_at:
+      custom_name: updatedAt
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    archived_alert_id: archivedAlertId
+    coming_help: comingHelp
+    created_at: createdAt
+    device_id: deviceId
+    geomatch_method: geomatchMethod
+    initial_distance: initialDistance
+    initial_location: initialLocation
+    near_location: nearLocation
+    notification_sent: notificationSent
+    notification_sent_at: notificationSentAt
+    opened_once: openedOnce
+    relative_user_id: relativeUserId
+    updated_at: updatedAt
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyAlerted
+    delete_by_pk: deleteOneAlerted
+    insert: insertManyAlerted
+    insert_one: insertOneAlerted
+    select: selectManyAlerted
+    select_aggregate: selectAggAlerted
+    select_by_pk: selectOneAlerted
+    select_stream: selectStreamAlerted
+    update: updateManyAlerted
+    update_by_pk: updateOneAlerted
+    update_many: updateBatchAlerted
+object_relationships:
+  - name: oneArchivedAlert
+    using:
+      foreign_key_constraint_on: archived_alert_id
+  - name: oneUser
+    using:
+      foreign_key_constraint_on: user_id
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - archived_alert_id
+        - coming_help
+        - created_at
+        - id
+        - initial_distance
+        - near_location
+        - opened
+        - opened_once
+        - reason
+        - relative_user_id
+        - updated_at
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""

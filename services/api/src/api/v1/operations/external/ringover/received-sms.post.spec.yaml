@@ -1,0 +1,103 @@
+security:
+  - bearerRingoverCallEvent: []
+# description: 
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        additionalProperties: true
+        required:
+          - resource
+          - event
+          - timestamp
+          - data
+        properties:
+          resource:
+            type: string
+            enum:
+              - sms
+          event:
+            type: string
+            enum:
+              - received
+          timestamp:
+            type: integer
+          data:
+            type: object
+            additionalProperties: true
+            required:
+              - from_number
+              - body
+            properties:
+              id:
+                type: string
+              conversation_id:
+                type: string
+              message_id:
+                type: string
+              time:
+                type: integer
+              date_time_atom:
+                type: string
+                format: date-time
+              direction:
+                type: string
+              from_number:
+                type: string
+              to_number:
+                type: string
+              body:
+                type: string
+              is_internal:
+                type: boolean
+              is_collaborative:
+                type: boolean
+              user_id:
+                type: integer
+          attempt:
+            type: integer
+responses:
+  200:
+    description: SMS event processed successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+            processedAt:
+              type: string
+              format: date-time
+          required:
+            - message
+            - processedAt
+  410:
+    description: Invalid code
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: {}
+  404:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: {}
+  422:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+  498:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: {}

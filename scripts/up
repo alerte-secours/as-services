@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+docker pull devthefuture/dockerfile-x
+docker compose --progress=plain build
+docker compose up -d

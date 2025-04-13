@@ -1,0 +1,38 @@
+{
+  "name": "@as/files",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "node src/index.js build && ncc build src/index.js --source-map",
+    "dev": "nodemon --inspect --exec node --trace-warnings src/index.js dev",
+    "postinstall": "[ -d ../../node_modules/link-module-alias ] && mkdir -p build && link-module-alias || true",
+    "lint": "eslint src",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@as/postgres-types": "workspace:^",
+    "@modjo/amqp": "*",
+    "@modjo/core": "*",
+    "@modjo/express": "*",
+    "@modjo/microservice-oapi": "*",
+    "@modjo/minio": "*",
+    "@modjo/postgres": "*",
+    "@modjo/sentry": "^1.6.2",
+    "@vercel/ncc": "^0.33.3",
+    "common": "workspace:^",
+    "lodash.tointeger": "^4.0.4",
+    "rate-limiter-flexible": "^5.0.3",
+    "utils": "workspace:^",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "link-module-alias": "^1.2.0",
+    "nodemon": "^2.0.12"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "_moduleAliases": {
+    "~": "src"
+  }
+}

@@ -1,0 +1,21 @@
+const capitalize = require("lodash.capitalize")
+
+const frWordlist = require("./wordlists/fr.json")
+
+module.exports = function wordsUuid(uuid, options = {}) {
+  const { wordlist = frWordlist } = options
+  const cleanUuid = uuid.replace(/-/g, "")
+
+  const parts = [
+    cleanUuid.substring(0, 8),
+    cleanUuid.substring(9, 17),
+    cleanUuid.substring(18, 26),
+  ]
+
+  const wordGroup = parts.map((part) => {
+    const decimal = parseInt(part, 16)
+    return wordlist[decimal % wordlist.length]
+  })
+
+  return wordGroup.map(capitalize).join("")
+}

@@ -1,0 +1,19 @@
+table:
+  name: enum_emergency_call
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyEnumEmergencyCall
+    delete_by_pk: deleteOneEnumEmergencyCall
+    insert: insertManyEnumEmergencyCall
+    insert_one: insertOneEnumEmergencyCall
+    select: selectManyEnumEmergencyCall
+    select_aggregate: selectAggEnumEmergencyCall
+    select_by_pk: selectOneEnumEmergencyCall
+    select_stream: selectStreamEnumEmergencyCall
+    update: updateManyEnumEmergencyCall
+    update_by_pk: updateOneEnumEmergencyCall
+    update_many: updateBatchEnumEmergencyCall

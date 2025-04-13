@@ -1,0 +1,9 @@
+function:
+  name: upsert_one_relative_invitation_by_phone_number_id
+  schema: public
+configuration:
+  custom_name: upsertOneRelativeInvitationByPhoneNumberId
+  custom_root_fields: {}
+  session_argument: hasura_session
+permissions:
+  - role: other

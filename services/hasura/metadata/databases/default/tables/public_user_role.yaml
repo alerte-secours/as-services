@@ -1,0 +1,21 @@
+table:
+  name: user_role
+  schema: public
+configuration:
+  column_config:
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyUserRole
+    delete_by_pk: deleteOneUserRole
+    insert: insertManyUserRole
+    insert_one: insertOneUserRole
+    select: selectManyUserRole
+    select_aggregate: selectAggUserRole
+    select_by_pk: selectOneUserRole
+    select_stream: selectStreamUserRole
+    update: updateManyUserRole
+    update_by_pk: updateOneUserRole
+    update_many: updateBatchUserRole

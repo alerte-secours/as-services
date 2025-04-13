@@ -1,0 +1,109 @@
+table:
+  name: message
+  schema: public
+configuration:
+  column_config:
+    alert_id:
+      custom_name: alertId
+    audio_file_uuid:
+      custom_name: audioFileUuid
+    content_type:
+      custom_name: contentType
+    created_at:
+      custom_name: createdAt
+    device_id:
+      custom_name: deviceId
+    user_id:
+      custom_name: userId
+  custom_column_names:
+    alert_id: alertId
+    audio_file_uuid: audioFileUuid
+    content_type: contentType
+    created_at: createdAt
+    device_id: deviceId
+    user_id: userId
+  custom_root_fields:
+    delete: deleteManyMessage
+    delete_by_pk: deleteOneMessage
+    insert: insertManyMessage
+    insert_one: insertOneMessage
+    select: selectManyMessage
+    select_aggregate: selectAggMessage
+    select_by_pk: selectOneMessage
+    select_stream: selectStreamMessage
+    update: updateManyMessage
+    update_by_pk: updateOneMessage
+    update_many: updateBatchMessage
+object_relationships:
+  - name: oneAlert
+    using:
+      foreign_key_constraint_on: alert_id
+computed_fields:
+  - name: avatarImageFileUuid
+    definition:
+      function:
+        name: computed_message__avatar_image_file_uuid
+        schema: public
+  - name: username
+    definition:
+      function:
+        name: computed_message__username
+        schema: public
+insert_permissions:
+  - role: other
+    permission:
+      check:
+        oneAlert:
+          manyAlerting:
+            user_id:
+              _eq: X-Hasura-User-Id
+      set:
+        device_id: X-Hasura-Device-Id
+        user_id: X-Hasura-User-Id
+      columns:
+        - alert_id
+        - audio_file_uuid
+        - content_type
+        - location
+        - text
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - alert_id
+        - audio_file_uuid
+        - content_type
+        - created_at
+        - id
+        - location
+        - text
+        - user_id
+      computed_fields:
+        - avatarImageFileUuid
+        - username
+      filter:
+        _or:
+          - oneAlert:
+              user_id:
+                _eq: X-Hasura-User-Id
+          - oneAlert:
+              manyAlerting:
+                user_id:
+                  _eq: X-Hasura-User-Id
+  - role: owner
+    permission:
+      columns:
+        - alert_id
+        - audio_file_uuid
+        - content_type
+        - created_at
+        - id
+        - location
+        - text
+        - user_id
+      computed_fields:
+        - avatarImageFileUuid
+        - username
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

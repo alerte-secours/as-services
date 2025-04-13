@@ -1,0 +1,59 @@
+table:
+  name: relative_allow
+  schema: public
+configuration:
+  column_config:
+    ask_notification_sent:
+      custom_name: askNotificationSent
+    relative_id:
+      custom_name: relativeId
+  custom_column_names:
+    ask_notification_sent: askNotificationSent
+    relative_id: relativeId
+  custom_root_fields:
+    delete: deleteManyRelativeAllow
+    delete_by_pk: deleteOneRelativeAllow
+    insert: insertManyRelativeAllow
+    insert_one: insertOneRelativeAllow
+    select: selectManyRelativeAllow
+    select_aggregate: selectAggRelativeAllow
+    select_by_pk: selectOneRelativeAllow
+    select_stream: selectStreamRelativeAllow
+    update: updateManyRelativeAllow
+    update_by_pk: updateOneRelativeAllow
+    update_many: updateBatchRelativeAllow
+object_relationships:
+  - name: oneRelative
+    using:
+      foreign_key_constraint_on: relative_id
+select_permissions:
+  - role: other
+    permission:
+      columns:
+        - allowed
+        - id
+        - relative_id
+      filter:
+        oneRelative:
+          user_id:
+            _eq: X-Hasura-User-Id
+  - role: owner
+    permission:
+      columns:
+        - allowed
+        - id
+        - relative_id
+      filter:
+        oneRelative:
+          to_user_id:
+            _eq: X-Hasura-User-Id
+update_permissions:
+  - role: owner
+    permission:
+      columns:
+        - allowed
+      filter:
+        oneRelative:
+          to_user_id:
+            _eq: X-Hasura-User-Id
+      check: null

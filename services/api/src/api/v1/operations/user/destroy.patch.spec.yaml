@@ -1,0 +1,32 @@
+x-security: 
+  - auth: ["user"]
+
+requestBody:
+  required: false
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          __:
+            type: string
+
+
+responses:
+  200:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            ok:
+              type: string
+  
+  404:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string

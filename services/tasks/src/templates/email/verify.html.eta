@@ -1,0 +1,6 @@
+<% layout("./layout.html.eta") %>
+
+<h2>Bonjour,</h2>
+<p>Vous venez d'enregistrer cette adresse email sur Alerte-Secours. Avant de pouvoir utiliser cette adresse email avec votre compte, vous devez prouver que cette adresse e-mail est bien la vôtre.</p>
+<a href="<%= it.apiUrl %>/v1/oas/auth/email/verify?code=<%= it.verificationCode %>" class="button">Cliquez ici pour vérifier</a>
+<p class="instruction">Si vous avez des difficultés à ouvrir ce lien, copiez et collez le lien suivant dans votre navigateur:<br> <%= it.apiUrl %>/v1/oas/auth/email/verify?code=<%= it.verificationCode %></p>
