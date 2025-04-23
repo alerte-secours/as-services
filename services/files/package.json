@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "node src/index.js build && ncc build src/index.js --source-map",
-    "dev": "nodemon --inspect --exec node --trace-warnings src/index.js dev",
+    "dev": "nodemon --inspect --exitcrash --exec node --trace-warnings src/index.js dev",
     "postinstall": "[ -d ../../node_modules/link-module-alias ] && mkdir -p build && link-module-alias || true",
     "lint": "eslint src",
     "start": "node dist/index.js"
