@@ -366,14 +366,14 @@ services:
       - "${MAILDEV_WEB_PORT:-4226}:1080"
     restart: always
 
-  # web:
-  #   image: helpme_web
-  #   restart: always
-  #   build:
-  #     context: .
-  #     dockerfile: ./services/web/Dockerfile
-  #   ports:
-  #     - ${WEB_PORT:-4203}:8080
+  web:
+    image: helpme_web
+    restart: always
+    build:
+      context: .
+      dockerfile: ./services/web/Dockerfile
+    ports:
+      - ${WEB_PORT:-4203}:8080
 
   app:
     image: helpme_app

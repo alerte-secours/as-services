@@ -1,0 +1,76 @@
+[global_config]
+suppress_multiple_term_dialog = True
+
+[keybindings]
+  hide_window = None
+  
+[profiles]
+  [[default]]
+  use_system_font = True
+
+[layouts]
+  [[dev]]
+    # root window
+    [[[window0]]]
+      type = Window
+      parent = ""
+
+    # top-level horizontal split: left vs right
+    [[[pane0]]]
+      type = HPaned
+      parent = window0
+
+    # left column: vertical paned into 3 rows
+    [[[pane_left]]]
+      type = VPaned
+      parent = pane0
+    # nest another VPaned under the bottom half of pane_left
+    [[[pane_left2]]]
+      type = VPaned
+      parent = pane_left
+
+    # right column: vertical paned into 3 rows
+    [[[pane_right]]]
+      type = VPaned
+      parent = pane0
+    # nest another VPaned under the bottom half of pane_right
+    [[[pane_right2]]]
+      type = VPaned
+      parent = pane_right
+
+    # Row 1, Col 1 (db/minio logs)
+    [[[child0]]]
+      type    = Terminal
+      parent  = pane_left
+      profile = default
+      command = bash -lc "docker compose logs --follow --tail=10 db minio rabbitmq redis-hot-geodata redis-q-dedup keydb-cold-geodata; exec bash"
+
+    # Row 2, Col 1 (tileserver logs)
+    [[[child1]]]
+      type    = Terminal
+      parent  = pane_left2
+      profile = default
+      command = bash -lc "docker compose logs --follow --tail=10 tileserver-gl osrm-car osrm-foot nominatim; exec bash"
+
+    # Row 3, Col 1 (hasura logs)
+    [[[child2]]]
+      type    = Terminal
+      parent  = pane_left2
+      profile = default
+      command = bash -lc "docker compose logs --follow --tail=10 hasura hasura_console; exec bash"
+
+    # Row 1, Col 2 (api/files logs)
+    [[[child3]]]
+      type    = Terminal
+      parent  = pane_right
+      profile = default
+      command = bash -lc "docker compose logs --follow --tail=10 api files web; exec bash"
+
+    # Row 2, Col 2 (watchers/tasks logs)
+    [[[child4]]]
+      type    = Terminal
+      parent  = pane_right2
+      profile = default
+      command = bash -lc "docker compose logs --follow --tail=10 watchers tasks; exec bash"
+
+[plugins]

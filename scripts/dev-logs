@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+# 1) your “before_script”
+
+
+# 2) launch Terminator in its own D-Bus session (so it fully registers & unregisters windows),
+#    background it, and redirect all of its output away from your shell:
+dbus-run-session -- terminator \
+    --config ./terminator-config \
+    --layout dev \
+  > /dev/null 2>&1 &
+
+# 3) remove it from your shell’s job table so it won’t ever echo anything later
+disown

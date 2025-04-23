@@ -26,13 +26,6 @@ services/*/dist
 !.yarn/versions
 # !.yarn/cache
 
-yarn.lock.dev
-yarn.lock
-/package.json.dev
-/package.json
-
-
-
 codebase.md
 
 /bin
