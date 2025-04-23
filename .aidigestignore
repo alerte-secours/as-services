@@ -1,11 +1,6 @@
 # ai-digest
 .aidigestignore
 
-# yarn-dev-portal
-yarn.lock.*
-package.json.*
-.yarn-dev-portal
-
 # versioning
 CHANGELOG.md
 .versionrc.json

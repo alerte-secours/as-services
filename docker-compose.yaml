@@ -165,7 +165,6 @@ services:
     volumes:
       - ./.dev-secrets:/secrets:ro
       - ./:/app
-      - ~/lab/devthefuture/modjo:/app/.yarn-dev-portal/.links/modjo
     ports:
       - ${EXPOSE_API_PORT:-4200}:${API_PORT:-4200}
     environment:
@@ -206,7 +205,6 @@ services:
     volumes:
       - ./.dev-secrets:/secrets:ro
       - ./:/app
-      - ~/lab/devthefuture/modjo:/app/.yarn-dev-portal/.links/modjo
     ports:
       - ${EXPOSE_FILES_PORT:-4292}:${FILES_PORT:-4292}
     environment:
@@ -241,7 +239,6 @@ services:
       dockerfile: ./services/tasks/Dockerfile.dev
     volumes:
       - ./:/app
-      - ~/lab/devthefuture/modjo:/app/.yarn-dev-portal/.links/modjo
     environment:
       API_URL: ${API_URL:-http://localhost:${EXPOSE_API_PORT:-4200}/api}
       LOGLEVEL: ${TASKS_LOGLEVEL:-debug}
@@ -281,7 +278,6 @@ services:
       dockerfile: ./services/watchers/Dockerfile.dev
     volumes:
       - ./:/app
-      - ~/lab/devthefuture/modjo:/app/.yarn-dev-portal/.links/modjo
     environment:
       LOGLEVEL: ${WATCHERS_LOGLEVEL:-debug}
       DATABASE_URL: ${DATABASE_URL-psql://dev:dev@db/dev}

@@ -50,7 +50,9 @@ module.exports = async function () {
 
             // Parse stored JSON to get `updatedAt`
             const data = JSON.parse(deviceData)
-            const age = now - data.updatedAt
+
+            // const age = now - data.updatedAt
+            const age = data.updatedAt ? now - data.updatedAt : Infinity // trick is for missing updatedAt field on old entries
 
             // If data is older than maxAge
             if (age > maxAge) {

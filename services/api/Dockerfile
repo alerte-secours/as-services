@@ -4,8 +4,7 @@ FROM ./dockerfile-x/node AS build
 ENV NODE_ENV=production
 
 # fetch
-COPY --chown=1000:1000 .yarnrc.yml ./
-COPY --chown=1000:1000 yarn.lock.prod ./yarn.lock
+COPY --chown=1000:1000 yarn.lock .yarnrc.yml ./
 COPY --chown=1000:1000 .yarn .yarn
 RUN yarn fetch workspaces focus @as/api
 

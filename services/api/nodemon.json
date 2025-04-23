@@ -3,7 +3,6 @@
   "ext": ".js, .json, .yaml, .yml",
   "watch": [
     "src",
-    "../../libs",
-    "../../.yarn-dev-portal/.links/modjo"
+    "../../libs"
   ]
 }

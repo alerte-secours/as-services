@@ -30,8 +30,7 @@ yarn.lock.dev
 yarn.lock
 /package.json.dev
 /package.json
-.yarn-dev-portal/.links/*
-!.yarn-dev-portal/.links/.gitkeep
+
 
 
 codebase.md
