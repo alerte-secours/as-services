@@ -31,7 +31,7 @@ module.exports = async function () {
       )
     },
     {
-      dedupOptions: { enabled: true },
+      dedupOptions: { enabled: false },
     }
   )
 }
