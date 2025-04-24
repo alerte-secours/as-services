@@ -3,6 +3,7 @@ const { ctx } = require("@modjo/core")
 const ms = require("ms")
 const cron = require("~/libs/cron")
 const { DEVICE_GEODATA_MAX_AGE } = require("~/constants/time")
+const tasks = require("~/tasks")
 
 const CLEANUP_CRON = "0 */1 * * *" // Run every hour
 const MAX_PARALLEL_PROCESS = 10
@@ -15,10 +16,61 @@ module.exports = async function () {
   const logger = ctx.require("logger")
   const redisCold = ctx.require("keydbColdGeodata")
   const redisHot = ctx.require("redisHotGeodata")
+  const { addTask } = ctx.require("amqp")
 
   return async function geodataCleanupCron() {
     logger.info("watcher geodataCleanupCron: daemon started")
 
+    // this is temporary function (fixing actual data)
+    async function cleanupOrphanedHotGeodata() {
+      // Get all devices from hot storage
+      const hotDevices = new Set()
+      let hotCursor = "0"
+      do {
+        // Use zscan to iterate through the sorted set
+        const [newCursor, items] = await redisHot.zscan(
+          HOTGEODATA_KEY,
+          hotCursor,
+          "COUNT",
+          "100"
+        )
+        hotCursor = newCursor
+
+        // Extract device IDs (every other item in the result is a score)
+        for (let i = 0; i < items.length; i += 2) {
+          hotDevices.add(items[i])
+        }
+      } while (hotCursor !== "0")
+
+      // Process each hot device
+      await async.eachLimit(
+        [...hotDevices],
+        MAX_PARALLEL_PROCESS,
+        async (deviceId) => {
+          try {
+            // Check if device exists in cold storage
+            const coldKey = `${COLDGEODATA_DEVICE_KEY_PREFIX}${deviceId}`
+            const exists = await redisCold.exists(coldKey)
+
+            // If device doesn't exist in cold storage, remove it from hot storage
+            if (!exists) {
+              await redisHot.zrem(HOTGEODATA_KEY, deviceId)
+              logger.debug(
+                { deviceId },
+                "Removed orphaned device data from hot storage (not found in cold storage)"
+              )
+            }
+          } catch (error) {
+            logger.error(
+              { error, deviceId },
+              "Error checking orphaned device data"
+            )
+          }
+        }
+      )
+    }
+
+    // TODO optimize by removing memory accumulation (cursor iteration to make it scalable)
     async function cleanupOldGeodata() {
       const now = Math.floor(Date.now() / 1000) // Current time in seconds
       const coldKeys = new Set() // Store cold geodata keys
@@ -68,6 +120,23 @@ module.exports = async function () {
                   { deviceId, age: `${Math.floor(age / 3600)}h` },
                   "Removed old device data from hot storage and marked as cleaned in cold storage"
                 )
+
+                // Enqueue task to notify user about lost background geolocation
+                try {
+                  await addTask(tasks.BACKGROUND_GEOLOCATION_LOST_NOTIFY, {
+                    deviceId,
+                  })
+
+                  logger.info(
+                    { deviceId },
+                    "Enqueued background geolocation lost notification task"
+                  )
+                } catch (notifError) {
+                  logger.error(
+                    { deviceId, error: notifError },
+                    "Error enqueueing background geolocation lost notification task"
+                  )
+                }
               } catch (error) {
                 logger.error({ error, deviceId }, "Error cleaning device data")
               }
@@ -82,7 +151,10 @@ module.exports = async function () {
       )
     }
 
-    // Schedule the cleanup to run periodically
-    cron.schedule(CLEANUP_CRON, cleanupOldGeodata)
+    // Schedule both cleanup functions to run periodically
+    cron.schedule(CLEANUP_CRON, async () => {
+      await cleanupOldGeodata()
+      await cleanupOrphanedHotGeodata()
+    })
   }
 }

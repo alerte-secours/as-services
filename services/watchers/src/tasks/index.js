@@ -9,4 +9,5 @@ module.exports = {
   RELATIVE_ALLOW_ASK_NOTIFY: "relativeAllowAskNotify",
   RELATIVE_INVITATION_NOTIFY: "relativeInvitationNotify",
   ALERT_CALL_EMERGENCY_INFO_NOTIFY: "alertCallEmergencyInfoNotify",
+  BACKGROUND_GEOLOCATION_LOST_NOTIFY: "backgroundGeolocationLostNotify",
 }
