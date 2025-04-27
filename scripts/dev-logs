@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 set -e
 
-# 1) your “before_script”
+# Get the absolute path to the terminator-config file
+CONFIG_PATH="$(pwd)/terminator-config"
+echo "Using config file: $CONFIG_PATH"
 
-
-# 2) launch Terminator in its own D-Bus session (so it fully registers & unregisters windows),
-#    background it, and redirect all of its output away from your shell:
+# Launch Terminator in its own D-Bus session
 dbus-run-session -- terminator \
-    --config ./terminator-config \
-    --layout dev \
-  > /dev/null 2>&1 &
+    --config "$CONFIG_PATH" \
+    --layout dev &
 
-# 3) remove it from your shell’s job table so it won’t ever echo anything later
+# Wait a moment before disowning
+sleep 1
+
+# Remove it from your shell's job table
 disown
