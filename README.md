@@ -1,151 +1,58 @@
 # Alerte-Secours - Le Réflexe qui Sauve
 
-Alerte-Secours is a microservices-based emergency alert and response system designed to provide rapid assistance in emergency situations.
+[![Liberapay](https://img.shields.io/liberapay/receives/alerte-secours.svg?logo=liberapay)](https://liberapay.com/alerte-secours)
+[![Buy Me a Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?logo=buy-me-a-coffee)](https://buymeacoffee.com/alerte-secours)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/alerte-secours?style=social)](https://github.com/sponsors/alerte-secours)
 
-## Official Website
+Alerte-Secours est un système d'alerte et de réponse d'urgence basé sur une architecture de microservices, conçu pour fournir une assistance rapide en situation d'urgence.
 
-Visit our official website at [alerte-secours.fr](https://alerte-secours.fr)
+## Site Web Officiel
 
-## Development Quick Start
+Visitez notre site web officiel sur [alerte-secours.fr](https://alerte-secours.fr)
 
-### Requirements
+## Documentation Développeur
 
-- Docker
-- Direnv
-- Node.js (>=20)
-- Yarn (v4.6.0+)
+Pour les développeurs souhaitant contribuer au projet ou déployer les services, consultez la [documentation technique complète](DEVELOPER.md) qui contient :
 
-### Installation
+- Guide de démarrage rapide
+- Stack technique détaillé
+- Instructions d'installation
+- Documentation des API
+- Structure du projet
+- Endpoints de développement
 
-1. Clone the repository:
-```sh
-git clone https://codeberg.org/alerte-secours/alerte-secours
-cd alerte-secours
-```
+## Licence
 
-2. Install dependencies:
-```sh
-yarn
-```
+Alerte-Secours est sous licence **DevTheFuture Ethical Use License (DEF License)**.
 
-3. Set up environment variables:
-```sh
-cp .env.default .env
-```
+Points clés :
+- **Usage à but non lucratif** : Gratuit pour les usages à but non lucratif
+- **Usage commercial** : Nécessite une licence payante
+- **Données personnelles** : Ne doivent pas être monétisées ou exploitées
+- **Propriété** : Tous les droits de propriété intellectuelle restent au concédant
+- **Restriction concurrentielle** : Les concurrents doivent obtenir une autorisation explicite
 
-### Start Services
+Pour les détails complets de la licence, voir [LICENSE.md](LICENSE.md).
 
-Start all services with:
-```sh
-yarn dev:up
-```
+## 💙 Soutenir le projet
 
-View logs:
-```sh
-yarn dev:logs
-```
+Alerte-Secours est une application mobile citoyenne, librement accessible, sans publicité ni exploitation de données.
 
-### Public Staging Environment
+Si vous souhaitez contribuer à son développement, sa maintenance et son indépendance :
 
-For development and testing, you can use our public staging environment:
+- 🟡 **[Liberapay – Soutien régulier](https://liberapay.com/alerte-secours)**  
+  Pour un soutien **récurrent et engagé**. Chaque don contribue à assurer la stabilité du service sur le long terme.
 
-- API: https://api-staging.alerte-secours.fr
-- GraphQL: https://graphql-staging.alerte-secours.fr
-- Web Interface: https://web-staging.alerte-secours.fr
+- ☕ **[Buy Me a Coffee – Don ponctuel](https://buymeacoffee.com/alerte-secours)**  
+  Pour un **coup de pouce ponctuel**, un café virtuel pour encourager le travail accompli !
 
-### Endpoints (Local Development)
+- 🧑‍💻 **[GitHub Sponsors](https://github.com/sponsors/alerte-secours)**  
+  Pour les développeurs et utilisateurs de GitHub : soutenez le projet directement via votre compte.
 
-#### Services
-- API: http://localhost:4200
-- Files: http://localhost:4292
-- Hasura: http://localhost:4201
-- Tasks Service
-- Watchers Service
-- Web: http://localhost:4203
+## Contribuer
 
-#### Consoles
-- [Hasura Console](http://localhost:4295)
-- [Minio Console](http://localhost:4291)
-- [API Swagger](http://localhost:4200/api/v1/swagger/)
-- [API GraphQL](http://localhost:4200/api/v1/graphql)
-- [Files API](http://localhost:4292/api/v1/swagger/)
-
-#### API URLs
-- `/api/v1`
-  - `/spec` - API Specification
-  - `/oas` - OpenAPI Service
-  - `/swagger` - Swagger Documentation
-  - `/graphql` - GraphQL Endpoint
-- `/status` - Service Status
-- `/` - Root Endpoint
-
-## Technical Stack
-
-### Backend
-- **Node.js** (>=20) - Core runtime
-- **PostgreSQL** - Primary database
-- **Redis** - Caching and queue deduplication
-- **RabbitMQ** - Message queue
-- **Hasura** - GraphQL engine
-- **OpenAPI** - API specification and documentation
-- **Modjo Framework** - Microservices architecture
-
-### Frontend
-- **React** - Web interface
-- **React Native** - Mobile application
-- **Apollo Client** - GraphQL integration
-- **MapView** - Geolocation visualization
-
-### Infrastructure
-- **Docker** - Containerization
-- **Microservices Architecture** - Separate services for API, files, tasks, etc.
-- **CQRS Pattern** - Command Query Responsibility Segregation
-- **Event-Driven Architecture** - Using message queues
-
-### Key Features
-- Real-time alerts and notifications
-- Geolocation tracking and mapping
-- Emergency services integration
-- User authentication and authorization
-- File storage and management
-- Background task processing
-
-## Project Structure
-
-```
-services/
-├── api/          # Main API service
-├── app/          # Frontend application
-├── files/        # File handling service
-├── hasura/       # GraphQL engine
-├── tasks/        # Background task processing
-├── watchers/     # Event monitoring
-└── web/          # Web interface
-
-libs/
-├── common/       # Shared utilities
-├── postgres-types/ # Database type definitions
-├── redis-queue-dedup/ # Redis queue deduplication
-└── utils/        # General utilities
-```
-
-## Licensing
-
-Alerte-Secours is licensed under the **DevTheFuture Ethical Use License (DEF License)**.
-
-Key points:
-- **Nonprofit Use**: Free for nonprofit purposes
-- **Profit Use**: Requires a paid license
-- **Personal Data**: Must not be monetized or exploited
-- **Ownership**: All intellectual property rights remain with the licensor
-- **Competitor Restriction**: Competitors must obtain explicit permission
-
-For full license details, see [LICENSE.md](LICENSE.md).
-
-## Contributing
-
-We welcome contributions to Alerte-Secours. Please read our contribution guidelines before submitting pull requests.
+Nous accueillons les contributions à Alerte-Secours. Veuillez lire nos directives de contribution avant de soumettre des pull requests.
 
 ## Support
 
-For support, please open an issue on our [Codeberg issue tracker](https://codeberg.org/alerte-secours/alerte-secours/-/issues) or [GitHub issue tracker](https://github.com/alerte-secours/alerte-secours/issues).
+Pour obtenir de l'aide, veuillez ouvrir un ticket sur notre [tracker d'issues Codeberg](https://codeberg.org/alerte-secours/alerte-secours/-/issues) ou [tracker d'issues GitHub](https://github.com/alerte-secours/alerte-secours/issues).
