@@ -33,6 +33,12 @@ configuration:
       custom_name: deviceId
     emergency_calling_notification_sent:
       custom_name: emergencyCallingNotificationSent
+    follow_location:
+      custom_name: followLocation
+    follow_location_ran:
+      custom_name: followLocationRan
+    initial_location:
+      custom_name: initialLocation
     keep_open_at:
       custom_name: keepOpenAt
     nearest_place:
@@ -71,6 +77,9 @@ configuration:
     created_at: createdAt
     device_id: deviceId
     emergency_calling_notification_sent: emergencyCallingNotificationSent
+    follow_location: followLocation
+    follow_location_ran: followLocationRan
+    initial_location: initialLocation
     keep_open_at: keepOpenAt
     nearest_place: nearestPlace
     notified_count: notifiedCount
@@ -128,8 +137,11 @@ select_permissions:
         - closed_at
         - code
         - created_at
+        - follow_location
+        - follow_location_ran
         - heading
         - id
+        - initial_location
         - keep_open_at
         - level
         - location
@@ -166,8 +178,11 @@ select_permissions:
         - closed_at
         - code
         - created_at
+        - follow_location
+        - follow_location_ran
         - heading
         - id
+        - initial_location
         - keep_open_at
         - level
         - location
@@ -193,6 +208,7 @@ update_permissions:
     permission:
       columns:
         - alert_tag
+        - follow_location
         - level
         - subject
       filter:

@@ -30,6 +30,7 @@ module.exports = function () {
       callEmergency,
       notifyAround,
       notifyRelatives,
+      followLocation,
       level,
       subject,
       accuracy,
@@ -54,8 +55,8 @@ module.exports = function () {
     let alertId
     await sql.begin(async () => {
       const [{ id }] = await sql`
-        INSERT INTO "alert" ("uuid", "device_id", "user_id", "call_emergency", "notify_around", "notify_relatives", "level", "subject", "location", "accuracy", "altitude", "altitude_accuracy", "heading", "speed", "code", "access_code")
-          VALUES (${uuid}, ${deviceId}, ${userId}, ${callEmergency}, ${notifyAround}, ${notifyRelatives}, ${level}, ${subject}, ST_GeomFromGeoJSON (${locationJSON}), ${accuracy}, ${altitude}, ${altitudeAccuracy}, ${heading}, ${speed}, ${code}, ${accessCode})
+        INSERT INTO "alert" ("uuid", "device_id", "user_id", "call_emergency", "notify_around", "notify_relatives", "follow_location", "level", "subject", "location", "initial_location", "accuracy", "altitude", "altitude_accuracy", "heading", "speed", "code", "access_code")
+          VALUES (${uuid}, ${deviceId}, ${userId}, ${callEmergency}, ${notifyAround}, ${notifyRelatives}, ${followLocation}, ${level}, ${subject}, ST_GeomFromGeoJSON (${locationJSON}), ST_GeomFromGeoJSON (${locationJSON}), ${accuracy}, ${altitude}, ${altitudeAccuracy}, ${heading}, ${speed}, ${code}, ${accessCode})
         ON CONFLICT ("uuid")
           DO UPDATE SET
             "uuid" = EXCLUDED. "uuid"
