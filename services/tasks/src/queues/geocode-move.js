@@ -31,9 +31,9 @@ module.exports = async function () {
           "device"."radius_reach",
           "device"."follow_location"
         FROM
-          " device "
+          "device"
         WHERE
-          " device "." id " = " gajus - eslint - plugin - sql "
+          "device"."id" = ${deviceId}
         `
 
       if (!device) {
