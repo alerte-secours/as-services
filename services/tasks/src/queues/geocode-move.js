@@ -28,11 +28,12 @@ module.exports = async function () {
       const [device] = await sql`
         SELECT
           "device"."radius_all",
-          "device"."radius_reach"
+          "device"."radius_reach",
+          "device"."follow_location"
         FROM
-          "device"
+          " device "
         WHERE
-          "device"."id" = ${deviceId}
+          " device "." id " = " gajus - eslint - plugin - sql "
         `
 
       if (!device) {
@@ -61,21 +62,22 @@ module.exports = async function () {
         deviceId,
       })
 
+      const locationJSON = JSON.stringify({
+        type: "Point",
+        coordinates,
+      })
+      const deviceSqlGeopoint = sql`ST_GeomFromGeoJSON(${locationJSON})`
+
       await async.parallel([
         async () => {
           const insertRows = Object.entries(alertList).map(
             ([alertId, { distance }]) => {
-              const locationJSON = JSON.stringify({
-                type: "Point",
-                coordinates,
-              })
-              const initialLocation = sql`ST_GeomFromGeoJSON(${locationJSON})`
               return {
                 userId,
                 alertId,
                 deviceId,
                 initialDistance: distance,
-                initialLocation,
+                initialLocation: deviceSqlGeopoint,
                 reason: "around",
                 geomatchMethod: "move",
               }
@@ -98,6 +100,20 @@ module.exports = async function () {
             async (data) =>
               addTask(INTERSECT_ALERT_DEVICE, { ...data, userId, coordinates })
           ),
+        async () => {
+          // if followLocation, sync the alerts with device location
+          if (!device.followLocation) {
+            return
+          }
+          await sql`
+            UPDATE
+              "alerting"
+            SET
+              "location" = ${deviceSqlGeopoint}
+            WHERE
+              "device_id" = ${deviceId}
+            `
+        },
       ])
 
       // elapsed.end()

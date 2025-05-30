@@ -1,0 +1,5 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE INDEX ON alert(device_id)
+--   WHERE state = 'open'
+--     AND follow_location = TRUE;

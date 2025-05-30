@@ -9,6 +9,8 @@ configuration:
       custom_name: createdAt
     fcm_token:
       custom_name: fcmToken
+    follow_location:
+      custom_name: followLocation
     notification_alert_level:
       custom_name: notificationAlertLevel
     phone_model:
@@ -27,6 +29,7 @@ configuration:
     altitude_accuracy: altitudeAccuracy
     created_at: createdAt
     fcm_token: fcmToken
+    follow_location: followLocation
     notification_alert_level: notificationAlertLevel
     phone_model: phoneModel
     preferred_emergency_call: preferredEmergencyCall
