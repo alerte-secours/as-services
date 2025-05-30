@@ -112,6 +112,8 @@ module.exports = async function () {
               "location" = ${deviceSqlGeopoint}
             WHERE
               "device_id" = ${deviceId}
+              AND "state" = 'open'
+              AND "follow_location" = TRUE
             `
         },
       ])
