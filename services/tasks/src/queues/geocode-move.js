@@ -107,7 +107,7 @@ module.exports = async function () {
           }
           await sql`
             UPDATE
-              "alerting"
+              "alert"
             SET
               "location" = ${deviceSqlGeopoint}
             WHERE
