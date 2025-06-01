@@ -35,8 +35,6 @@ configuration:
       custom_name: emergencyCallingNotificationSent
     follow_location:
       custom_name: followLocation
-    follow_location_ran:
-      custom_name: followLocationRan
     initial_location:
       custom_name: initialLocation
     keep_open_at:
@@ -84,7 +82,6 @@ configuration:
     device_id: deviceId
     emergency_calling_notification_sent: emergencyCallingNotificationSent
     follow_location: followLocation
-    follow_location_ran: followLocationRan
     initial_location: initialLocation
     keep_open_at: keepOpenAt
     last_address: lastAddress
@@ -147,7 +144,6 @@ select_permissions:
         - code
         - created_at
         - follow_location
-        - follow_location_ran
         - heading
         - id
         - initial_location
@@ -191,7 +187,6 @@ select_permissions:
         - code
         - created_at
         - follow_location
-        - follow_location_ran
         - heading
         - id
         - initial_location
