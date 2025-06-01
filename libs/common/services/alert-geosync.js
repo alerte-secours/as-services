@@ -2,7 +2,7 @@ const async = require("async")
 const { ctx } = require("@modjo/core")
 const tasks = require("~/tasks")
 
-module.exports = async function alertGeolocSync(params) {
+module.exports = async function alertGeosync(params) {
   const { addTask } = ctx.require("amqp")
   const redis = ctx.require("redisHotGeodata")
 

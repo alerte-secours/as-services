@@ -4,7 +4,7 @@ const { nanoid } = require("nanoid")
 // const natoUuid = require("utils/nato-alphabet/uuid")
 const wordsUuid = require("utils/words-id/uuid")
 
-const alertGeosync = require("common/oapi/services/alert-geosync")
+const alertGeosync = require("common/services/alert-geosync")
 
 module.exports = function () {
   const sql = ctx.require("postgres")

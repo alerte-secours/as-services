@@ -3,7 +3,7 @@ const async = require("async")
 const { ctx } = require("@modjo/core")
 // const { taskCtx } = require("@modjo/microservice-worker/ctx")
 
-const alertGeosync = require("common/oapi/services/alert-geosync")
+const alertGeosync = require("common/services/alert-geosync")
 const { ignoreForeignKeyViolation } = require("common/libs/pg/ignoreErrors")
 const {
   DEVICE_RADIUS_ALL_DEFAULT,
