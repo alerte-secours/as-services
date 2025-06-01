@@ -3,6 +3,7 @@ const async = require("async")
 const { ctx } = require("@modjo/core")
 // const { taskCtx } = require("@modjo/microservice-worker/ctx")
 
+const alertGeosync = require("common/oapi/services/alert-geosync")
 const { ignoreForeignKeyViolation } = require("common/libs/pg/ignoreErrors")
 const {
   DEVICE_RADIUS_ALL_DEFAULT,
@@ -115,6 +116,39 @@ module.exports = async function () {
               AND "state" = 'open'
               AND "follow_location" = TRUE
             `
+        },
+        async () => {
+          if (!device.followLocation) {
+            return
+          }
+
+          // Get all open alerts for this device that follow location
+          const alerts = await sql`
+            SELECT
+              "id",
+              "notify_around"
+            FROM
+              "alert"
+            WHERE
+              "device_id" = ${deviceId}
+              AND "state" = 'open'
+              AND "follow_location" = TRUE
+            `
+
+          // Update geolocation data for each alert
+          await Promise.all(
+            alerts.map((alert) =>
+              alertGeosync({
+                alertId: alert.id,
+                coordinates,
+                userId,
+                deviceId,
+                notifyAround: alert.notifyAround,
+                notifyRelatives: false,
+                isLast: true,
+              })
+            )
+          )
         },
       ])
 

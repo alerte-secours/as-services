@@ -1,16 +1,13 @@
-const async = require("async")
 const { ctx } = require("@modjo/core")
 const { reqCtx } = require("@modjo/express/ctx")
 const { nanoid } = require("nanoid")
 // const natoUuid = require("utils/nato-alphabet/uuid")
 const wordsUuid = require("utils/words-id/uuid")
 
-const tasks = require("~/tasks")
+const alertGeosync = require("common/oapi/services/alert-geosync")
 
 module.exports = function () {
   const sql = ctx.require("postgres")
-  const { addTask } = ctx.require("amqp")
-  const redis = ctx.require("redisHotGeodata")
 
   // ;(async () => {
   //   for (const row of await sql`SELECT id,uuid FROM alert`) {
@@ -74,36 +71,15 @@ module.exports = function () {
         `
     })
 
-    await async.parallel([
-      async () => {
-        const [longitude, latitude] = coordinates
-        return redis.geoadd("alert", longitude, latitude, alertId)
-      },
-      async () =>
-        notifyAround &&
-        addTask(tasks.GEOCODE_ALERT, {
-          alertId,
-          userId,
-          deviceId,
-          coordinates,
-        }),
-      async () =>
-        notifyRelatives &&
-        addTask(tasks.RELATIVE_ALERT, {
-          alertId,
-          userId,
-        }),
-      async () =>
-        addTask(tasks.GEOCODE_ALERT_GUESS_ADDRESS, {
-          alertId,
-          coordinates,
-        }),
-      async () =>
-        addTask(tasks.GEOCODE_ALERT_WHAT3WORDS, {
-          alertId,
-          coordinates,
-        }),
-    ])
+    await alertGeosync({
+      alertId,
+      coordinates,
+      userId,
+      deviceId,
+      notifyAround,
+      notifyRelatives,
+      isLast: false,
+    })
 
     return { alertId, accessCode, code }
   }

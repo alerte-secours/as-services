@@ -11,17 +11,38 @@ module.exports = async function () {
 
       const sql = ctx.require("postgres")
 
-      const { coordinates, alertId } = params
+      const { coordinates, alertId, isLast = false } = params
+
+      // Check if coordinates is valid
+      if (
+        !coordinates ||
+        !Array.isArray(coordinates) ||
+        coordinates.length !== 2
+      ) {
+        logger.error(
+          { params },
+          "Invalid coordinates for geocodeAlertWhat3words"
+        )
+        return
+      }
 
       const what3wordsResult = await what3words(coordinates)
+      if (!what3wordsResult) {
+        logger.error({ params }, "Failed to get what3words result")
+        return
+      }
+
       const { words, nearestPlace } = what3wordsResult
+
+      const fields = isLast
+        ? { last_what3words: words, last_nearest_place: nearestPlace }
+        : { what3words: words, nearest_place: nearestPlace }
 
       await sql`
         UPDATE
           "alert"
         SET
-          "what3words" = ${words},
-          "nearest_place" = ${nearestPlace}
+          ${sql(fields)}
         WHERE
           "id" = ${alertId}
         `
