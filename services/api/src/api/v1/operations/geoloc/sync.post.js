@@ -36,10 +36,11 @@ module.exports = function () {
 
     await async.parallel([
       async () => {
-        const transaction = redis.multi()
-        transaction.geoadd("device", longitude, latitude, deviceId)
-        transaction.publish("deviceSet", deviceId)
-        await transaction.exec()
+        // const transaction = redis.multi()
+        // transaction.geoadd("device", longitude, latitude, deviceId)
+        // transaction.publish("deviceSet", deviceId)
+        // await transaction.exec()
+        await redis.geoadd("device", longitude, latitude, deviceId)
 
         await addTask(tasks.GEOCODE_MOVE, { deviceId, userId, coordinates })
       },
