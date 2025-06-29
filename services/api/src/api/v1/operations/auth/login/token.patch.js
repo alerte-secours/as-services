@@ -72,7 +72,26 @@ module.exports = async function ({ services: { sortRolesByLevel, signJwt } }) {
           `
       })
     } else {
+      if (!deviceId && deviceUuid) {
+        // First check if a device with this UUID already exists for this user
+        const existingDevice = await sql`
+          SELECT
+            id
+          FROM
+            "device"
+          WHERE
+            "user_id" = ${userId}
+            AND "uuid" = ${deviceUuid}
+          LIMIT 1
+          `
+
+        if (existingDevice.length > 0) {
+          deviceId = existingDevice[0].id
+        }
+      }
+
       if (!deviceId) {
+        // Only create new device if UUID doesn't exist
         ;[{ id: deviceId }] = await sql`
            INSERT INTO "device" ("user_id", "phone_model", "uuid")
              VALUES (${userId}, ${phoneModel}, ${deviceUuid})
@@ -80,6 +99,16 @@ module.exports = async function ({ services: { sortRolesByLevel, signJwt } }) {
              id
            `
       }
+
+      // Update the auth_token to reference this device
+      await sql`
+        UPDATE
+          "auth_token"
+        SET
+          "device_id" = ${deviceId}
+        WHERE
+          "auth_token" = ${authToken}
+        `
 
       roles = (
         await sql`

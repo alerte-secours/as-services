@@ -34,12 +34,12 @@ module.exports = function () {
       const deviceExpKey = `device:${deviceId}:last_exp`
       const storedLastExp = await redis.get(deviceExpKey)
 
-      if (storedLastExp && session.exp <= parseInt(storedLastExp, 10)) {
+      if (storedLastExp && session.exp < parseInt(storedLastExp, 10)) {
         throw httpError(401, "not the latest jwt")
       }
 
       // Store the new expiration date
-      await redis.set(deviceExpKey, session.exp, "EX", 30 * 24 * 60 * 60) // 30 days TTL
+      await redis.set(deviceExpKey, session.exp)
     }
 
     const { userId } = session
