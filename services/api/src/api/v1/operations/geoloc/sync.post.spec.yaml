@@ -1,6 +1,6 @@
 # description: 
 x-security: 
-  - auth: ["user"]
+  - auth: ["user", "meta.exp-user"]
 requestBody:
   required: true
   content:
