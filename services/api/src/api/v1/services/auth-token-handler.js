@@ -10,7 +10,7 @@ module.exports = ({ services: { sortRolesByLevel, signJwt } }) => {
 
   const { claimsNamespace, jwtExpirationInHours } = config
 
-  async function validateAuthToken(authTokenJwt) {
+  function validateAuthToken(authTokenJwt) {
     try {
       const { authToken } = jwtDecode(authTokenJwt)
       return authToken
