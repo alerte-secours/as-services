@@ -4,7 +4,7 @@ const { nanoid } = require("nanoid")
 
 const { ctx } = require("@modjo/core")
 
-module.exports = ({ services: { sortRolesByLevel, signJwt } }) => {
+module.exports = ({ services }) => {
   const config = ctx.require("config.project")
   const sql = ctx.require("postgres")
 
@@ -141,7 +141,7 @@ module.exports = ({ services: { sortRolesByLevel, signJwt } }) => {
   }
 
   async function generateUserJwt(userId, deviceId, roles) {
-    const [defaultRole] = sortRolesByLevel(roles)
+    const [defaultRole] = services.sortRolesByLevel(roles)
 
     const hasuraClaim = {}
     hasuraClaim["x-hasura-default-role"] = defaultRole
@@ -158,7 +158,7 @@ module.exports = ({ services: { sortRolesByLevel, signJwt } }) => {
       exp,
     }
 
-    return signJwt(jwtData)
+    return services.signJwt(jwtData)
   }
 
   return {
