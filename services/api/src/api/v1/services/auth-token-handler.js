@@ -28,21 +28,21 @@ module.exports = ({ services: { sortRolesByLevel, signJwt } }) => {
     let deviceId
     let roles
 
-    try {
-      const [row] = await sql`
-        SELECT
-          "user_id" as "userId",
-          "device_id" as "deviceId"
-        FROM
-          "auth_token"
-        WHERE
-          "auth_token" = ${authToken}
-        `
-      userId = row.userId
-      deviceId = row.deviceId
-    } catch (e) {
+    const [row] = await sql`
+      SELECT
+        "user_id" as "userId",
+        "device_id" as "deviceId"
+      FROM
+        "auth_token"
+      WHERE
+        "auth_token" = ${authToken}
+      `
+    if (!row) {
       throw httpError(410, "Auth token not found")
     }
+
+    userId = row.userId
+    deviceId = row.deviceId
 
     if (!userId) {
       await sql.begin(async (sql) => {
