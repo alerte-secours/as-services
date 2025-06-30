@@ -57,7 +57,6 @@ module.exports = function () {
     // For meta.auth-token scope, check for X-Auth-Token header
     if (hasMetaAuthToken) {
       const req = reqCtx.get("req")
-      console.log("req?.headers", req?.headers)
       const authTokenHeader = req?.headers?.["x-auth-token"]
 
       if (!authTokenHeader) {
