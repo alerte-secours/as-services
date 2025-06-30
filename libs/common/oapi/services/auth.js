@@ -1,5 +1,4 @@
 const { jwtVerify } = require("jose")
-const jwtDecode = require("jwt-decode")
 const getHasuraClaimsFromJWT = require("@modjo/hasura/utils/jwt/get-hasura-claims-from-jwt")
 const { ctx } = require("@modjo/core")
 const { reqCtx } = require("@modjo/express/ctx")
@@ -27,7 +26,7 @@ module.exports = function () {
   }
 
   return async function auth(jwt, scopes) {
-    const hasMetaExpUser = scopes.includes("meta.exp-user")
+    const hasMetaAuthToken = scopes.includes("meta.auth-token")
     let jwtVerified = false
 
     try {
@@ -42,11 +41,11 @@ module.exports = function () {
     } catch (err) {
       const logger = ctx.require("logger")
 
-      // Allow expired JWT only if meta.exp-user scope is present
-      if (hasMetaExpUser && err.code === "ERR_JWT_EXPIRED") {
+      // Allow expired JWT only if meta.auth-token scope is present
+      if (hasMetaAuthToken && err.code === "ERR_JWT_EXPIRED") {
         logger.debug(
           { error: err },
-          "Allowing expired JWT for meta.exp-user scope"
+          "Allowing expired JWT for meta.auth-token scope"
         )
         // Continue processing with expired JWT
       } else {
@@ -55,21 +54,22 @@ module.exports = function () {
       }
     }
 
-    const claims = getHasuraClaimsFromJWT(jwt, claimsNamespace)
-    const session = sessionVarsFromClaims(claims)
+    // For meta.auth-token scope, check for X-Auth-Token header
+    if (hasMetaAuthToken) {
+      const req = reqCtx.get("req")
+      const authTokenHeader = req?.headers?.["x-auth-token"]
 
-    // Add exp claim to session if meta.exp-user scope is present
-    if (hasMetaExpUser) {
-      try {
-        const payload = jwtDecode(jwt)
-        if (payload && payload.exp) {
-          session.exp = payload.exp
-        }
-      } catch (err) {
-        const logger = ctx.require("logger")
-        logger.error({ error: err }, "Failed to decode JWT for exp claim")
+      if (authTokenHeader) {
+        // Create a session that indicates auth token processing is needed
+        const session = { isAuthTokenRequest: true, authToken: authTokenHeader }
+        reqCtx.set("session", session)
+        return true
       }
     }
+
+    // Regular user JWT processing
+    const claims = getHasuraClaimsFromJWT(jwt, claimsNamespace)
+    const session = sessionVarsFromClaims(claims)
 
     if (!isScopeAllowed(session, scopes)) {
       return false

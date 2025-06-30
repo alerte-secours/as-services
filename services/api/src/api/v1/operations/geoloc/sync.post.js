@@ -5,7 +5,7 @@ const { reqCtx } = require("@modjo/express/ctx")
 
 const tasks = require("~/tasks")
 
-module.exports = function () {
+module.exports = function ({ services: { authTokenHandler } }) {
   const { addTask } = ctx.require("amqp")
   const redis = ctx.require("redisHotGeodata")
 
@@ -23,39 +23,69 @@ module.exports = function () {
         longitude,
       },
     } = location
-    // console.log("addOneGeolocSync", req.body)
 
     const session = reqCtx.get("session")
+    let userId
+    let deviceId
+    let userBearerJwt = null
 
-    const { deviceId } = session
+    // Check if this is an auth token request (set by auth.js)
+    if (session && session.isAuthTokenRequest) {
+      // This is an auth token request, process it
+      try {
+        logger.debug("Processing auth token for geoloc sync")
 
-    // Check JWT expiration sequence to prevent replay attacks
-    if (session.exp) {
-      const deviceExpKey = `device:${deviceId}:last_exp`
-      const storedLastExp = await redis.get(deviceExpKey)
+        const { authToken } = session
+        const {
+          userId: newUserId,
+          deviceId: newDeviceId,
+          roles,
+        } = await authTokenHandler.getOrCreateUserSession(
+          authToken,
+          req.body.phoneModel,
+          req.body.deviceUuid
+        )
 
-      if (storedLastExp && session.exp < parseInt(storedLastExp, 10)) {
-        throw httpError(401, "not the latest jwt")
+        userId = newUserId
+        deviceId = newDeviceId
+
+        // Generate new user JWT for token refresh
+        userBearerJwt = await authTokenHandler.generateUserJwt(
+          userId,
+          deviceId,
+          roles
+        )
+
+        logger.debug({
+          action: "geoloc-sync-auth-token",
+          userId,
+          deviceId,
+          tokenRefreshed: true,
+        })
+      } catch (error) {
+        logger.error("Failed to process auth token", { error: error.message })
+        throw httpError(401, "Invalid auth token")
       }
-
-      // Store the new expiration date
-      await redis.set(deviceExpKey, session.exp)
+    } else if (session && session.userId && session.deviceId) {
+      // Regular user JWT session
+      userId = session.userId
+      deviceId = session.deviceId
+      logger.debug({ action: "geoloc-sync-user-jwt", userId, deviceId })
+    } else {
+      // Invalid session
+      logger.error("Invalid session", { session })
+      throw httpError(401, "Invalid session")
     }
 
-    const { userId } = session
-
-    logger.debug({ action: "geoloc-sync", userId, deviceId })
+    if (!userId || !deviceId) {
+      throw httpError(401, "Missing user or device information")
+    }
 
     const coordinates = [longitude, latitude]
 
     await async.parallel([
       async () => {
-        // const transaction = redis.multi()
-        // transaction.geoadd("device", longitude, latitude, deviceId)
-        // transaction.publish("deviceSet", deviceId)
-        // await transaction.exec()
         await redis.geoadd("device", longitude, latitude, deviceId)
-
         await addTask(tasks.GEOCODE_MOVE, { deviceId, userId, coordinates })
       },
       async () =>
@@ -70,7 +100,14 @@ module.exports = function () {
         }),
     ])
 
-    return { ok: true }
+    const response = { ok: true }
+
+    // Include userBearerJwt in response if token refresh occurred
+    if (userBearerJwt) {
+      response.userBearerJwt = userBearerJwt
+    }
+
+    return response
   }
 
   return [addOneGeolocSync]
