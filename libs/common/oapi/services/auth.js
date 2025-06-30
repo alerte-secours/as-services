@@ -60,12 +60,14 @@ module.exports = function () {
       console.log("req?.headers", req?.headers)
       const authTokenHeader = req?.headers?.["x-auth-token"]
 
-      if (authTokenHeader) {
-        // Create a session that indicates auth token processing is needed
-        const session = { isAuthTokenRequest: true, authToken: authTokenHeader }
-        reqCtx.set("session", session)
-        return true
+      if (!authTokenHeader) {
+        return false
       }
+
+      // Create a session that indicates auth token processing is needed
+      const session = { isAuthTokenRequest: true, authToken: authTokenHeader }
+      reqCtx.set("session", session)
+      return true
     }
 
     // Regular user JWT processing
