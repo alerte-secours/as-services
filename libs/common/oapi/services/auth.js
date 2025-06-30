@@ -47,26 +47,18 @@ module.exports = function () {
           { error: err },
           "Allowing expired JWT for meta.auth-token scope"
         )
-        // Continue processing with expired JWT
-      } else {
-        logger.error({ error: err }, "jwVerify failed")
-        return false
+        const req = reqCtx.get("req")
+        const authTokenHeader = req?.headers?.["x-auth-token"]
+        if (!authTokenHeader) {
+          return false
+        }
+        // Create a session that indicates auth token processing is needed
+        const session = { isAuthTokenRequest: true, authToken: authTokenHeader }
+        reqCtx.set("session", session)
+        return true
       }
-    }
-
-    // For meta.auth-token scope, check for X-Auth-Token header
-    if (hasMetaAuthToken) {
-      const req = reqCtx.get("req")
-      const authTokenHeader = req?.headers?.["x-auth-token"]
-
-      if (!authTokenHeader) {
-        return false
-      }
-
-      // Create a session that indicates auth token processing is needed
-      const session = { isAuthTokenRequest: true, authToken: authTokenHeader }
-      reqCtx.set("session", session)
-      return true
+      logger.error({ error: err }, "jwVerify failed")
+      return false
     }
 
     // Regular user JWT processing
