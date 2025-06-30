@@ -63,7 +63,7 @@ module.exports = function ({ services: { authTokenHandler } }) {
           tokenRefreshed: true,
         })
       } catch (error) {
-        logger.error("Failed to process auth token", { error: error.message })
+        logger.error({ error: error.message }, "Failed to process auth token")
         throw httpError(401, "Invalid auth token")
       }
     } else if (session && session.userId && session.deviceId) {
@@ -73,7 +73,7 @@ module.exports = function ({ services: { authTokenHandler } }) {
       logger.debug({ action: "geoloc-sync-user-jwt", userId, deviceId })
     } else {
       // Invalid session
-      logger.error("Invalid session", { session })
+      logger.error({ session }, "Invalid session")
       throw httpError(401, "Invalid session")
     }
 
