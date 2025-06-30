@@ -5,9 +5,9 @@
     "eslint": "^8.10.0"
   },
   "dependencies": {
-    "@modjo/core": "^1.10.0",
-    "@modjo/hasura": "^1.10.0",
-    "@modjo/microservice-oapi": "^1.10.0",
+    "@modjo/core": "*",
+    "@modjo/hasura": "*",
+    "@modjo/microservice-oapi": "*",
     "@what3words/api": "^5.4.0",
     "fast-levenshtein": "^3.0.0",
     "fnv-plus": "^1.3.1",
