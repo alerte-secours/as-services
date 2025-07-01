@@ -1,9 +1,10 @@
 const { jwtVerify } = require("jose")
+const jwtDecode = require("jwt-decode")
 const getHasuraClaimsFromJWT = require("@modjo/hasura/utils/jwt/get-hasura-claims-from-jwt")
 const { ctx } = require("@modjo/core")
 const { reqCtx } = require("@modjo/express/ctx")
 
-module.exports = function (services) {
+module.exports = function () {
   const castIntVars = ["deviceId", "userId"]
   function sessionVarsFromClaims(claims) {
     const session = { ...claims }
@@ -26,7 +27,7 @@ module.exports = function (services) {
   }
 
   return async function auth(jwt, scopes) {
-    const hasMetaAuthToken = scopes.includes("meta.auth-token")
+    const hasMetaExpUser = scopes.includes("meta.exp-user")
     let jwtVerified = false
 
     try {
@@ -41,31 +42,34 @@ module.exports = function (services) {
     } catch (err) {
       const logger = ctx.require("logger")
 
-      // Allow expired JWT only if meta.auth-token scope is present
-      if (hasMetaAuthToken && err.code === "ERR_JWT_EXPIRED") {
+      // Allow expired JWT only if meta.exp-user scope is present
+      if (hasMetaExpUser && err.code === "ERR_JWT_EXPIRED") {
         logger.debug(
           { error: err },
-          "Allowing expired JWT for meta.auth-token scope"
+          "Allowing expired JWT for meta.exp-user scope"
         )
-        const req = reqCtx.get("req")
-        const authTokenJWT = req?.headers?.["x-auth-token"]
-        if (!authTokenJWT) {
-          return false
-        }
-        const authToken =
-          services.authTokenHandler.decodeAuthToken(authTokenJWT)
-        // Create a session that indicates auth token processing is needed
-        const session = { isAuthTokenRequest: true, authToken }
-        reqCtx.set("session", session)
-        return true
+        // Continue processing with expired JWT
+      } else {
+        logger.error({ error: err }, "jwVerify failed")
+        return false
       }
-      logger.error({ error: err }, "jwVerify failed")
-      return false
     }
 
-    // Regular user JWT processing
     const claims = getHasuraClaimsFromJWT(jwt, claimsNamespace)
     const session = sessionVarsFromClaims(claims)
+
+    // Add exp claim to session if meta.exp-user scope is present
+    if (hasMetaExpUser) {
+      try {
+        const payload = jwtDecode(jwt)
+        if (payload && payload.exp) {
+          session.exp = payload.exp
+        }
+      } catch (err) {
+        const logger = ctx.require("logger")
+        logger.error({ error: err }, "Failed to decode JWT for exp claim")
+      }
+    }
 
     if (!isScopeAllowed(session, scopes)) {
       return false

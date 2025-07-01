@@ -1,13 +1,6 @@
 # description: 
 x-security: 
-  - auth: ["user", "meta.auth-token"]
-parameters:
-  - name: X-Auth-Token
-    in: header
-    required: false
-    schema:
-      type: string
-    description: Auth token for token refresh when user JWT is expired
+  - auth: ["user", "meta.exp-user"]
 requestBody:
   required: true
   content:
@@ -108,7 +101,3 @@ responses:
           properties:
             ok:
               type: boolean
-            userBearerJwt:
-              type: string
-              description: New user JWT token when auth token refresh occurred
-              nullable: true
