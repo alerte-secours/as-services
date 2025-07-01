@@ -3,7 +3,7 @@ const getHasuraClaimsFromJWT = require("@modjo/hasura/utils/jwt/get-hasura-claim
 const { ctx } = require("@modjo/core")
 const { reqCtx } = require("@modjo/express/ctx")
 
-module.exports = function () {
+module.exports = function (services) {
   const castIntVars = ["deviceId", "userId"]
   function sessionVarsFromClaims(claims) {
     const session = { ...claims }
@@ -48,12 +48,14 @@ module.exports = function () {
           "Allowing expired JWT for meta.auth-token scope"
         )
         const req = reqCtx.get("req")
-        const authTokenHeader = req?.headers?.["x-auth-token"]
-        if (!authTokenHeader) {
+        const authTokenJWT = req?.headers?.["x-auth-token"]
+        if (!authTokenJWT) {
           return false
         }
+        const authToken =
+          services.authTokenHandler.decodeAuthToken(authTokenJWT)
         // Create a session that indicates auth token processing is needed
-        const session = { isAuthTokenRequest: true, authToken: authTokenHeader }
+        const session = { isAuthTokenRequest: true, authToken }
         reqCtx.set("session", session)
         return true
       }

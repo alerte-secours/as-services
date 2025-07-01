@@ -10,7 +10,7 @@ module.exports = ({ services }) => {
 
   const { claimsNamespace, jwtExpirationInHours } = config
 
-  function validateAuthToken(authTokenJwt) {
+  function decodeAuthToken(authTokenJwt) {
     try {
       const { authToken } = jwtDecode(authTokenJwt)
       return authToken
@@ -162,7 +162,7 @@ module.exports = ({ services }) => {
   }
 
   return {
-    validateAuthToken,
+    decodeAuthToken,
     getOrCreateUserSession,
     generateUserJwt,
   }

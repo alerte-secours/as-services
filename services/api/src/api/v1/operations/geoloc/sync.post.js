@@ -64,6 +64,9 @@ module.exports = function ({ services: { authTokenHandler } }) {
         })
       } catch (error) {
         logger.error({ error: error.message }, "Failed to process auth token")
+        if (httpError.isHttpError(error)) {
+          throw error
+        }
         throw httpError(401, "Invalid auth token")
       }
     } else if (session && session.userId && session.deviceId) {

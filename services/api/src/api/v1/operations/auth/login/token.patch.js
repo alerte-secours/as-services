@@ -3,7 +3,7 @@ module.exports = async function ({ services: { authTokenHandler } }) {
     const { authTokenJwt, phoneModel = null, deviceUuid = null } = req.body
 
     // Validate the auth token JWT and extract the auth token
-    const authToken = authTokenHandler.validateAuthToken(authTokenJwt)
+    const authToken = authTokenHandler.decodeAuthToken(authTokenJwt)
 
     // Get or create user session (userId, deviceId, roles)
     const { userId, deviceId, roles } =
