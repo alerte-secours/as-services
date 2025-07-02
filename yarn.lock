@@ -314,15 +314,15 @@ __metadata:
   resolution: "@as/api@workspace:services/api"
   dependencies:
     "@as/postgres-types": "workspace:^"
-    "@modjo/amqp": "npm:*"
-    "@modjo/core": "npm:*"
-    "@modjo/express": "npm:*"
-    "@modjo/hasura": "npm:*"
-    "@modjo/ioredis": "npm:*"
-    "@modjo/microservice-oapi": "npm:*"
-    "@modjo/oa-graphql": "npm:*"
-    "@modjo/postgres": "npm:*"
-    "@modjo/sentry": "npm:*"
+    "@modjo/amqp": "npm:^1.10.1"
+    "@modjo/core": "npm:^1.10.1"
+    "@modjo/express": "npm:^1.10.1"
+    "@modjo/hasura": "npm:^1.10.1"
+    "@modjo/ioredis": "npm:^1.10.1"
+    "@modjo/microservice-oapi": "npm:^1.10.1"
+    "@modjo/oa-graphql": "npm:^1.10.1"
+    "@modjo/postgres": "npm:^1.10.1"
+    "@modjo/sentry": "npm:^1.10.1"
     "@vercel/ncc": "npm:^0.33.3"
     argon2: "npm:^0.31.0"
     async: "npm:^3.2.5"
@@ -351,13 +351,13 @@ __metadata:
   resolution: "@as/files@workspace:services/files"
   dependencies:
     "@as/postgres-types": "workspace:^"
-    "@modjo/amqp": "npm:*"
-    "@modjo/core": "npm:*"
-    "@modjo/express": "npm:*"
-    "@modjo/microservice-oapi": "npm:*"
-    "@modjo/minio": "npm:*"
-    "@modjo/postgres": "npm:*"
-    "@modjo/sentry": "npm:*"
+    "@modjo/amqp": "npm:^1.10.1"
+    "@modjo/core": "npm:^1.10.1"
+    "@modjo/express": "npm:^1.10.1"
+    "@modjo/microservice-oapi": "npm:^1.10.1"
+    "@modjo/minio": "npm:^1.10.1"
+    "@modjo/postgres": "npm:^1.10.1"
+    "@modjo/sentry": "npm:^1.10.1"
     "@vercel/ncc": "npm:^0.33.3"
     common: "workspace:^"
     link-module-alias: "npm:^1.2.0"
@@ -380,11 +380,11 @@ __metadata:
   resolution: "@as/tasks@workspace:services/tasks"
   dependencies:
     "@as/postgres-types": "workspace:^"
-    "@modjo/core": "npm:*"
-    "@modjo/ioredis": "npm:*"
-    "@modjo/microservice-worker": "npm:*"
-    "@modjo/postgres": "npm:*"
-    "@modjo/sentry": "npm:*"
+    "@modjo/core": "npm:^1.10.1"
+    "@modjo/ioredis": "npm:^1.10.1"
+    "@modjo/microservice-worker": "npm:^1.10.1"
+    "@modjo/postgres": "npm:^1.10.1"
+    "@modjo/sentry": "npm:^1.10.1"
     "@vercel/ncc": "npm:^0.30.0"
     "@what3words/api": "npm:^4.0.4"
     async: "npm:^3.2.5"
@@ -428,11 +428,11 @@ __metadata:
   dependencies:
     "@apollo/client": "npm:^3.5.8"
     "@as/postgres-types": "workspace:^"
-    "@modjo/core": "npm:*"
-    "@modjo/ioredis": "npm:*"
-    "@modjo/microservice-watcher": "npm:*"
-    "@modjo/postgres": "npm:*"
-    "@modjo/sentry": "npm:*"
+    "@modjo/core": "npm:^1.10.1"
+    "@modjo/ioredis": "npm:^1.10.1"
+    "@modjo/microservice-watcher": "npm:^1.10.1"
+    "@modjo/postgres": "npm:^1.10.1"
+    "@modjo/sentry": "npm:^1.10.1"
     "@vercel/ncc": "npm:^0.30.0"
     async: "npm:^3.2.5"
     common: "workspace:^"
@@ -3153,6 +3153,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@modjo/amqp@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/amqp@npm:1.10.1"
+  dependencies:
+    "@modjo/config": "npm:*"
+    "@modjo/logger": "npm:*"
+    amqplib: "npm:^0.10.5"
+    nctx: "npm:^2.2.0"
+    wait-on: "npm:^6.0.1"
+    ya-retry: "npm:^1.2.0"
+  checksum: 10/5fd35d879da4ba2fea775a5e5dce72f3de5149d5fcba9afea3d8baa77e90023dca33cee9dbb9e9001bf7a225f8f390be9034f429ccc8e2e642d75fa65170b9a9
+  languageName: node
+  linkType: hard
+
 "@modjo/apollo-client@npm:*":
   version: 1.9.6
   resolution: "@modjo/apollo-client@npm:1.9.6"
@@ -3205,6 +3219,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@modjo/core@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/core@npm:1.10.1"
+  dependencies:
+    "@foundernetes/dbug": "npm:^1.0.0"
+    commander: "npm:^9.1.0"
+    fs-extra: "npm:^11.1.1"
+    js-yaml: "npm:^4.1.0"
+    link-module-alias: "npm:^1.2.0"
+    lodash: "npm:^4.17.21"
+    lodash.camelcase: "npm:^4.3.0"
+    lodash.capitalize: "npm:^4.2.1"
+    lodash.defaultsdeep: "npm:^4.6.1"
+    lodash.get: "npm:^4.4.2"
+    lodash.kebabcase: "npm:^4.1.1"
+    lodash.merge: "npm:^4.6.2"
+    lodash.mergewith: "npm:^4.6.2"
+    lodash.omit: "npm:^4.5.0"
+    lodash.set: "npm:^4.3.2"
+    nctx: "npm:^2.2.0"
+    pretty-ms: "npm:^7.0.1"
+    yup: "npm:^0.32.11"
+  checksum: 10/195ea58e99a1c22622b37facd03889dcc66666bd17935d278eddc48b74fde50044167ffeba5f98ddd8585ea73339f77160baec6dc08fc13314eb262beb22930a
+  languageName: node
+  linkType: hard
+
 "@modjo/express@npm:*":
   version: 1.9.6
   resolution: "@modjo/express@npm:1.9.6"
@@ -3225,6 +3265,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@modjo/express@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/express@npm:1.10.1"
+  dependencies:
+    "@modjo/config": "npm:*"
+    "@modjo/http-logger": "npm:*"
+    "@modjo/http-server": "npm:*"
+    "@modjo/logger": "npm:*"
+    "@types/express": "npm:^5.0.0"
+    "@types/ws": "npm:^8.5.12"
+    cookie-parser: "npm:^1.4.6"
+    cors: "npm:^2.8.5"
+    express: "npm:^5.0.1"
+    nctx: "npm:^2.2.0"
+    websocket-express: "npm:^3.1.2"
+    ws: "npm:^8.18.0"
+  checksum: 10/5df7841ab08dfa77d747f3da460e702fab334632610ed3d237c29ca95bf53b3392d7e652da4d725e1387ad8c005181be69efb4fc351c3734423f8781cc96418d
+  languageName: node
+  linkType: hard
+
 "@modjo/graphql-pubsub@npm:*":
   version: 1.9.6
   resolution: "@modjo/graphql-pubsub@npm:1.9.6"
@@ -3237,9 +3297,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@modjo/hasura@npm:*":
-  version: 1.10.0
-  resolution: "@modjo/hasura@npm:1.10.0"
+"@modjo/hasura@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/hasura@npm:1.10.1"
   dependencies:
     "@modjo/config": "npm:*"
     axios: "npm:^1.4.0"
@@ -3251,7 +3311,7 @@ __metadata:
     nctx: "npm:^2.2.0"
     postgres: "npm:^3.4.4"
     wait-on: "npm:^6.0.1"
-  checksum: 10/744bd911203f48c6e2046168998677550bf32dd959bd57455eff4cbdaed5c0ce02732413c9c9848718a496bd7f4f9819aa7296515edaf8a648cd06e76cb7da88
+  checksum: 10/e814911a51217b00d81183c408c166031171e4b1db7e6d221d3a2c99771ee05aa9b98cafc4efd406d53b523a29ae0d216cf0287583290ca3a9b6547b61bb3edc
   languageName: node
   linkType: hard
 
@@ -3278,15 +3338,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@modjo/ioredis@npm:*":
-  version: 1.10.0
-  resolution: "@modjo/ioredis@npm:1.10.0"
+"@modjo/ioredis@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/ioredis@npm:1.10.1"
   dependencies:
     "@modjo/config": "npm:*"
     ioredis: "npm:^5.3.2"
     nctx: "npm:^2.2.0"
     wait-on: "npm:^6.0.1"
-  checksum: 10/324a3b2cbb5f43b80fc8445b907517c1cd077b72495051efdc733571641efaddac5d59d9829718882c3159172d65af0b8797fa5b15035ec8cdaadc131ed6beb7
+  checksum: 10/9f00ae16ad127d274b5e8b92e12a71ff0889c97d9653e0bfb04e8dcbe633c78257e4e3205971da8f8408dd8242f63237722a22bcc9a965ef7a21c10f73159b50
   languageName: node
   linkType: hard
 
@@ -3332,21 +3392,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@modjo/microservice-watcher@npm:*":
-  version: 1.10.0
-  resolution: "@modjo/microservice-watcher@npm:1.10.0"
+"@modjo/microservice-oapi@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/microservice-oapi@npm:1.10.1"
+  dependencies:
+    "@modjo/core": "npm:*"
+    "@modjo/express": "npm:*"
+    "@modjo/http-logger": "npm:*"
+    "@modjo/http-server": "npm:*"
+    "@modjo/lightship": "npm:*"
+    "@modjo/logger": "npm:*"
+    "@modjo/microservice-oapi": "npm:*"
+    "@modjo/oa": "npm:*"
+    "@modjo/shutdown-handlers": "npm:*"
+    nctx: "npm:^2.2.0"
+  checksum: 10/faaee3e2b361af6b03e2ebdf204ce76e619c3ac14ebaa453503accd9f2a38266e24e92dd209c72ef5d5e76782b7afaa83d444cf2d57d3c514600e13098cbc51d
+  languageName: node
+  linkType: hard
+
+"@modjo/microservice-watcher@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/microservice-watcher@npm:1.10.1"
   dependencies:
     "@modjo/amqp": "npm:*"
     "@modjo/apollo-client": "npm:*"
     "@modjo/core": "npm:*"
     nctx: "npm:^2.2.0"
-  checksum: 10/543927812b86e2a52ac963441e4c14e3ab3a7b8e7d69de9f78086fd500adb6c5c2b86ac0a7bff182c477166be8fb7c1952935f9d5b3d1f5935899603a53c8a4f
+  checksum: 10/07eca69b55e6f73550ca2983def897beb183f0004f19f57c108b577e94bbd2019f9fb444255a8991c026537e47e8bcf0536bfef0bf8fe2355b71e77a11565482
   languageName: node
   linkType: hard
 
-"@modjo/microservice-worker@npm:*":
-  version: 1.10.0
-  resolution: "@modjo/microservice-worker@npm:1.10.0"
+"@modjo/microservice-worker@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/microservice-worker@npm:1.10.1"
   dependencies:
     "@modjo/amqp": "npm:*"
     "@modjo/config": "npm:*"
@@ -3356,25 +3434,25 @@ __metadata:
     lodash.kebabcase: "npm:^4.1.1"
     nctx: "npm:^2.2.0"
     pretty-ms: "npm:^7.0.1"
-  checksum: 10/74a2e2aa676742745109705dbde62b617bdae0bffa1bb4085b151c24dfcc9d5e1f75269835a1939478b7e64c19d96ca808d282a8ec385f058fab88f779f0dae2
+  checksum: 10/5e5d8c31015a20f878ea5bd80ee742a3304d92c555e4c0f5555dfc0ec6ae5cf771266cd1b3812ca673308d3bd52bf15cc872f4569eaa6dc868addc2474fef2dd
   languageName: node
   linkType: hard
 
-"@modjo/minio@npm:*":
-  version: 1.10.0
-  resolution: "@modjo/minio@npm:1.10.0"
+"@modjo/minio@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/minio@npm:1.10.1"
   dependencies:
     "@modjo/config": "npm:*"
     minio: "npm:^7.0.26"
     nctx: "npm:^2.2.0"
     wait-on: "npm:^6.0.1"
-  checksum: 10/cb250571b01eb902ec93e42c17122527278a6fdfcc7f2f2fc0b75e1ea6aa8adbddb7dd8032379387a22ac336061b50b402255e50750dcdff0c8ab85cdcab92f3
+  checksum: 10/591267e10ca2e41331f4784e6f760bf27f0a412c7fb6580a2bd1e7f3f264310f584ed4112f51affbb77a162bb14d8cc64868b0269e9bd4e9b70be62188fe055c
   languageName: node
   linkType: hard
 
-"@modjo/oa-graphql@npm:*":
-  version: 1.10.0
-  resolution: "@modjo/oa-graphql@npm:1.10.0"
+"@modjo/oa-graphql@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/oa-graphql@npm:1.10.1"
   dependencies:
     "@apollo/server": "npm:^4.7.5"
     "@apollo/server-plugin-landing-page-graphql-playground": "npm:^4.0.1"
@@ -3398,7 +3476,7 @@ __metadata:
     nctx: "npm:^2.2.0"
     openapi-to-graphql: "npm:^3.0.5"
     subscriptions-transport-ws: "npm:^0.11.0"
-  checksum: 10/bba8eb52ac5a0bbe81061071190efd99d4348dd005f13c0b8ee7b52e9e17d58dd0a17fd1f9ae1d849bbc2c4d544f75da8423de35b2cb4cad0f67949808cde180
+  checksum: 10/e65c55226e00a7dcf59fa43e65779917a6d812ceff34897e97f1982e7767ec2f672f1d0c8e88bcd8aeab96d7a93044f4023c06100b4c382e62c4ce1ee665ae05
   languageName: node
   linkType: hard
 
@@ -3430,9 +3508,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@modjo/postgres@npm:*":
-  version: 1.10.0
-  resolution: "@modjo/postgres@npm:1.10.0"
+"@modjo/postgres@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/postgres@npm:1.10.1"
   dependencies:
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^1.25.1"
@@ -3440,18 +3518,18 @@ __metadata:
     lodash.defaultsdeep: "npm:^4.6.1"
     nctx: "npm:^2.2.0"
     postgres: "npm:^3.4.4"
-  checksum: 10/b9711ff444f0f978d78c6a1d2cc4dac7e9816cbee2ee7395d2ac8e7b794606e22155e69a6debea99c592f58a63110f2207cd9dfdd199cc06d9bfa6814a9ed4cd
+  checksum: 10/0b285ba376548ba9c8fd00adc4927360585307a7585e86ca9961faa9d7e5893b7e5fc75c2d0615df2e246fb525552ab8a442e9ee8c958217bd993c86a2cdc11d
   languageName: node
   linkType: hard
 
-"@modjo/sentry@npm:*":
-  version: 1.10.0
-  resolution: "@modjo/sentry@npm:1.10.0"
+"@modjo/sentry@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@modjo/sentry@npm:1.10.1"
   dependencies:
     "@sentry/node": "npm:^8.15.0"
     "@sentry/profiling-node": "npm:^8.15.0"
     nctx: "npm:^2.2.0"
-  checksum: 10/050e5d724fcc49542f839705c96765fdee1e185ba9f1d0c5bbb276fab5b755c4c6b2fe4a8c3e9519d44948149eca8506545e3713c76dcb14ac4aeefc87f65656
+  checksum: 10/9ce29d2018be97ac4e0fa0152e174b58ed70663a5df6e0a6ef053ba4d88905967c2cd24dfbdcb751005a2944fc27a73d081fdfe490c248e2e6baca29cdaf2807
   languageName: node
   linkType: hard
 
@@ -7992,9 +8070,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "common@workspace:libs/common"
   dependencies:
-    "@modjo/core": "npm:*"
-    "@modjo/hasura": "npm:*"
-    "@modjo/microservice-oapi": "npm:*"
+    "@modjo/core": "npm:^1.10.1"
+    "@modjo/hasura": "npm:^1.10.1"
+    "@modjo/microservice-oapi": "npm:^1.10.1"
     "@what3words/api": "npm:^5.4.0"
     eslint: "npm:^8.10.0"
     fast-levenshtein: "npm:^3.0.0"
@@ -19490,7 +19568,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "redis-queue-dedup@workspace:libs/redis-queue-dedup"
   dependencies:
-    "@modjo/core": "npm:*"
+    "@modjo/core": "npm:^1.10.1"
     murmurhash: "npm:^2.0.1"
   languageName: unknown
   linkType: soft
