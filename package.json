@@ -23,6 +23,7 @@
     "dev": "yarn dev:up && yarn dev:logs",
     "dev:up": "up",
     "dev:logs": "dev-logs",
+    "up:modjo": "git stash && yarn up @modjo/* && git stash pop",
     "release": "commit-and-tag-version",
     "lint": "eslint .",
     "test": "jest tests",
