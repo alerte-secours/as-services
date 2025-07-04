@@ -27,7 +27,7 @@ module.exports = function () {
       callEmergency,
       notifyAround,
       notifyRelatives,
-      followLocation,
+      followLocation = false,
       level,
       subject,
       accuracy,
