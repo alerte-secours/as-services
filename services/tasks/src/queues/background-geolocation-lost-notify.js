@@ -9,8 +9,8 @@ function createBackgroundGeolocationLostNotification() {
       action: "background_geolocation_lost",
     },
     notification: {
-      title: "Localisation en arrière-plan désactivée",
-      body: "Votre localisation en arrière-plan a été désactivée. Veuillez vérifier les paramètres de l'application.",
+      title: `Alerte-Secours ne peut plus accéder à votre position`,
+      body: `Vous ne pouvez plus recevoir d'alertes de proximité. Vérifiez les paramètres.`,
       channel: "system",
       priority: "high",
       actionId: "open-settings",
