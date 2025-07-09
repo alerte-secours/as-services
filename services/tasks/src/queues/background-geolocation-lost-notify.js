@@ -6,14 +6,14 @@ const addNotification = require("~/services/add-notification")
 function createBackgroundGeolocationLostNotification() {
   return {
     data: {
-      action: "background_geolocation_lost",
+      action: "background-geolocation-lost",
     },
     notification: {
       title: `Alerte-Secours ne peut plus accéder à votre position`,
       body: `Vous ne pouvez plus recevoir d'alertes de proximité. Vérifiez les paramètres.`,
       channel: "system",
       priority: "high",
-      actionId: "open-settings",
+      actionId: "open-background-geolocation-settings",
     },
   }
 }
@@ -71,11 +71,16 @@ module.exports = async function () {
         const notificationConfig = createBackgroundGeolocationLostNotification()
 
         // Send notification
+        logger.info(
+          { deviceId, userId, notificationConfig },
+          "DEBUG: About to send background geolocation lost notification"
+        )
+
         const { success } = await addNotification({
           fcmToken,
           deviceId,
           userId,
-          type: "background_geolocation_lost",
+          type: "background-geolocation-lost",
           ...notificationConfig,
         })
 
