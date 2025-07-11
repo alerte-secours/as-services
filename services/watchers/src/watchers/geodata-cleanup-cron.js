@@ -5,7 +5,7 @@ const cron = require("~/libs/cron")
 const { DEVICE_GEODATA_MAX_AGE } = require("~/constants/time")
 const tasks = require("~/tasks")
 
-const CLEANUP_CRON = "0 */1 * * *" // Run every hour
+const CLEANUP_CRON = "0 9-19 * * *" // Run every hour from 9h to 19h
 const MAX_PARALLEL_PROCESS = 10
 const COLDGEODATA_DEVICE_KEY_PREFIX = "device:geodata:"
 const COLDGEODATA_OLD_KEY_PREFIX = "old:device:geodata:"
