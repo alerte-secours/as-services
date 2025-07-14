@@ -344,8 +344,11 @@ services:
       - ${TILESERVERGL_PORT:-4282}:8080
 
   nominatim:
-    image: mediagis/nominatim:4.0
+    image: devthefuture/nominatim:5.1
     restart: always
+    depends_on:
+      nominatim-pg:
+        condition: service_healthy
     ports:
       - ${NOMINATIM_PORT:-4283}:8080
     environment:
@@ -353,11 +356,25 @@ services:
       # PBF_URL: https://download.geofabrik.de/europe/switzerland-latest.osm.pbf
       PBF_PATH: /data/switzerland-latest.osm.pbf
       REPLICATION_URL: https://download.geofabrik.de/europe/switzerland-updates/
-      NOMINATIM_PASSWORD: very_secure_password
+      # NOMINATIM_DATABASE_DSN: "pgsql:host=nominatim-pg;port=5432;user=nominatim;password=nominatim_password;dbname=nominatim"
+      NOMINATIM_DATABASE_DSN: "postgresql://nominatim:nominatim_password@nominatim-pg:5432/nominatim"
     volumes:
-      - nominatim-data:/var/lib/postgresql/12/main
       - ./osm-files:/data
     shm_size: 1gb
+  nominatim-pg:
+    image: postgis/postgis:16-3.4
+    restart: always
+    volumes:
+      - nominatim-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: nominatim
+      POSTGRES_USER: nominatim
+      POSTGRES_PASSWORD: nominatim_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nominatim -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   maildev:
     image: maildev/maildev:2.1.0
@@ -421,7 +438,7 @@ volumes:
       project: "alertesecours"
     # external: true
   nominatim-data:
-    name: helpme-nominatim-data
+    name: helpme-nominatim-pg-data
     labels:
       project: "alertesecours"
   # osrm-data:
