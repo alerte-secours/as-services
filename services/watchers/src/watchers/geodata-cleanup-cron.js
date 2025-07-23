@@ -9,7 +9,7 @@ const {
 } = require("~/constants/time")
 const tasks = require("~/tasks")
 
-const CLEANUP_CRON = "0 9-19 * * *" // Run every hour from 9h to 19h
+const CLEANUP_CRON = "0 */4 * * *" // Run every 4 hours
 const MAX_PARALLEL_PROCESS = 10
 const COLDGEODATA_DEVICE_KEY_PREFIX = "device:geodata:"
 const COLDGEODATA_OLD_KEY_PREFIX = "old:device:geodata:"
@@ -29,6 +29,13 @@ module.exports = async function () {
 
   return async function geodataCleanupCron() {
     logger.info("watcher geodataCleanupCron: daemon started")
+
+    // Helper function to check if current time is within notification window (9-19h)
+    function isWithinNotificationWindow() {
+      const now = new Date()
+      const hour = now.getHours()
+      return hour >= 9 && hour < 19
+    }
 
     // Process geodata cleanup with single loop for both notifications and cleanup
     async function processGeodataCleanup() {
@@ -107,7 +114,7 @@ module.exports = async function () {
                   )
                 }
               }
-              // Handle notification (36h+ but less than 48h)
+              // Handle notification (36h+ but less than 48h) - only during 9-19h window
               else if (age > notificationAge) {
                 const notifiedKey = `${COLDGEODATA_NOTIFIED_KEY_PREFIX}${deviceId}`
 
@@ -115,7 +122,7 @@ module.exports = async function () {
                   // Check if we've already notified for this device
                   const alreadyNotified = await redisCold.exists(notifiedKey)
 
-                  if (!alreadyNotified) {
+                  if (!alreadyNotified && isWithinNotificationWindow()) {
                     // Enqueue task to notify user about lost background geolocation
                     try {
                       await addTask(tasks.BACKGROUND_GEOLOCATION_LOST_NOTIFY, {
@@ -134,6 +141,14 @@ module.exports = async function () {
                     }
                     // Mark as notified with 48h expiry (cleanup age)
                     await redisCold.set(notifiedKey, "1", "EX", cleanupAge)
+                  } else if (
+                    !alreadyNotified &&
+                    !isWithinNotificationWindow()
+                  ) {
+                    logger.debug(
+                      { deviceId, age: `${Math.floor(age / 3600)}h` },
+                      "Skipping notification outside business hours (9-19h)"
+                    )
                   }
                 } catch (error) {
                   logger.error(
