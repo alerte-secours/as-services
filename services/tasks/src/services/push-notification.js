@@ -48,7 +48,9 @@ function deriveNotificationConfig({
   android = {},
   apns = {},
   uid,
+  silent = false,
 }) {
+  const isVisible = !silent
   const notification = {
     // https://firebase.google.com/docs/reference/admin/node/firebase-admin.messaging.notification.md#notification_interface
     title,
@@ -74,7 +76,14 @@ function deriveNotificationConfig({
       priority: "high",
       visibility: "public",
       defaultSound: true,
-      clickAction: `com.alertesecours.${snakeCase(actionId).toUpperCase()}`,
+      // Only include clickAction for visible notifications (not silent ones)
+      ...(actionId && isVisible
+        ? {
+            clickAction: `com.alertesecours.${snakeCase(
+              actionId
+            ).toUpperCase()}`,
+          }
+        : {}),
       ...(android.notification || {}),
     },
     restrictedPackageName: "com.alertesecours",
@@ -85,7 +94,7 @@ function deriveNotificationConfig({
     // https://firebase.google.com/docs/reference/admin/node/firebase-admin.messaging.apnsconfig.md#apnsconfig_interface
     headers: {
       "apns-priority": priority === "high" ? "10" : "5",
-      "apns-push-type": "alert",
+      "apns-push-type": isVisible ? "alert" : "background", // Use background for silent pushes
       "apns-collapse-id": uid, // https://firebase.google.com/docs/cloud-messaging/concept-options
       ...(apns.headers || {}),
     },
@@ -93,16 +102,20 @@ function deriveNotificationConfig({
       aps: {
         category: channel,
         threadId: channel, // Thread ID for grouping notifications
-        // Critical alerts for high importance
-        sound: {
-          critical: priority === "high",
-          name: "default",
-          volume: 1.0,
-        },
         // Content available flag for background processing
         contentAvailable: true,
         // Support for modification of notification content
         mutableContent: true,
+        // Only include sound for non-silent notifications
+        ...(isVisible
+          ? {
+              sound: {
+                critical: priority === "high",
+                name: "default",
+                volume: 1.0,
+              },
+            }
+          : {}),
 
         // alert: {
         //   // https://firebase.google.com/docs/reference/admin/node/firebase-admin.messaging.apsalert.md#apsalert_interface
@@ -160,12 +173,19 @@ async function pushNotification({
   // https://firebase.google.com/docs/reference/admin/node/firebase-admin.messaging.basemessage
   const message = {
     token: fcmToken,
-    // Basic notification for platforms that don't need specific configs
-    notification: derivedNotification.notification,
-    data: { json: JSON.stringify(data), uid, actionId: notification.actionId },
+    data: { json: JSON.stringify(data), uid, actionId: notification?.actionId },
     // Platform specific configurations
     android: derivedNotification.android,
     apns: derivedNotification.apns,
+  }
+
+  // Only include notification for non-silent pushes
+  if (
+    notification &&
+    !notification.silent &&
+    (notification.title || notification.body)
+  ) {
+    message.notification = derivedNotification.notification
   }
 
   try {

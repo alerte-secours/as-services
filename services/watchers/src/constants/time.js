@@ -8,6 +8,7 @@ module.exports = {
   SCAN_AUTO_CLOSE_CRON: "15 * * * *", // At minute 15
   SCAN_AUTO_ARCHIVE_CRON: "0 4 * * *", // At 4:00
   RELATIVE_UNREGISTERED_RECONCILIATION_CRON: "0 4 * * *", // At 4:00
+  DEVICE_GEODATA_IOS_SILENT_PUSH_AGE: "24 hours", // When to send iOS silent push for heartbeat sync
   DEVICE_GEODATA_NOTIFICATION_AGE: "36 hours", // When to send push notification
   DEVICE_GEODATA_CLEANUP_AGE: "48 hours", // When to remove/clean data
 }

@@ -3,6 +3,7 @@ const { ctx } = require("@modjo/core")
 const ms = require("ms")
 const cron = require("~/libs/cron")
 const {
+  DEVICE_GEODATA_IOS_SILENT_PUSH_AGE,
   DEVICE_GEODATA_NOTIFICATION_AGE,
   DEVICE_GEODATA_CLEANUP_AGE,
 } = require("~/constants/time")
@@ -14,6 +15,9 @@ const COLDGEODATA_DEVICE_KEY_PREFIX = "device:geodata:"
 const COLDGEODATA_OLD_KEY_PREFIX = "old:device:geodata:"
 const COLDGEODATA_NOTIFIED_KEY_PREFIX = "notified:device:geodata:"
 const HOTGEODATA_KEY = "device" // The key where hot geodata is stored
+const iosHeartbeatAge = Math.floor(
+  ms(DEVICE_GEODATA_IOS_SILENT_PUSH_AGE) / 1000
+) // Convert to seconds
 const notificationAge = Math.floor(ms(DEVICE_GEODATA_NOTIFICATION_AGE) / 1000) // Convert to seconds
 const cleanupAge = Math.floor(ms(DEVICE_GEODATA_CLEANUP_AGE) / 1000) // Convert to seconds
 
@@ -81,6 +85,25 @@ module.exports = async function () {
                   logger.error(
                     { error, deviceId },
                     "Error cleaning device data"
+                  )
+                }
+              }
+              // Handle iOS silent push for heartbeat sync (24h+ but less than 36h)
+              else if (age > iosHeartbeatAge) {
+                try {
+                  // Enqueue task to send iOS silent push for geolocation heartbeat sync
+                  await addTask(tasks.IOS_GEOLOCATION_HEARTBEAT_SYNC, {
+                    deviceId,
+                  })
+
+                  logger.info(
+                    { deviceId, age: `${Math.floor(age / 3600)}h` },
+                    "Enqueued iOS geolocation heartbeat sync task"
+                  )
+                } catch (heartbeatError) {
+                  logger.error(
+                    { deviceId, error: heartbeatError },
+                    "Error enqueueing iOS geolocation heartbeat sync task"
                   )
                 }
               }
