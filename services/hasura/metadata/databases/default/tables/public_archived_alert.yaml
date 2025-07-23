@@ -3,10 +3,22 @@ table:
   schema: public
 configuration:
   column_config:
+    acknowledged_around_count:
+      custom_name: acknowledgedAroundCount
+    acknowledged_connect_count:
+      custom_name: acknowledgedConnectCount
+    acknowledged_relative_count:
+      custom_name: acknowledgedRelativeCount
     alert_id:
       custom_name: alertId
     alert_tag:
       custom_name: alertTag
+    alerting_around_count:
+      custom_name: alertingAroundCount
+    alerting_connect_count:
+      custom_name: alertingConnectCount
+    alerting_relative_count:
+      custom_name: alertingRelativeCount
     altitude_accuracy:
       custom_name: altitudeAccuracy
     archive_created_at:
@@ -21,8 +33,20 @@ configuration:
       custom_name: createdAt
     device_id:
       custom_name: deviceId
+    emergency_calling_notification_sent:
+      custom_name: emergencyCallingNotificationSent
+    follow_location:
+      custom_name: followLocation
+    initial_location:
+      custom_name: initialLocation
     keep_open_at:
       custom_name: keepOpenAt
+    last_address:
+      custom_name: lastAddress
+    last_nearest_place:
+      custom_name: lastNearestPlace
+    last_what3words:
+      custom_name: lastWhat3Words
     nearest_place:
       custom_name: nearestPlace
     notified_count:
@@ -44,8 +68,14 @@ configuration:
     what3words:
       custom_name: what3Words
   custom_column_names:
+    acknowledged_around_count: acknowledgedAroundCount
+    acknowledged_connect_count: acknowledgedConnectCount
+    acknowledged_relative_count: acknowledgedRelativeCount
     alert_id: alertId
     alert_tag: alertTag
+    alerting_around_count: alertingAroundCount
+    alerting_connect_count: alertingConnectCount
+    alerting_relative_count: alertingRelativeCount
     altitude_accuracy: altitudeAccuracy
     archive_created_at: archiveCreatedAt
     call_emergency: callEmergency
@@ -53,7 +83,13 @@ configuration:
     closed_by: closedBy
     created_at: createdAt
     device_id: deviceId
+    emergency_calling_notification_sent: emergencyCallingNotificationSent
+    follow_location: followLocation
+    initial_location: initialLocation
     keep_open_at: keepOpenAt
+    last_address: lastAddress
+    last_nearest_place: lastNearestPlace
+    last_what3words: lastWhat3Words
     nearest_place: nearestPlace
     notified_count: notifiedCount
     notify_around: notifyAround

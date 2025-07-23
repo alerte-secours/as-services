@@ -19,6 +19,7 @@
 - "!include public_enum_content_type.yaml"
 - "!include public_enum_emergency_call.yaml"
 - "!include public_enum_notification_type.yaml"
+- "!include public_enum_phone_os.yaml"
 - "!include public_enum_user_login_request_type.yaml"
 - "!include public_enum_user_role.yaml"
 - "!include public_external_public_config.yaml"

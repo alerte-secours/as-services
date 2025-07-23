@@ -1,0 +1,19 @@
+table:
+  name: enum_phone_os
+  schema: public
+is_enum: true
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_root_fields:
+    delete: deleteManyEnumPhoneOs
+    delete_by_pk: deleteOneEnumPhoneOs
+    insert: insertManyEnumPhoneOs
+    insert_one: insertOneEnumPhoneOs
+    select: selectManyEnumPhoneOs
+    select_aggregate: selectAggEnumPhoneOs
+    select_by_pk: selectOneEnumPhoneOs
+    select_stream: selectStreamEnumPhoneOs
+    update: updateManyEnumPhoneOs
+    update_by_pk: updateOneEnumPhoneOs
+    update_many: updateBatchEnumPhoneOs

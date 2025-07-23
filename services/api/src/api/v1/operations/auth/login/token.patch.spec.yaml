@@ -11,6 +11,8 @@ requestBody:
             format: apiJwt
           phoneModel:
             type: string
+          phoneOS:
+            type: string
           deviceUuid:
             type: string
             format: uuid

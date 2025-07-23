@@ -1,6 +1,11 @@
 module.exports = async function ({ services: { authTokenHandler } }) {
   async function doAuthLoginToken(req) {
-    const { authTokenJwt, phoneModel = null, deviceUuid = null } = req.body
+    const {
+      authTokenJwt,
+      phoneModel = null,
+      phoneOS = null,
+      deviceUuid = null,
+    } = req.body
 
     // Validate the auth token JWT and extract the auth token
     const authToken = authTokenHandler.decodeAuthToken(authTokenJwt)
@@ -10,6 +15,7 @@ module.exports = async function ({ services: { authTokenHandler } }) {
       await authTokenHandler.getOrCreateUserSession(
         authToken,
         phoneModel,
+        phoneOS,
         deviceUuid
       )
 

@@ -22,6 +22,7 @@ module.exports = ({ services }) => {
   async function getOrCreateUserSession(
     authToken,
     phoneModel = null,
+    phoneOS = null,
     deviceUuid = null
   ) {
     let userId
@@ -54,8 +55,8 @@ module.exports = ({ services }) => {
                id
            `
         ;[{ id: deviceId }] = await sql`
-           INSERT INTO "device" ("user_id", "phone_model", "uuid")
-             VALUES (${userId}, ${phoneModel}, ${deviceUuid})
+           INSERT INTO "device" ("user_id", "phone_model", "phone_os", "uuid")
+             VALUES (${userId}, ${phoneModel}, ${phoneOS}, ${deviceUuid})
            RETURNING
              id
            `
@@ -104,8 +105,8 @@ module.exports = ({ services }) => {
       if (!deviceId) {
         // Only create new device if UUID doesn't exist
         ;[{ id: deviceId }] = await sql`
-           INSERT INTO "device" ("user_id", "phone_model", "uuid")
-             VALUES (${userId}, ${phoneModel}, ${deviceUuid})
+           INSERT INTO "device" ("user_id", "phone_model", "phone_os", "uuid")
+             VALUES (${userId}, ${phoneModel}, ${phoneOS}, ${deviceUuid})
            RETURNING
              id
            `
