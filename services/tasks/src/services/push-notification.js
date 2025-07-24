@@ -169,11 +169,22 @@ async function pushNotification({
         },
       }
 
+  // Prepare data payload - Firebase requires all values to be strings and no undefined values
+  const dataPayload = {
+    json: JSON.stringify(data),
+    uid,
+  }
+
+  // Only add actionId if it's defined
+  if (notification?.actionId) {
+    dataPayload.actionId = String(notification.actionId)
+  }
+
   // Construct message according to Firebase Admin SDK format
   // https://firebase.google.com/docs/reference/admin/node/firebase-admin.messaging.basemessage
   const message = {
     token: fcmToken,
-    data: { json: JSON.stringify(data), uid, actionId: notification?.actionId },
+    data: dataPayload,
     // Platform specific configurations
     android: derivedNotification.android,
     apns: derivedNotification.apns,
