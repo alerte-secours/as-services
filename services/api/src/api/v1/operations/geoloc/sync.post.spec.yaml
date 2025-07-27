@@ -31,7 +31,7 @@ requestBody:
                   - geofence
                   - geofenceschange
                   - enabledchange
-                  - connectvitychange
+                  - connectivitychange
                   - schedule
                   - powersavechange
                   - notificationaction

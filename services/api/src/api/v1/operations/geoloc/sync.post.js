@@ -13,6 +13,7 @@ module.exports = function () {
     const logger = ctx.require("logger")
     const { location } = req.body
     const {
+      event,
       coords: {
         accuracy,
         altitude,
@@ -28,6 +29,11 @@ module.exports = function () {
     const session = reqCtx.get("session")
 
     const { deviceId } = session
+
+    // Log the event type if present
+    if (event) {
+      logger.debug({ action: "geoloc-sync-event", deviceId, event })
+    }
 
     // Check JWT expiration sequence to prevent replay attacks
     if (session.exp) {
