@@ -69,7 +69,6 @@ module.exports = async function () {
               const data = JSON.parse(deviceData)
               const age = data.updatedAt ? now - data.updatedAt : Infinity
 
-              // Handle cleanup first (48h+) - this takes priority
               if (age > cleanupAge) {
                 try {
                   // Remove from hot storage
@@ -94,11 +93,8 @@ module.exports = async function () {
                     "Error cleaning device data"
                   )
                 }
-              }
-              // Handle iOS silent push for heartbeat sync (24h+ but less than 36h)
-              else if (age > iosHeartbeatAge) {
+              } else if (age > iosHeartbeatAge) {
                 try {
-                  // Enqueue task to send iOS silent push for geolocation heartbeat sync
                   await addTask(tasks.IOS_GEOLOCATION_HEARTBEAT_SYNC, {
                     deviceId,
                   })
@@ -113,9 +109,7 @@ module.exports = async function () {
                     "Error enqueueing iOS geolocation heartbeat sync task"
                   )
                 }
-              }
-              // Handle notification (36h+ but less than 48h) - only during 9-19h window
-              else if (age > notificationAge) {
+              } else if (age > notificationAge) {
                 const notifiedKey = `${COLDGEODATA_NOTIFIED_KEY_PREFIX}${deviceId}`
 
                 try {
