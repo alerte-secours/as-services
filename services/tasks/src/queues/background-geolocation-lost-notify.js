@@ -9,8 +9,8 @@ function createBackgroundGeolocationLostNotification() {
       action: "background-geolocation-lost",
     },
     notification: {
-      title: `Alerte-Secours ne peut plus accéder à votre position`,
-      body: `Vous ne pouvez plus recevoir d'alertes de proximité. Vérifiez les paramètres.`,
+      title: `Alerte-Secours ne reçoit plus de mises à jour de votre position`,
+      body: `Vous ne pourrez plus recevoir d'alertes de proximité. Vérifiez les paramètres.`,
       channel: "system",
       priority: "high",
       actionId: "open-background-geolocation-settings",

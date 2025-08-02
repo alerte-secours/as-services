@@ -10,5 +10,5 @@ module.exports = {
   RELATIVE_INVITATION_NOTIFY: "relativeInvitationNotify",
   ALERT_CALL_EMERGENCY_INFO_NOTIFY: "alertCallEmergencyInfoNotify",
   BACKGROUND_GEOLOCATION_LOST_NOTIFY: "backgroundGeolocationLostNotify",
-  IOS_GEOLOCATION_HEARTBEAT_SYNC: "iosGeolocationHeartbeatSync",
+  // IOS_GEOLOCATION_HEARTBEAT_SYNC: "iosGeolocationHeartbeatSync",
 }
