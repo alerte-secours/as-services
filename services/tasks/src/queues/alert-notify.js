@@ -263,7 +263,7 @@ module.exports = async function () {
       await setNotificationSent(alertingId, sentOnce)
     },
     {
-      dedupOptions: { enabled: false },
+      dedupOptions: { enabled: true },
     }
   )
 }
