@@ -38,25 +38,37 @@ module.exports = function () {
         "id"
       `
 
+    const incomingType = (file?.mimetype || "").toLowerCase()
+    const nameFromClient = (file?.originalname || "").toLowerCase()
+    const mappedType =
+      incomingType === "audio/m4a"
+        ? "audio/mp4"
+        : incomingType && incomingType.startsWith("audio/")
+        ? incomingType
+        : ""
+    const guessedFromName = nameFromClient.endsWith(".m4a") ? "audio/mp4" : ""
+    const contentType = mappedType || guessedFromName || "audio/mp4"
+
     const metaData = {
-      "Content-Type": file.mimetype,
-      encoding: file.encoding,
-      originalname: file.originalname,
-      userId,
-      deviceId,
+      "Content-Type": contentType,
+      "Content-Disposition": `inline; filename="${audioFileUuid}.m4a"`,
+      "Cache-Control": "public, max-age=31536000, immutable",
+      "x-amz-meta-encoding": file.encoding,
+      "x-amz-meta-originalname": file.originalname,
+      "x-amz-meta-userid": String(userId),
+      "x-amz-meta-deviceid": String(deviceId),
     }
 
     await minio.ensureBucketExists(bucket)
 
     try {
       const res = await minio.putObject(
-        "audio",
-        audioFileUuid,
+        bucket,
+        `${audioFileUuid}.m4a`,
         file.buffer,
         file.size,
         metaData
       )
-      // logger.trace(res)
       logger.debug(
         { res, bucket, audioFileUuid, userId, deviceId },
         "Successfully uploaded audio file"
