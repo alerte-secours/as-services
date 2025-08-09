@@ -22,7 +22,7 @@ function createSuggestKeepOpenNotification({ alertId, code, level }) {
       title: `Alerte bientôt expirée - #${code}`,
       body: "Votre alerte va bientôt expirer, gardez la ouverte si la situation n'est pas résolue",
       channel: "suggest-keep-open",
-      icon: `notif-${level}.png`,
+      icon: `notif-${level}`,
       priority: "high",
       ttl: expires,
       color,

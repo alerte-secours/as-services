@@ -39,7 +39,7 @@ function createEmergencyInfoNotification({
       title: "Infos de localisation pour les secours",
       body: notificationText,
       channel: "alert-infos",
-      icon: `notif-${level}.png`,
+      icon: `notif-${level}`,
       priority: "high",
       ttl: expires,
       actionId: "open-alert",

@@ -22,7 +22,7 @@ function createSuggestCloseNotification({ code, level, alertId }) {
       title: `Alerte toujours en cours - #${code}`,
       body: "Votre alerte est toujours ouverte, pensez à la terminer si la situation est résolue",
       channel: "suggest-close",
-      icon: `notif-${level}.png`,
+      icon: `notif-${level}`,
       priority: "high",
       ttl: expires,
       color,
