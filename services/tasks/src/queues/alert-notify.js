@@ -167,7 +167,20 @@ module.exports = async function () {
         }
       }
 
+      logger.debug({ alertId }, "Querying alert record")
+      const [{ userId: alertUserId, level, code }] = await sql`
+        SELECT
+          "alert"."level" as "level",
+          "alert"."user_id" as "userId",
+          "alert"."code" as "code"
+        FROM
+          "alert"
+        WHERE
+          "alert"."id" = ${alertId}
+        `
+
       let sentOnce = false
+
       await async.allLimit(devices, MAX_PARALLEL_PUSHES, async (device) => {
         const { id: deviceId, fcmToken } = device
         const notificationAlertLevel = device.notificationAlertLevel || "green"
@@ -175,18 +188,6 @@ module.exports = async function () {
           { deviceId, notificationAlertLevel },
           "Found device record"
         )
-
-        logger.debug({ alertId }, "Querying alert record")
-        const [{ userId: alertUserId, level, code }] = await sql`
-          SELECT
-            "alert"."level" as "level",
-            "alert"."user_id" as "userId",
-            "alert"."code" as "code"
-          FROM
-            "alert"
-          WHERE
-            "alert"."id" = ${alertId}
-          `
 
         if (alertUserId === alertingUserId) {
           logger.info(
