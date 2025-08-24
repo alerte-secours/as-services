@@ -134,34 +134,17 @@ module.exports = async function () {
       const { reason, alertId, userId: alertingUserId } = alertingRow
       logger.debug({ reason, alertId, alertingUserId }, "Found alerting record")
 
-      let devicesList
-      if (reason === "relative") {
-        logger.debug({ alertingUserId }, "Querying device record for user")
-        devicesList = await sql`
-          SELECT
-            "id",
-            "fcm_token" as "fcmToken",
-            "notification_alert_level" as "notificationAlertLevel"
-          FROM
-            "device"
-          WHERE
-            "user_id" = ${alertingUserId}
-            AND "fcm_token" IS NOT NULL
-          `
-      } else {
-        const { deviceId } = alertingRow
-        logger.debug({ deviceId }, "Querying device record")
-        devicesList = await sql`
-          SELECT
-            "fcm_token" as "fcmToken",
-            "notification_alert_level" as "notificationAlertLevel"
-          FROM
-            "device"
-          WHERE
-            "user_id" = ${alertingUserId}
-            AND "fcm_token" IS NOT NULL
-          `
-      }
+      const devicesList = await sql`
+        SELECT
+          "id",
+          "fcm_token" as "fcmToken",
+          "notification_alert_level" as "notificationAlertLevel"
+        FROM
+          "device"
+        WHERE
+          "user_id" = ${alertingUserId}
+          AND "fcm_token" IS NOT NULL
+        `
       const devices = devicesList.map((device) => ({ ...device }))
 
       logger.debug({ alertId }, "Querying alert record")
