@@ -29,7 +29,7 @@ module.exports = async function () {
         "id" = ${alertId}
       `
 
-    if (alert) {
+    if (!alert) {
       // alert removed
       return
     }
