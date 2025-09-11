@@ -1,0 +1,92 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "curl": {
+      "resolved": "github:NixOS/nixpkgs/ca77296380960cd497a765102eeb1356eb80fed0?narHash=sha256-PgLSZDBEWUHpfTRfFyklmiiLBE1i1aGCtz4eRA3POao%3D#curl",
+      "source": "nixpkg",
+      "systems": {
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "man",
+              "path": "/nix/store/bsga1570f0sxs832blngxcb7jcc706mw-curl-8.14.1-man",
+              "default": true
+            },
+            {
+              "name": "bin",
+              "path": "/nix/store/vdl7fgasaimqnkr47xw8vq7alafv9zyx-curl-8.14.1-bin",
+              "default": true
+            }
+          ]
+        }
+      }
+    },
+    "git": {
+      "resolved": "github:NixOS/nixpkgs/ca77296380960cd497a765102eeb1356eb80fed0?narHash=sha256-PgLSZDBEWUHpfTRfFyklmiiLBE1i1aGCtz4eRA3POao%3D#git",
+      "source": "nixpkg",
+      "systems": {
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "path": "/nix/store/zhv8ib8y1zfi76afddfnp8fmm562bgaa-git-2.50.1",
+              "default": true
+            }
+          ]
+        }
+      }
+    },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "last_modified": "2025-09-05T01:14:44Z",
+      "resolved": "github:NixOS/nixpkgs/ca77296380960cd497a765102eeb1356eb80fed0?lastModified=1757034884&narHash=sha256-PgLSZDBEWUHpfTRfFyklmiiLBE1i1aGCtz4eRA3POao%3D"
+    },
+    "jq": {
+      "resolved": "github:NixOS/nixpkgs/ca77296380960cd497a765102eeb1356eb80fed0?narHash=sha256-PgLSZDBEWUHpfTRfFyklmiiLBE1i1aGCtz4eRA3POao%3D#jq",
+      "source": "nixpkg",
+      "systems": {
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "man",
+              "path": "/nix/store/xvv5ss0sb0y0bfi7m19smls37afsxmvi-jq-1.8.1-man",
+              "default": true
+            },
+            {
+              "name": "bin",
+              "path": "/nix/store/zjl3cfsqvwiz2g943sm15n1gghv793m3-jq-1.8.1-bin",
+              "default": true
+            }
+          ]
+        }
+      }
+    },
+    "nodejs_20": {
+      "plugin_version": "0.0.2",
+      "resolved": "github:NixOS/nixpkgs/ca77296380960cd497a765102eeb1356eb80fed0?narHash=sha256-PgLSZDBEWUHpfTRfFyklmiiLBE1i1aGCtz4eRA3POao%3D#nodejs_20",
+      "source": "nixpkg",
+      "systems": {
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "path": "/nix/store/4i5h4acwfks571bagg651zdp0fybv93s-nodejs-20.19.4",
+              "default": true
+            }
+          ]
+        }
+      }
+    },
+    "yarn": {
+      "resolved": "github:NixOS/nixpkgs/ca77296380960cd497a765102eeb1356eb80fed0?narHash=sha256-PgLSZDBEWUHpfTRfFyklmiiLBE1i1aGCtz4eRA3POao%3D#yarn",
+      "source": "nixpkg",
+      "systems": {
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "path": "/nix/store/0wckc0rh5m1v74g0sb3xa9ax0rf1dfg5-yarn-1.22.22",
+              "default": true
+            }
+          ]
+        }
+      }
+    }
+  }
+}

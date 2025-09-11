@@ -7,9 +7,9 @@ This document contains technical information for developers working on the Alert
 ### Requirements
 
 - Docker
-- Direnv
-- Node.js (>=20)
-- Yarn (v4.6.0+)
+- Devbox
+- Android SDK (for mobile development)
+- Java 8+ (for Android development)
 
 ### Installation
 
@@ -19,12 +19,22 @@ git clone https://codeberg.org/alerte-secours/alerte-secours
 cd alerte-secours
 ```
 
-2. Install dependencies:
+2. Install devbox if not already installed:
+```sh
+curl -fsSL https://get.jetpack.io/devbox | bash
+```
+
+3. Enter devbox shell (this will automatically install Node.js 20 and Yarn 4.6.0):
+```sh
+devbox shell
+```
+
+4. Install dependencies:
 ```sh
 yarn
 ```
 
-3. Set up environment variables:
+5. Set up environment variables:
 ```sh
 cp .env.default .env
 ```
@@ -35,11 +45,43 @@ Start all services with:
 ```sh
 yarn dev:up
 ```
+Or using devbox scripts:
+```sh
+devbox run dev:up
+```
 
 View logs:
 ```sh
 yarn dev:logs
 ```
+Or using devbox:
+```sh
+devbox run dev:logs
+```
+
+### Using Devbox
+
+Once you're in the devbox shell, you have access to:
+- Node.js 20 (automatically installed)
+- Yarn 4.6.0 (automatically installed)
+- All project scripts and environment variables
+- PostgreSQL client tools
+
+To exit the devbox shell:
+```sh
+exit
+```
+
+To run commands from outside the shell:
+```sh
+devbox run <command>
+```
+
+Available devbox scripts:
+- `devbox run dev` - Start development environment
+- `devbox run dev:up` - Start all services
+- `devbox run dev:logs` - View development logs
+- `devbox run console` - Open development console
 
 ### Public Staging Environment
 

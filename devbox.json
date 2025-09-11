@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetpack-io/devbox/0.13.6/.schema/devbox.schema.json",
+  "packages": [
+    "nodejs_20",
+    "yarn",
+    "git",
+    "curl",
+    "jq"
+  ],
+  "shell": {
+    "init_hook": [
+      "# Load environment variables from .env files",
+      "[ -f .env.default ] && export $(grep -v '^#' .env.default | xargs)",
+      "[ -f .env.local ] && export $(grep -v '^#' .env.local | xargs)",
+      "",
+      "# Project-specific PATH modifications",
+      "export PATH=$PWD/bin:$PWD/scripts:$PATH",
+      "export PROJECT_WORKINGDIR=$PWD",
+      "",
+      "# Node.js configuration",
+      "export NODE_OPTIONS=\"--openssl-legacy-provider\"",
+      "export LOCAL_DEV=true",
+      "",
+      "# Local PostgreSQL configuration",
+      "export PGHOST=localhost",
+      "export PGUSER=dev", 
+      "export PGPASSWORD=dev",
+      "export PGPORT=${EXPOSE_PG_PORT:-4204}",
+      "",
+      "# Android development (system dependencies)",
+      "# Note: JAVA_HOME and ANDROID_HOME should be configured in your system",
+      "# These are kept as system dependencies as requested",
+      "if [ -n \"$ANDROID_HOME\" ]; then",
+      "  export PATH=$PATH:$ANDROID_HOME/emulator",
+      "  export PATH=$PATH:$ANDROID_HOME/tools",
+      "  export PATH=$PATH:$ANDROID_HOME/tools/bin",
+      "  export PATH=$PATH:$ANDROID_HOME/platform-tools",
+      "fi",
+      ""
+    ],
+    "scripts": {
+      "dev": "yarn dev",
+      "dev:up": "yarn dev:up",
+      "dev:logs": "yarn dev:logs",
+      "console": "scripts/console"
+    }
+  },
+  "env": {
+    "NODE_ENV": "development",
+    "LOCAL_DEV": "true"
+  }
+}
