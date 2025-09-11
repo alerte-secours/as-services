@@ -1,0 +1,35 @@
+# description: Get count of people within 25km radius of authenticated user's device location
+x-security:
+  - auth: ["user"]
+responses:
+  200:
+    # description: People count within 25km radius
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            count:
+              type: integer
+              minimum: 0
+              description: Number of people within 25km radius
+          required:
+            - count
+  400:
+    # description: Invalid coordinates provided
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+  500:
+    # description: Internal server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
