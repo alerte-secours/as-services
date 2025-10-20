@@ -39,17 +39,18 @@ modjo({
             })
           },
         },
-        keydbColdGeodata: {
+        kvrocksColdGeodata: {
           pluginName: "ioredis",
           context: (ctx) => {
             ctx.set("config", {
               ...ctx.get("config"),
               redis: {
                 host: process.env.KVROCKS_COLD_GEODATA_HOST,
-                port: process.env.KEYDB_COLD_GEODATA_PORT || "6379",
-                username: process.env.KEYDB_COLD_GEODATA_USERNAME || "default",
+                port: process.env.KVROCKS_COLD_GEODATA_PORT || "6379",
+                username:
+                  process.env.KVROCKS_COLD_GEODATA_USERNAME || "default",
                 password: process.env.KVROCKS_COLD_GEODATA_PASSWORD,
-                db: process.env.KEYDB_COLD_GEODATA_DB || "0",
+                db: process.env.KVROCKS_COLD_GEODATA_DB || "0",
               },
             })
           },

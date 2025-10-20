@@ -20,7 +20,7 @@ module.exports = async function () {
     async function iosGeolocationHeartbeatSync(params) {
       const logger = taskCtx.require("logger")
       const sql = ctx.require("postgres")
-      const redisCold = ctx.require("keydbColdGeodata")
+      const redisCold = ctx.require("kvrocksColdGeodata")
 
       const { deviceId } = params
 

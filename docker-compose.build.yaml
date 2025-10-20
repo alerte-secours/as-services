@@ -79,19 +79,19 @@ services:
       REDIS_AOF_ENABLED: "yes"
       REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
 
-  keydb-cold-geodata:
-    image: eqalpha/keydb:x86_64_v6.3.4
+  kvrocks-cold-geodata:
+    image: apache/kvrocks
     # restart: always
     ports:
-      - "${EXPOSE_KEYDB_CG_PORT:-4277}:6379"
+      - "${EXPOSE_KVROCKS_CG_PORT:-4277}:6666"
     volumes:
-      - keydb_cg_data:/data
+      - kvrocks_cg_data:/data
     command:
-      - keydb-server
-      - /etc/keydb/redis.conf
+      - kvrocks-server
+      - /etc/kvrocks/redis.conf
 
       - --requirepass
-      - keydb-password
+      - kvrocks-password
 
       - --server-threads
       - "2"
@@ -180,7 +180,7 @@ services:
       - db
       - rabbitmq
       - redis-hot-geodata
-      - keydb-cold-geodata
+      - kvrocks-cold-geodata
       - redis-q-dedup
 
   files:
@@ -245,15 +245,15 @@ services:
       REDIS_QUEUE_DEDUP_PASSWORD: redis-password
       REDIS_HOT_GEODATA_HOST: redis-hot-geodata
       REDIS_HOT_GEODATA_PASSWORD: redis-password
-      KVROCKS_COLD_GEODATA_HOST: keydb-cold-geodata
-      KVROCKS_COLD_GEODATA_PASSWORD: keydb-password
+      KVROCKS_COLD_GEODATA_HOST: kvrocks-cold-geodata
+      KVROCKS_COLD_GEODATA_PASSWORD: kvrocks-password
       SENTRY_DSN: ${SENTRY_DSN_TASKS:-""}
       SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-development}
     depends_on:
       - db
       - rabbitmq
       - redis-hot-geodata
-      - keydb-cold-geodata
+      - kvrocks-cold-geodata
       - redis-q-dedup
 
   watchers:
@@ -272,15 +272,15 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-admin}
       REDIS_HOT_GEODATA_HOST: redis-hot-geodata
       REDIS_HOT_GEODATA_PASSWORD: redis-password
-      KVROCKS_COLD_GEODATA_HOST: keydb-cold-geodata
-      KVROCKS_COLD_GEODATA_PASSWORD: keydb-password
+      KVROCKS_COLD_GEODATA_HOST: kvrocks-cold-geodata
+      KVROCKS_COLD_GEODATA_PASSWORD: kvrocks-password
       SENTRY_DSN: ${SENTRY_DSN_WATCHERS:-""}
       SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-development}
     depends_on:
       - db
       - rabbitmq
       - redis-hot-geodata
-      - keydb-cold-geodata
+      - kvrocks-cold-geodata
 
   web:
     image: helpme_web
@@ -300,5 +300,5 @@ volumes:
     name: helpme-rabbitmq-data
   redis_hg_data:
     name: helpme-redishg-data
-  keydb_cg_data:
-    name: helpme-keydbcg-data
+  kvrocks_cg_data:
+    name: helpme-kvrockscg-data

@@ -1,7 +1,7 @@
 const { ctx } = require("@modjo/core")
 
 module.exports = async function () {
-  const redis = ctx.require("keydbColdGeodata")
+  const redis = ctx.require("kvrocksColdGeodata")
 
   return Object.assign(
     async function geocodeDeviceUpdate(params) {

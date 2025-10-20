@@ -21,7 +21,7 @@ const cleanupAge = Math.floor(ms(DEVICE_GEODATA_CLEANUP_AGE) / 1000) // Convert 
 
 module.exports = async function () {
   const logger = ctx.require("logger")
-  const redisCold = ctx.require("keydbColdGeodata")
+  const redisCold = ctx.require("kvrocksColdGeodata")
   const redisHot = ctx.require("redisHotGeodata")
   const { addTask } = ctx.require("amqp")
 
