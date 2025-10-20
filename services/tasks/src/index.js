@@ -83,7 +83,7 @@ modjo({
               ...ctx.get("config"),
               redis: {
                 host: process.env.KVROCKS_COLD_GEODATA_HOST,
-                port: process.env.KVROCKS_COLD_GEODATA_PORT || "6379",
+                port: process.env.KVROCKS_COLD_GEODATA_PORT || "6666",
                 username:
                   process.env.KVROCKS_COLD_GEODATA_USERNAME || "default",
                 password: process.env.KVROCKS_COLD_GEODATA_PASSWORD,
