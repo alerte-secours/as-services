@@ -82,7 +82,7 @@ modjo({
             ctx.set("config", {
               ...ctx.get("config"),
               redis: {
-                host: process.env.KEYDB_COLD_GEODATA_HOST,
+                host: process.env.KVROCKS_COLD_GEODATA_HOST,
                 port: process.env.KEYDB_COLD_GEODATA_PORT || "6379",
                 username: process.env.KEYDB_COLD_GEODATA_USERNAME || "default",
                 password: process.env.KEYDB_COLD_GEODATA_PASSWORD,

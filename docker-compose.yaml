@@ -259,7 +259,7 @@ services:
       REDIS_QUEUE_DEDUP_PASSWORD: redis-password
       REDIS_HOT_GEODATA_HOST: redis-hot-geodata
       REDIS_HOT_GEODATA_PASSWORD: redis-password
-      KEYDB_COLD_GEODATA_HOST: keydb-cold-geodata
+      KVROCKS_COLD_GEODATA_HOST: keydb-cold-geodata
       KEYDB_COLD_GEODATA_PASSWORD: keydb-password
       SENTRY_DSN: ${SENTRY_DSN_TASKS:-""}
       SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-development}
@@ -287,7 +287,7 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-admin}
       REDIS_HOT_GEODATA_HOST: redis-hot-geodata
       REDIS_HOT_GEODATA_PASSWORD: redis-password
-      KEYDB_COLD_GEODATA_HOST: keydb-cold-geodata
+      KVROCKS_COLD_GEODATA_HOST: keydb-cold-geodata
       KEYDB_COLD_GEODATA_PASSWORD: keydb-password
       SENTRY_DSN: ${SENTRY_DSN_WATCHERS:-""}
       SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-development}
