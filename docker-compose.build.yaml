@@ -246,7 +246,7 @@ services:
       REDIS_HOT_GEODATA_HOST: redis-hot-geodata
       REDIS_HOT_GEODATA_PASSWORD: redis-password
       KVROCKS_COLD_GEODATA_HOST: keydb-cold-geodata
-      KEYDB_COLD_GEODATA_PASSWORD: keydb-password
+      KVROCKS_COLD_GEODATA_PASSWORD: keydb-password
       SENTRY_DSN: ${SENTRY_DSN_TASKS:-""}
       SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-development}
     depends_on:
@@ -273,7 +273,7 @@ services:
       REDIS_HOT_GEODATA_HOST: redis-hot-geodata
       REDIS_HOT_GEODATA_PASSWORD: redis-password
       KVROCKS_COLD_GEODATA_HOST: keydb-cold-geodata
-      KEYDB_COLD_GEODATA_PASSWORD: keydb-password
+      KVROCKS_COLD_GEODATA_PASSWORD: keydb-password
       SENTRY_DSN: ${SENTRY_DSN_WATCHERS:-""}
       SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-development}
     depends_on:
