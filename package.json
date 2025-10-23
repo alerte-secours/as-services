@@ -67,7 +67,21 @@
     "node": ">=20"
   },
   "resolutions": {
-    "express": "5.0.0-beta.3"
+    "express": "5.0.0-beta.3",
+    "@modjo/express": "1.10.4",
+    "@modjo/express-middleware": "1.10.4",
+    "@modjo/express-middleware-graphql": "1.10.4",
+    "@modjo/express-middleware-oapi": "1.10.4",
+    "@modjo/amqp": "1.10.4",
+    "@modjo/core": "1.10.4",
+    "@modjo/hasura": "1.10.4",
+    "@modjo/ioredis": "1.10.4",
+    "@modjo/microservice-oapi": "1.10.4",
+    "@modjo/microservice-worker": "1.10.4",
+    "@modjo/microservice-watcher": "1.10.4",
+    "@modjo/oa-graphql": "1.10.4",
+    "@modjo/postgres": "1.10.4",
+    "@modjo/sentry": "1.10.4"
   },
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@4.10.3"
 }

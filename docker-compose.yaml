@@ -11,57 +11,65 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   minio:
-    image: bitnami/minio:2022-debian-10
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z-cpuv1
+    container_name: minio
     ports:
-      - "${EXPOSE_MINO_PORT:-4290}:9000"
+      - "${EXPOSE_MINIO_PORT:-4290}:9000"
       - "${EXPOSE_MINIO_CONSOLE_PORT:-4291}:9001"
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio-admin}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minio-admin}
-      MINIO_FORCE_NEW_KEYS: "yes"
-      BITNAMI_DEBUG: "true"
+      # (optional) MINIO_SERVER_URL: "http://minio:9000"   # set if clients need absolute URLs
+    command: server /data --console-address ":9001"
     volumes:
       - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   minio-setup:
-    image: minio/mc
+    image: minio/mc:latest
     depends_on:
       - minio
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio-admin}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minio-admin}
     entrypoint: >
-      /bin/sh -c "
+      /bin/sh -c '
       set -e
-      mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER:-minio-admin} ${MINIO_ROOT_PASSWORD:-minio-admin};
-      until mc ls myminio; do
-        echo 'Waiting for MinIO to be ready...';
+      mc alias set myminio http://minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD";
+      # wait for server to be ready
+      until mc ls myminio >/dev/null 2>&1; do
+        echo "Waiting for MinIO to be ready...";
         sleep 1;
       done;
-      echo 'MinIO is up and running, configuring...';
-      mc mb myminio/avatar;
-      mc mb myminio/audio;
-      mc anonymous set download myminio/avatar;
-      "
+      echo "MinIO is up and running, configuring...";
+      mc mb -p myminio/avatar || true;
+      mc mb -p myminio/audio || true;
+      mc anonymous set download myminio/avatar || true;
+      echo "MinIO bucket setup complete.";
+      '
 
   rabbitmq:
-    image: docker.io/bitnami/rabbitmq:3.9
+    image: docker.io/rabbitmq:4.1
     restart: always
     volumes:
-      - rabbitmq_data:/bitnami
+      - rabbitmq_data:/var/lib/rabbitmq
     ports:
       - ${EXPOSE_RABBITMQ_NODE_PORT}:5672
       - ${EXPOSE_RABBITMQ_MANAGEMENT_PORT_PORT}:15672
     environment:
-      - RABBITMQ_USERNAME=dev
-      - RABBITMQ_PASSWORD=dev
-      - RABBITMQ_DISK_FREE_ABSOLUTE_LIMIT=2GB
+      RABBITMQ_DEFAULT_USER: dev
+      RABBITMQ_DEFAULT_PASS: dev
 
   redis-q-dedup:
-    image: &redisImage bitnami/redis:7.2
+    image: &redisImage docker.io/valkey/valkey:8.0.1
     # restart: always
     ports:
       - "${EXPOSE_REDIS_QD_PORT:-4278}:6379"
-    environment: # https://hub.docker.com/r/bitnami/redis
+    environment:
       REDIS_PASSWORD: redis-password
       REDIS_PORT: "6379"
       REDIS_AOF_ENABLED: "no"
@@ -72,39 +80,30 @@ services:
     ports:
       - "${EXPOSE_REDIS_HG_PORT:-4279}:6379"
     volumes:
-      - redis_hg_data:/bitnami/redis/data
-    environment: # https://hub.docker.com/r/bitnami/redis
+      - redis_hg_data:/data
+    environment:
       REDIS_PASSWORD: redis-password
       REDIS_PORT: "6379"
       REDIS_AOF_ENABLED: "yes"
       REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
 
   kvrocks-cold-geodata:
-    image: apache/kvrocks
+    image: apache/kvrocks:2.13.0
     # restart: always
     ports:
       - "${EXPOSE_KVROCKS_CG_PORT:-4277}:6379"
     volumes:
-      - kvrocks_cg_data:/data
+    - kvrocks_cg_data:/var/lib/kvrocks
     command:
-      - kvrocks-server
-      - /etc/kvrocks/redis.conf
-
+      - --bind
+      - 0.0.0.0
+      - --dir
+      - /var/lib/kvrocks
       - --requirepass
       - kvrocks-password
-
-      - --server-threads
+      - --workers
       - "2"
       
-      - --storage-provider
-      - flash
-      - /data/flash
-      
-      - --maxmemory
-      - "1G"
-
-      - --maxmemory-policy
-      - allkeys-lfu
   hasura:
     image: helpme_hasura
     restart: always
