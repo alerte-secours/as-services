@@ -5,7 +5,8 @@
     "yarn",
     "git",
     "curl",
-    "jq"
+    "jq",
+    "tilt"
   ],
   "shell": {
     "init_hook": [

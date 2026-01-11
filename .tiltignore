@@ -1,0 +1,9 @@
+**/node_modules/**
+**/.git/**
+**/.cache/**
+**/.dev-secrets/**
+**/android/**
+**/ios/**
+**/*.log
+osm-files/**
+tileserver-files/**

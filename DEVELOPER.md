@@ -41,22 +41,37 @@ cp .env.default .env
 
 ### Start Services
 
-Start all services with:
+Start all services with Tilt:
 ```sh
-yarn dev:up
-```
-Or using devbox scripts:
-```sh
-devbox run dev:up
+yarn dev
+# or
+devbox run dev
+# or run a subset of services:
+tilt up api files hasura
 ```
 
-View logs:
+View logs in Tilt UI (web HUD opens automatically). CLI alternative:
 ```sh
 yarn dev:logs
+# or
+tilt logs
 ```
-Or using devbox:
+
+Stop services:
 ```sh
-devbox run dev:logs
+# If running in the foreground terminal:
+Ctrl-C
+# Or explicitly:
+tilt down
+```
+
+Compose fallback (legacy):
+```sh
+yarn compose:up
+yarn compose:down
+# or via devbox:
+devbox run compose:up
+devbox run compose:down
 ```
 
 ### Using Devbox

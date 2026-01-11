@@ -20,9 +20,11 @@
     "tests/*"
   ],
   "scripts": {
-    "dev": "yarn dev:up && yarn dev:logs",
-    "dev:up": "up",
-    "dev:logs": "dev-logs",
+    "dev": "tilt up",
+    "dev:up": "tilt up",
+    "dev:logs": "tilt logs",
+    "compose:up": "scripts/up",
+    "compose:down": "docker compose down -v",
     "up:modjo": "git stash && yarn up '@modjo/*' && git stash pop && yarn",
     "release": "commit-and-tag-version",
     "lint": "eslint .",

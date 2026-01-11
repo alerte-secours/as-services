@@ -74,6 +74,10 @@
         }
       }
     },
+    "tilt": {
+      "resolved": "github:NixOS/nixpkgs/ca77296380960cd497a765102eeb1356eb80fed0?narHash=sha256-PgLSZDBEWUHpfTRfFyklmiiLBE1i1aGCtz4eRA3POao%3D#tilt",
+      "source": "nixpkg"
+    },
     "yarn": {
       "resolved": "github:NixOS/nixpkgs/ca77296380960cd497a765102eeb1356eb80fed0?narHash=sha256-PgLSZDBEWUHpfTRfFyklmiiLBE1i1aGCtz4eRA3POao%3D#yarn",
       "source": "nixpkg",
