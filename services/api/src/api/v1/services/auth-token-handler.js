@@ -142,10 +142,8 @@ module.exports = ({ services }) => {
   }
 
   async function generateUserJwt(userId, deviceId, roles) {
-    const [defaultRole] = services.sortRolesByLevel(roles)
-
     const hasuraClaim = {}
-    hasuraClaim["x-hasura-default-role"] = defaultRole
+    hasuraClaim["x-hasura-default-role"] = "user"
     hasuraClaim["x-hasura-allowed-roles"] = roles
     hasuraClaim["x-hasura-user-id"] = userId.toString()
     hasuraClaim["x-hasura-device-id"] = deviceId.toString()
