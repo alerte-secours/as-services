@@ -35,8 +35,8 @@ module.exports = async function updateUserWithUniqueUsername(
         username = ${username}
       WHERE
         id = ${userId}
-        AND username IS NULL
-        OR username = ''
+        AND (username IS NULL
+          OR username = '')
       RETURNING
         id
       `
