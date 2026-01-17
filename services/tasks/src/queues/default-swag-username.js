@@ -15,7 +15,7 @@ module.exports = async function () {
       await updateUserWithUniqueUsername({ userId })
     },
     {
-      dedupOptions: { enabled: true },
+      dedupOptions: { enabled: false },
     }
   )
 }
