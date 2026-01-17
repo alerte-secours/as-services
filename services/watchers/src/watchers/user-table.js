@@ -37,6 +37,14 @@ module.exports = async function () {
     observable.subscribe({
       next: async ({ data }) => {
         const { selectManyUser } = data
+
+        logger.debug(
+          {
+            userIds: selectManyUser.map(({ id }) => id),
+          },
+          "userTable"
+        )
+
         await async.eachOf(selectManyUser, async ({ id }) =>
           addTask(tasks.DEFAULT_SWAG_USERNAME, { userId: id })
         )
